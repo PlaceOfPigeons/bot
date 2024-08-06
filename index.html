@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">
-    <title>Hamster Kombat Clicker</title>
+    <title>Project President Clicker</title>
     <style>
         body {
             display: flex;
@@ -44,7 +44,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        #hamster {
+        #president {
             width: 200px;
             cursor: pointer;
             border-radius: 50%; /* Делает изображение круглым */
@@ -144,9 +144,9 @@
             <input type="text" id="username-input" placeholder="Введите имя">
             <button id="save-username">Сохранить имя</button>
         </div>
-        <img id="hamster" src="https://via.placeholder.com/200" alt="Hamster">
+        <img id="president" src="https://via.placeholder.com/200" alt="President">
         <div id="score">0</div>
-        <button id="upgrade">Upgrade (Cost: 10)</button>
+        <button id="upgrade">Upgrade (Cost: 1)</button>
         <div id="referral">
             <a href="https://example.com?ref=yourReferralCode" target="_blank" id="referral-link">Invite Friends with this Referral Link</a>
             <div id="referral-ranking">
@@ -169,14 +169,15 @@
         <div id="menu-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Меню</h2>
-            <img src="https://via.placeholder.com/200" alt="Hamster">
+            <img src="https://via.placeholder.com/200" alt="President">
         </div>
     </div>
 
     <script>
         let score = parseInt(localStorage.getItem('score')) || 0;
-        let clickValue = 1;
-        const hamster = document.getElementById('hamster');
+        let clickValue = parseInt(localStorage.getItem('clickValue')) || 1;
+        let upgradeCost = parseInt(localStorage.getItem('upgradeCost')) || 1;
+        const president = document.getElementById('president');
         const scoreDisplay = document.getElementById('score');
         const upgradeButton = document.getElementById('upgrade');
         const referralRanking = document.getElementById('referral-ranking');
@@ -187,25 +188,29 @@
 
         // Update the displayed score
         scoreDisplay.textContent = score;
+        upgradeButton.textContent = `Upgrade (Cost: ${upgradeCost})`;
 
-        hamster.addEventListener('click', (event) => {
+        president.addEventListener('click', (event) => {
             event.preventDefault();
             score += clickValue;
             scoreDisplay.textContent = score;
             localStorage.setItem('score', score);
         });
 
-        hamster.addEventListener('dblclick', (event) => {
+        president.addEventListener('dblclick', (event) => {
             event.preventDefault(); // Предотвращаем увеличение очков при двойном клике
         });
 
         upgradeButton.addEventListener('click', () => {
-            if (score >= 10) {
-                score -= 10;
-                clickValue += 1;
+            if (score >= upgradeCost) {
+                score -= upgradeCost;
+                clickValue *= 2;
+                upgradeCost *= 10;
                 scoreDisplay.textContent = score;
                 localStorage.setItem('score', score);
-                upgradeButton.textContent = `Upgrade (Cost: ${clickValue * 10})`;
+                localStorage.setItem('clickValue', clickValue);
+                localStorage.setItem('upgradeCost', upgradeCost);
+                upgradeButton.textContent = `Upgrade (Cost: ${upgradeCost})`;
             }
         });
 
