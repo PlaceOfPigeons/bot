@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">
     <title>Hamster Kombat Clicker</title>
     <style>
         body {
@@ -23,9 +23,31 @@
             align-items: center;
             justify-content: center;
         }
+        #username-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #username-display {
+            font-size: 1.5rem;
+        }
+        #username-input {
+            font-size: 1rem;
+            padding: 5px;
+            margin-right: 10px;
+        }
+        #save-username {
+            font-size: 1rem;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
         #hamster {
             width: 200px;
             cursor: pointer;
+            border-radius: 50%; /* Делает изображение круглым */
         }
         #score {
             font-size: 2rem;
@@ -117,6 +139,11 @@
 <body>
 
     <div id="content">
+        <div id="username-section">
+            <span id="username-display"></span>
+            <input type="text" id="username-input" placeholder="Введите имя">
+            <button id="save-username">Сохранить имя</button>
+        </div>
         <img id="hamster" src="https://via.placeholder.com/200" alt="Hamster">
         <div id="score">0</div>
         <button id="upgrade">Upgrade (Cost: 10)</button>
@@ -154,6 +181,9 @@
         const upgradeButton = document.getElementById('upgrade');
         const referralRanking = document.getElementById('referral-ranking');
         const menuModal = document.getElementById('menu-modal');
+        const usernameDisplay = document.getElementById('username-display');
+        const usernameInput = document.getElementById('username-input');
+        const saveUsernameButton = document.getElementById('save-username');
 
         // Update the displayed score
         scoreDisplay.textContent = score;
@@ -220,6 +250,24 @@
                 closeModal();
             }
         }
+
+        // Load username from localStorage if it exists
+        const savedUsername = localStorage.getItem('username');
+        if (savedUsername) {
+            usernameDisplay.textContent = savedUsername;
+            usernameInput.style.display = 'none';
+            saveUsernameButton.style.display = 'none';
+        }
+
+        saveUsernameButton.addEventListener('click', () => {
+            const username = usernameInput.value.trim();
+            if (username) {
+                localStorage.setItem('username', username);
+                usernameDisplay.textContent = username;
+                usernameInput.style.display = 'none';
+                saveUsernameButton.style.display = 'none';
+            }
+        });
     </script>
 
 </body>
