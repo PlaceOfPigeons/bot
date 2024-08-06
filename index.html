@@ -134,6 +134,12 @@
             text-decoration: none;
             cursor: pointer;
         }
+        #desktop-message {
+            display: none;
+            text-align: center;
+            font-size: 1.5rem;
+            color: #ff0000;
+        }
     </style>
 </head>
 <body>
@@ -173,6 +179,8 @@
         </div>
     </div>
 
+    <div id="desktop-message">Зайдите с телефона.</div>
+
     <script>
         let score = parseInt(localStorage.getItem('score')) || 0;
         let clickValue = parseInt(localStorage.getItem('clickValue')) || 1;
@@ -185,6 +193,21 @@
         const usernameDisplay = document.getElementById('username-display');
         const usernameInput = document.getElementById('username-input');
         const saveUsernameButton = document.getElementById('save-username');
+        const desktopMessage = document.getElementById('desktop-message');
+
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        if (isMobile()) {
+            // Mobile device: show the content
+            document.getElementById('content').style.display = 'flex';
+            desktopMessage.style.display = 'none';
+        } else {
+            // Desktop device: hide the content and show the message
+            document.getElementById('content').style.display = 'none';
+            desktopMessage.style.display = 'block';
+        }
 
         // Update the displayed score
         scoreDisplay.textContent = score;
