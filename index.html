@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>World Pepper</title>
+    <title>World Dove</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -21,14 +21,13 @@
             flex-direction: column;
             height: 100vh;
             justify-content: space-between;
+            padding-bottom: 60px;
             position: relative;
         }
 
         header {
             text-align: center;
             padding-top: 10%;
-            position: relative;
-            z-index: 1;
         }
 
         #telegram-nickname {
@@ -47,7 +46,7 @@
         main {
             position: relative;
             overflow: hidden;
-            height: 100%; /* Заполняет все доступное пространство */
+            height: 100%;
         }
 
         .fixed-buttons {
@@ -58,7 +57,6 @@
             justify-content: space-around;
             padding: 10px 0;
             background-color: black;
-            z-index: 1;
         }
 
         .fixed-buttons button {
@@ -95,15 +93,33 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        .pepper {
+            position: absolute;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+            animation: fall linear;
+            transition: opacity 0.5s ease-out;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        @keyframes fall {
+            from {
+                top: -50px;
+            }
+            to {
+                top: 100%;
+            }
+        }
+
         .icon-container {
             position: absolute;
             width: 50px;
             height: 50px;
             z-index: 2;
             cursor: pointer;
-            overflow: hidden; /* Убедитесь, что иконка не выходит за пределы контейнера */
         }
-
         .icon-container .cage {
             position: relative;
             width: 100%;
@@ -112,7 +128,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .icon-container .cage svg {
             width: 100%;
             height: 100%;
@@ -121,7 +136,6 @@
             left: 0;
             z-index: 2;
         }
-
         .icon-container .bird {
             position: relative;
             width: 100%;
@@ -133,18 +147,8 @@
             justify-content: center;
             z-index: 1;
         }
-
         .hidden {
             display: none;
-        }
-
-        @keyframes fall {
-            from {
-                top: -50px; /* Начальная позиция над экраном */
-            }
-            to {
-                top: 100%; /* Конечная позиция за пределами нижней части экрана */
-            }
         }
     </style>
 </head>
@@ -155,7 +159,6 @@
             <div id="pepper-count"><i class="fas fa-dove" style="color: #74C0FC; margin-right: 10px;"></i>0</div>
         </header>
         <main>
-            <!-- Peppers or Icons will fall here -->
         </main>
         <div class="fixed-buttons">
             <button class="main-btn">Main</button>
@@ -166,6 +169,7 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
+        // Инициализация Web App API
         window.Telegram.WebApp.ready();
         window.Telegram.WebApp.expand();
 
@@ -188,9 +192,15 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            const nickname = 'TelegramUser';
-            loadScore();
+            // Извлечение ника пользователя из Telegram Web App API
+            const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+            const nickname = telegramUser ? telegramUser.username : 'TelegramUser';
+            
+            // Отображение ника в интерфейсе
             document.getElementById('telegram-nickname').textContent = nickname;
+
+            // Загрузка сохраненного количества очков
+            loadScore();
         });
 
         document.querySelector('main').addEventListener('click', (event) => {
@@ -204,8 +214,7 @@
             function createIcon() {
                 let container = document.createElement('div');
                 container.classList.add('icon-container');
-                container.style.left = Math.random() * (window.innerWidth - 50) + 'px'; // Оставляем место для иконок
-                container.style.top = '-50px'; // Начальная позиция за верхней границей экрана
+                container.style.left = Math.random() * 100 + 'vw';
                 container.style.animation = `fall ${Math.random() * 5 + 5}s linear forwards`;
 
                 let cage = document.createElement('div');
