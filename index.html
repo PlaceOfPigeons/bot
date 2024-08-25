@@ -169,6 +169,7 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
+        // Инициализация Web App API
         window.Telegram.WebApp.ready();
         window.Telegram.WebApp.expand();
 
@@ -191,9 +192,15 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            const nickname = 'TelegramUser';
-            loadScore();
+            // Извлечение ника пользователя из Telegram Web App API
+            const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+            const nickname = telegramUser ? telegramUser.username : 'TelegramUser';
+            
+            // Отображение ника в интерфейсе
             document.getElementById('telegram-nickname').textContent = nickname;
+
+            // Загрузка сохраненного количества очков
+            loadScore();
         });
 
         document.querySelector('main').addEventListener('click', (event) => {
