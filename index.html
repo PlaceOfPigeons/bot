@@ -23,6 +23,7 @@
             justify-content: space-between;
             padding-bottom: 60px;
             position: relative;
+            overflow: hidden; /* Убедитесь, что иконки не выходят за пределы */
         }
 
         header {
@@ -119,6 +120,7 @@
             height: 50px;
             z-index: 2;
             cursor: pointer;
+            overflow: hidden; /* Обеспечивает, что иконка не выходит за пределы контейнера */
         }
         .icon-container .cage {
             position: relative;
@@ -214,7 +216,16 @@
             function createIcon() {
                 let container = document.createElement('div');
                 container.classList.add('icon-container');
-                container.style.left = Math.random() * 100 + 'vw';
+                
+                // Определяем размеры контейнера иконок
+                const iconSize = 50; // Размер иконки в пикселях
+                const containerWidth = window.innerWidth;
+                const containerHeight = window.innerHeight;
+
+                // Устанавливаем случайное значение left и top с учетом размеров иконки
+                container.style.left = Math.random() * (containerWidth - iconSize) + 'px';
+                container.style.top = Math.random() * (containerHeight - iconSize) + 'px';
+                
                 container.style.animation = `fall ${Math.random() * 5 + 5}s linear forwards`;
 
                 let cage = document.createElement('div');
