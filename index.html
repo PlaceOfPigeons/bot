@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>World Pepper</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Подключаем FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -44,8 +44,8 @@
 
         main {
             position: relative;
-            overflow: hidden; /* Убедитесь, что элементы не выходят за пределы контейнера */
-            height: 100%; /* Заполняет все доступное пространство */
+            overflow: hidden;
+            height: 100%;
         }
 
         .fixed-buttons {
@@ -99,9 +99,8 @@
             cursor: pointer;
             animation: fall linear;
             transition: opacity 0.5s ease-out;
-            /* Убедитесь, что перец не выходит за пределы контейнера */
             border-radius: 50%;
-            padding: 5px; /* Добавляет пространство вокруг перца */
+            padding: 5px;
         }
 
         @keyframes fall {
@@ -113,7 +112,6 @@
             }
         }
 
-        /* Стили для иконок из нового проекта */
         .icon-container {
             position: absolute;
             width: 50px;
@@ -160,7 +158,6 @@
             <div id="pepper-count"><i class="fas fa-dove" style="color: #74C0FC; margin-right: 10px;"></i>0</div>
         </header>
         <main>
-            <!-- Peppers or Icons will fall here -->
         </main>
         <div class="fixed-buttons">
             <button class="main-btn">Main</button>
@@ -169,10 +166,13 @@
         </div>
     </div>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+
         let score = 0;
 
-        // Load the saved score from localStorage
         function loadScore() {
             const savedScore = localStorage.getItem('pepperScore');
             if (savedScore) {
@@ -181,30 +181,26 @@
             }
         }
 
-        // Save the score to localStorage
         function saveScore() {
             localStorage.setItem('pepperScore', score);
         }
 
         document.querySelector('.play-btn').addEventListener('click', () => {
-            startIconGame(); // Запуск новой игры с иконками
+            startIconGame();
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            const nickname = 'TelegramUser'; // Replace with actual Telegram username
-            loadScore(); // Load the score when the page loads
-
+            const nickname = 'TelegramUser';
+            loadScore();
             document.getElementById('telegram-nickname').textContent = nickname;
         });
 
-        // Убираем событие клика по документу, чтобы не создавались артефакты
         document.querySelector('main').addEventListener('click', (event) => {
             event.stopPropagation();
         });
 
-        // Функция запуска новой игры с иконками
         function startIconGame() {
-            let duration = 2 * 60 * 1000; // Длительность игры 2 минуты
+            let duration = 2 * 60 * 1000;
             let startTime = Date.now();
 
             function createIcon() {
@@ -213,7 +209,6 @@
                 container.style.left = Math.random() * 100 + 'vw';
                 container.style.animation = `fall ${Math.random() * 5 + 5}s linear forwards`;
 
-                // Иконка клетки
                 let cage = document.createElement('div');
                 cage.classList.add('cage');
                 container.appendChild(cage);
@@ -266,7 +261,6 @@
 
                 cage.appendChild(svg);
 
-                // Иконка птицы
                 let bird = document.createElement('i');
                 bird.classList.add('fa-solid', 'fa-dove', 'bird');
                 cage.appendChild(bird);
@@ -287,7 +281,7 @@
                         score++;
                         container.remove();
                         document.getElementById('pepper-count').innerHTML = `<i class="fas fa-dove" style="color: #74C0FC; margin-right: 10px;"></i>${score}`;
-                        saveScore(); // Save score after update
+                        saveScore();
                     }
                 });
 
