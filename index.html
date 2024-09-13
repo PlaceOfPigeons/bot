@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -23,7 +24,7 @@
             justify-content: space-between;
             padding-bottom: 60px;
             position: relative;
-            overflow: hidden; /* Убедитесь, что иконки не выходят за пределы */
+            overflow: hidden; 
         }
 
         header {
@@ -94,6 +95,20 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        .centered-connect-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
         .pepper {
             position: absolute;
             font-size: 2em;
@@ -120,7 +135,7 @@
             height: 50px;
             z-index: 2;
             cursor: pointer;
-            overflow: hidden; /* Обеспечивает, что иконка не выходит за пределы контейнера */
+            overflow: hidden; 
         }
         .icon-container .cage {
             position: relative;
@@ -160,8 +175,8 @@
             <div id="telegram-nickname">TelegramUser</div>
             <div id="pepper-count"><i class="fas fa-dove" style="color: #74C0FC; margin-right: 10px;"></i>0</div>
         </header>
-        <main>
-        </main>
+        <main></main>
+        <button id="connect-btn" class="centered-connect-btn">Connect TON Wallet</button>
         <div class="fixed-buttons">
             <button class="main-btn">Main</button>
             <button class="play-btn">Play</button>
@@ -169,7 +184,6 @@
         </div>
     </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         // Инициализация Web App API
         window.Telegram.WebApp.ready();
@@ -194,14 +208,9 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Извлечение ника пользователя из Telegram Web App API
             const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
             const nickname = telegramUser ? telegramUser.username : 'TelegramUser';
-            
-            // Отображение ника в интерфейсе
             document.getElementById('telegram-nickname').textContent = nickname;
-
-            // Загрузка сохраненного количества очков
             loadScore();
         });
 
@@ -217,15 +226,11 @@
                 let container = document.createElement('div');
                 container.classList.add('icon-container');
                 
-                // Определяем размеры контейнера иконок
-                const iconSize = 50; // Размер иконки в пикселях
+                const iconSize = 50;
                 const containerWidth = window.innerWidth;
                 const containerHeight = window.innerHeight;
-
-                // Устанавливаем случайное значение left и top с учетом размеров иконки
                 container.style.left = Math.random() * (containerWidth - iconSize) + 'px';
                 container.style.top = Math.random() * (containerHeight - iconSize) + 'px';
-                
                 container.style.animation = `fall ${Math.random() * 5 + 5}s linear forwards`;
 
                 let cage = document.createElement('div');
@@ -280,43 +285,49 @@
 
                 cage.appendChild(svg);
 
-                let bird = document.createElement('i');
-                bird.classList.add('fa-solid', 'fa-dove', 'bird');
-                cage.appendChild(bird);
+                let bird = document.createElement('div');
+                bird.classList.add('bird');
+                bird.innerHTML = `<i class="fas fa-dove"></i>`;
+                container.appendChild(bird);
 
-                let cageHidden = false;
-
-                container.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    if (!cageHidden) {
-                        cageHidden = true;
-                        cage.querySelector('svg').classList.add('hidden');
-                    }
-                });
-
-                bird.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    if (cageHidden) {
-                        score++;
-                        container.remove();
-                        document.getElementById('pepper-count').innerHTML = `<i class="fas fa-dove" style="color: #74C0FC; margin-right: 10px;"></i>${score}`;
-                        saveScore();
-                    }
+                container.addEventListener('click', () => {
+                    bird.style.color = 'green';
+                    setTimeout(() => {
+                        container.classList.add('hidden');
+                    }, 100);
+                    score++;
+                    document.getElementById('pepper-count').innerHTML = `<i class="fas fa-dove" style="color: #74C0FC; margin-right: 10px;"></i>${score}`;
+                    saveScore();
                 });
 
                 document.querySelector('main').appendChild(container);
             }
 
-            function updateIcons() {
-                let elapsedTime = Date.now() - startTime;
-                if (elapsedTime < duration) {
+            function gameLoop() {
+                const currentTime = Date.now();
+                if (currentTime - startTime < duration) {
                     createIcon();
-                    setTimeout(updateIcons, 1000);
+                    setTimeout(gameLoop, Math.random() * 2000);
                 }
             }
 
-            updateIcons();
+            gameLoop();
         }
+
+        // Инициализация TON Connect
+        const tonConnect = new TonConnect();
+        const connectButton = document.getElementById('connect-btn');
+
+        connectButton.addEventListener('click', async () => {
+            try {
+                await tonConnect.connectWallet();
+                alert('TON wallet connected');
+                connectButton.style.display = 'none'; // Скрываем кнопку после успешного подключения
+            } catch (error) {
+                alert('Error connecting TON wallet');
+                console.error(error);
+            }
+        });
     </script>
 </body>
 </html>
