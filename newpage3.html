@@ -108,6 +108,8 @@
             margin-top: 2px; /* Уменьшено на 3px */
         }
     </style>
+    <!-- Подключите Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
@@ -161,6 +163,20 @@
                 content.style.marginTop = '40px';
             }
         });
+
+        // Инициализация Telegram Web App
+        window.Telegram.WebApp.ready();
+
+        // Установите черный цвет фона и заголовка
+        Telegram.WebApp.setBackgroundColor("#000000");
+        Telegram.WebApp.setHeaderColor("#000000");
+
+        // Проверка текущей темы и установка цветовой схемы, если необходимо
+        if (Telegram.WebApp.colorScheme === "dark") {
+            // Темная тема уже активирована
+        } else {
+            // Можно также установить другие элементы интерфейса на темные цвета
+        }
     </script>
 
 </body>
