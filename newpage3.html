@@ -6,16 +6,8 @@
     <title>ProjectPresident</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --tg-theme-section-bg-color: #007BFF; /* Замените на желаемый цвет */
-        }
-
-        /* Применение фона в секции */
-        .section {
-            background-color: var(--tg-theme-section-bg-color);
-        }
-        
         body, html {
             margin: 0;
             padding: 0;
@@ -156,7 +148,9 @@
     <script>
         // Установка темы для мини-приложения
         const themeParams = {
-            secondary_bg_color: "#0000FF" // Синий цвет
+            secondary_bg_color: "#0000FF", // Синий цвет
+            header_bg_color: "#007BFF", // Цвет фона заголовка
+            header_text_color: "#FFFFFF" // Цвет текста заголовка
         };
         App.setThemeParams(themeParams);
 
