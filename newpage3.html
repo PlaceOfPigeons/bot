@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap" />
     <style>
         :root {
-            --tg-theme-section-bg-color: #007BFF; /* Синий цвет для секции */
+            --tg-theme-section-bg-color: #007BFF; /* Цвет фона секции */
         }
 
         body, html {
@@ -35,7 +35,7 @@
 
         /* Синяя шапка с анимацией перелива */
         .header {
-            background: linear-gradient(180deg, #007BFF, #000);
+            background: linear-gradient(180deg, var(--tg-theme-section-bg-color), #000); 
             background-size: 200% 100%;
             animation: gradient 3s ease infinite;
             color: white;
@@ -70,7 +70,8 @@
             align-items: center;
             margin-top: 40px;
             transition: margin-top 0.5s ease;
-            background-color: var(--tg-theme-section-bg-color); /* Применение цвета фона */
+            background-color: var(--tg-theme-section-bg-color); /* Использование переменной */
+            padding: 20px; /* Добавлено для отступов */
         }
 
         .content img {
