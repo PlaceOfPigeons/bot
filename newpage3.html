@@ -6,7 +6,6 @@
     <title>ProjectPresident</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap" />
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body, html {
             margin: 0;
@@ -32,7 +31,7 @@
 
         /* Синяя шапка с анимацией перелива */
         .header {
-            background: linear-gradient(180deg, #007BFF, #000);
+            background: linear-gradient(90deg, #007BFF, #000);
             background-size: 200% 100%;
             animation: gradient 3s ease infinite;
             color: white;
@@ -50,7 +49,7 @@
 
         @keyframes gradient {
             0% { background-position: 0% 0%; }
-            50% { background-position: 0% 100%; }
+            50% { background-position: 100% 0%; }
             100% { background-position: 0% 0%; }
         }
 
@@ -79,7 +78,7 @@
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 10px;
+            padding: 10px; /* Уменьшено на 5px */
             position: fixed;
             bottom: 20px;
             left: 50%;
@@ -90,23 +89,23 @@
             width: 90%;
             max-width: 500px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            height: 50px;
+            height: 50px; /* Уменьшено на 20px */
         }
 
         .footer div {
             text-align: center;
-            margin: 0 5px;
+            margin: 0 5px; /* Добавлен небольшой отступ */
         }
 
         .footer .material-symbols-outlined {
-            font-size: 24px;
+            font-size: 24px; /* Уменьшено на 8px */
             color: white;
         }
 
         .footer .icon-label {
             color: white;
-            font-size: 12px;
-            margin-top: 2px;
+            font-size: 12px; /* Уменьшено на 2px */
+            margin-top: 2px; /* Уменьшено на 3px */
         }
     </style>
 </head>
@@ -146,14 +145,6 @@
     </div>
 
     <script>
-        // Установка темы для мини-приложения
-        const themeParams = {
-            secondary_bg_color: "#0000FF", // Синий цвет
-            header_bg_color: "#007BFF", // Цвет фона заголовка
-            header_text_color: "#FFFFFF" // Цвет текста заголовка
-        };
-        App.setThemeParams(themeParams);
-
         // Получаем элементы шапки и контента
         const header = document.getElementById('header');
         const content = document.getElementById('content');
