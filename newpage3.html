@@ -30,15 +30,17 @@
             z-index: 1000;
         }
 
-        /* Синяя шапка с анимацией перелива */
+        /* Синяя шапка с анимацией перелива и мерцанием */
         .header {
             background: linear-gradient(90deg, #007BFF, #000);
             background-size: 200% 100%;
-            animation: gradient 3s ease infinite;
+            animation: gradient 3s ease infinite, shimmer 1.5s infinite alternate;
             color: white;
             text-align: center;
             padding: 10px;
             font-size: 24px;
+            border-top-left-radius: 20px; /* Закругление верхнего левого угла */
+            border-top-right-radius: 20px; /* Закругление верхнего правого угла */
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
             transition: height 0.5s ease;
@@ -46,12 +48,22 @@
             cursor: pointer;
             overflow: hidden;
             font-family: 'New Amsterdam', sans-serif;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5); /* Мягкое свечение */
         }
 
         @keyframes gradient {
             0% { background-position: 0% 0%; }
             50% { background-position: 100% 0%; }
             100% { background-position: 0% 0%; }
+        }
+
+        @keyframes shimmer {
+            0% {
+                box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(0, 123, 255, 1);
+            }
         }
 
         /* Увеличенная высота */
@@ -79,7 +91,7 @@
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 10px; /* Уменьшено на 5px */
+            padding: 10px;
             position: fixed;
             bottom: 20px;
             left: 50%;
@@ -90,27 +102,25 @@
             width: 90%;
             max-width: 500px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            height: 50px; /* Уменьшено на 20px */
+            height: 50px;
         }
 
         .footer div {
             text-align: center;
-            margin: 0 5px; /* Добавлен небольшой отступ */
+            margin: 0 5px;
         }
 
         .footer .material-symbols-outlined {
-            font-size: 24px; /* Уменьшено на 8px */
+            font-size: 24px;
             color: white;
         }
 
         .footer .icon-label {
             color: white;
-            font-size: 12px; /* Уменьшено на 2px */
-            margin-top: 2px; /* Уменьшено на 3px */
+            font-size: 12px;
+            margin-top: 2px;
         }
     </style>
-    <!-- Подключите Telegram Web App -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
