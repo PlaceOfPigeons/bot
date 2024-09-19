@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap" />
     <style>
+        :root {
+            --tg-theme-section-bg-color: #007BFF; /* Синий цвет для секции */
+        }
+
         body, html {
             margin: 0;
             padding: 0;
@@ -29,9 +33,11 @@
             z-index: 1000;
         }
 
-        /* Синяя шапка */
+        /* Синяя шапка с анимацией перелива */
         .header {
-            background-color: #007BFF;
+            background: linear-gradient(180deg, #007BFF, #000);
+            background-size: 200% 100%;
+            animation: gradient 3s ease infinite;
             color: white;
             text-align: center;
             padding: 10px;
@@ -43,6 +49,12 @@
             cursor: pointer;
             overflow: hidden;
             font-family: 'New Amsterdam', sans-serif;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
         }
 
         /* Увеличенная высота */
@@ -58,6 +70,7 @@
             align-items: center;
             margin-top: 40px;
             transition: margin-top 0.5s ease;
+            background-color: var(--tg-theme-section-bg-color); /* Применение цвета фона */
         }
 
         .content img {
@@ -70,7 +83,7 @@
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 10px; /* Уменьшено на 5px */
+            padding: 10px;
             position: fixed;
             bottom: 20px;
             left: 50%;
@@ -81,23 +94,23 @@
             width: 90%;
             max-width: 500px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            height: 50px; /* Уменьшено на 20px */
+            height: 50px;
         }
 
         .footer div {
             text-align: center;
-            margin: 0 5px; /* Добавлен небольшой отступ */
+            margin: 0 5px;
         }
 
         .footer .material-symbols-outlined {
-            font-size: 24px; /* Уменьшено на 8px */
+            font-size: 24px;
             color: white;
         }
 
         .footer .icon-label {
             color: white;
-            font-size: 12px; /* Уменьшено на 2px */
-            margin-top: 2px; /* Уменьшено на 3px */
+            font-size: 12px;
+            margin-top: 2px;
         }
     </style>
 </head>
