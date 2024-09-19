@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Male and Female Animation with Glowing Effect</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .image-container {
+            text-align: center;
+            position: relative;
+        }
+
+        .image-container img {
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .image-container img.glowing {
+            filter: drop-shadow(0 0 16px rgba(0, 191, 255, 0.8)); /* Голубое сияние */
+            animation: glow 1.5s infinite ease-in-out;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.1);
+        }
+
+        .label {
+            margin-top: 10px;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            font-family: 'New Amsterdam', serif; /* Добавляем шрифт New Amsterdam */
+        }
+
+        .male-label {
+            color: #00bfff; /* Голубой для Male */
+        }
+
+        .female-label {
+            color: #ff69b4; /* Розовый для Female */
+        }
+
+        .label.active span {
+            animation: pulse 1.5s infinite, colorChange 3s infinite;
+        }
+
+        @keyframes glow {
+            0% {
+                filter: drop-shadow(0 0 16px rgba(0, 191, 255, 0.8)); /* Голубое сияние */
+            }
+            50% {
+                filter: drop-shadow(0 0 32px rgba(0, 191, 255, 1)); /* Увеличенное сияние */
+            }
+            100% {
+                filter: drop-shadow(0 0 16px rgba(0, 191, 255, 0.8)); /* Голубое сияние */
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.5);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes colorChange {
+            0% {
+                color: #00bfff; /* Голубой цвет */
+            }
+            50% {
+                color: #ff69b4; /* Розовый цвет */
+            }
+            100% {
+                color: #00bfff; /* Голубой цвет */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Male Section -->
+        <div class="image-container">
+            <img src="male-image.png" alt="Male" id="male-img">
+            <div class="label male-label" id="male-label">
+                <span>M</span><span>A</span><span>L</span><span>E</span>
+            </div>
+        </div>
+        
+        <!-- Female Section -->
+        <div class="image-container">
+            <img src="female-image.png" alt="Female" id="female-img">
+            <div class="label female-label" id="female-label">
+                <span>F</span><span>E</span><span>M</span><span>A</span><span>L</span><span>E</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function animate(section) {
+            // Удаляем класс 'active' и 'glowing' у всех элементов
+            const labels = document.querySelectorAll('.label');
+            const images = document.querySelectorAll('.image-container img');
+            
+            labels.forEach(label => {
+                label.classList.remove('active');
+            });
+            images.forEach(img => {
+                img.classList.remove('glowing');
+            });
+
+            // Добавляем класс 'active' и 'glowing' только к выбранному элементу
+            const selectedLabel = document.getElementById(`${section}-label`);
+            const selectedImage = document.getElementById(`${section}-img`);
+            
+            selectedLabel.classList.add('active');
+            selectedImage.classList.add('glowing');
+
+            // Перенаправляем на новую страницу через 1.5 секунды
+            setTimeout(() => {
+                window.location.href = 'newpage3.html'; // Замените на URL нужной страницы
+            }, 1500);
+        }
+
+        // Добавляем обработчики для изображений
+        document.querySelectorAll('.image-container img').forEach(img => {
+            img.addEventListener('click', function() {
+                const section = img.id.split('-')[0]; // Извлекаем 'male' или 'female'
+                animate(section);
+            });
+        });
+    </script>
+</body>
+</html>

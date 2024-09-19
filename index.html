@@ -2,332 +2,110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>World Dove</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Page</title>
     <style>
         body {
-            margin: 0;
-            font-family: 'New Amsterdam', serif;
-            background-color: black;
-            color: white;
-            overflow: hidden;
-        }
-
-        .container {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            justify-content: space-between;
-            padding-bottom: 60px;
-            position: relative;
-            overflow: hidden; 
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
         }
 
-        header {
-            text-align: center;
-            padding-top: 10%;
-        }
-
-        #telegram-nickname {
-            font-size: 2em;
-            color: white;
-            margin-bottom: 5%;
-            font-weight: 300;
-        }
-
-        #pepper-count {
-            font-size: 1.5em;
-            color: white;
-            font-weight: 300;
-        }
-
-        main {
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-        }
-
-        .fixed-buttons {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        .shadow-container {
             display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            background-color: black;
-        }
-
-        .fixed-buttons button {
-            font-family: 'New Amsterdam', serif;
-            background-color: rgba(255, 255, 255, 0.3);
-            color: black;
-            border: none;
-            font-size: 1em;
-            cursor: pointer;
-            border-radius: 50px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            will-change: transform;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            align-items: center;
+            position: relative;
         }
 
-        .fixed-buttons .main-btn,
-        .fixed-buttons .tasks-btn {
-            height: 40px;
-            padding: 0 20px;
+        .animated-shadow {
+            width: 200px;
+            height: auto;
+            filter: drop-shadow(0 0 8px rgba(0, 191, 255, 0.5));
+            animation: shadowPulse 1.5s infinite ease-in-out;
         }
 
-        .fixed-buttons .play-btn {
-            height: 60px;
-            padding: 0 30px;
-        }
-
-        .fixed-buttons button:active {
-            transform: scale(1.1);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .centered-connect-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .pepper {
-            position: absolute;
-            font-size: 2em;
-            color: white;
-            cursor: pointer;
-            animation: fall linear;
-            transition: opacity 0.5s ease-out;
-            border-radius: 50%;
-            padding: 5px;
-        }
-
-        @keyframes fall {
-            from {
-                top: -50px;
+        @keyframes shadowPulse {
+            0% {
+                filter: drop-shadow(0 0 8px rgba(0, 191, 255, 0.5));
             }
-            to {
-                top: 100%;
+            50% {
+                filter: drop-shadow(0 0 16px rgba(0, 191, 255, 0.7));
+            }
+            100% {
+                filter: drop-shadow(0 0 8px rgba(0, 191, 255, 0.5));
             }
         }
 
-        .icon-container {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            z-index: 2;
-            cursor: pointer;
-            overflow: hidden; 
-        }
-        .icon-container .cage {
-            position: relative;
-            width: 100%;
-            height: 100%;
+        .loading-text {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
             display: flex;
-            align-items: center;
             justify-content: center;
-        }
-        .icon-container .cage svg {
             width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 2;
         }
-        .icon-container .bird {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            font-size: 30px;
-            color: #74C0FC;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
+
+        .loading-text span {
+            display: inline-block;
+            animation: pulse 1.5s infinite, colorChange 3s infinite;
         }
-        .hidden {
-            display: none;
+
+        .loading-text span:nth-child(even) {
+            animation-delay: 0.75s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.5);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes colorChange {
+            0% {
+                color: #00bfff;
+            }
+            50% {
+                color: #ff69b4;
+            }
+            100% {
+                color: #00bfff;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div id="telegram-nickname">TelegramUser</div>
-            <div id="pepper-count"><i class="fas fa-dove" style="color: #74C0FC; margin-right: 10px;"></i>0</div>
-        </header>
-        <main></main>
-        <button id="connect-btn" class="centered-connect-btn">Connect TON Wallet</button>
-        <div class="fixed-buttons">
-            <button class="main-btn">Main</button>
-            <button class="play-btn">Play</button>
-            <button class="tasks-btn">Tasks</button>
-        </div>
+    <div class="shadow-container">
+        <img src="your-image.png" alt="Your Image" class="animated-shadow">
+    </div>
+    <div class="loading-text">
+        <span>L</span>
+        <span>O</span>
+        <span>A</span>
+        <span>D</span>
+        <span>I</span>
+        <span>N</span>
+        <span>G</span>
     </div>
 
     <script>
-        // Инициализация Web App API
-        window.Telegram.WebApp.ready();
-        window.Telegram.WebApp.expand();
-
-        let score = 0;
-
-        function loadScore() {
-            const savedScore = localStorage.getItem('pepperScore');
-            if (savedScore) {
-                score = parseInt(savedScore, 10);
-                document.getElementById('pepper-count').innerHTML = `<i class="fas fa-dove" style="color: #74C0FC; margin-right: 10px;"></i>${score}`;
-            }
-        }
-
-        function saveScore() {
-            localStorage.setItem('pepperScore', score);
-        }
-
-        document.querySelector('.play-btn').addEventListener('click', () => {
-            startIconGame();
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
-            const nickname = telegramUser ? telegramUser.username : 'TelegramUser';
-            document.getElementById('telegram-nickname').textContent = nickname;
-            loadScore();
-        });
-
-        document.querySelector('main').addEventListener('click', (event) => {
-            event.stopPropagation();
-        });
-
-        function startIconGame() {
-            let duration = 2 * 60 * 1000;
-            let startTime = Date.now();
-
-            function createIcon() {
-                let container = document.createElement('div');
-                container.classList.add('icon-container');
-                
-                const iconSize = 50;
-                const containerWidth = window.innerWidth;
-                const containerHeight = window.innerHeight;
-                container.style.left = Math.random() * (containerWidth - iconSize) + 'px';
-                container.style.top = Math.random() * (containerHeight - iconSize) + 'px';
-                container.style.animation = `fall ${Math.random() * 5 + 5}s linear forwards`;
-
-                let cage = document.createElement('div');
-                cage.classList.add('cage');
-                container.appendChild(cage);
-
-                let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                svg.setAttribute('viewBox', '0 0 24 24');
-                svg.setAttribute('fill', 'none');
-                svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-                svg.setAttribute('width', '100%');
-                svg.setAttribute('height', '100%');
-                svg.setAttribute('stroke', 'white');
-                svg.setAttribute('stroke-width', '2');
-
-                let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                rect.setAttribute('x', '2');
-                rect.setAttribute('y', '2');
-                rect.setAttribute('width', '20');
-                rect.setAttribute('height', '20');
-                rect.setAttribute('rx', '4');
-                rect.setAttribute('ry', '4');
-                svg.appendChild(rect);
-
-                let line1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line1.setAttribute('x1', '2');
-                line1.setAttribute('y1', '8');
-                line1.setAttribute('x2', '22');
-                line1.setAttribute('y2', '8');
-                svg.appendChild(line1);
-
-                let line2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line2.setAttribute('x1', '2');
-                line2.setAttribute('y1', '16');
-                line2.setAttribute('x2', '22');
-                line2.setAttribute('y2', '16');
-                svg.appendChild(line2);
-
-                let line3 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line3.setAttribute('x1', '8');
-                line3.setAttribute('y1', '2');
-                line3.setAttribute('x2', '8');
-                line3.setAttribute('y2', '22');
-                svg.appendChild(line3);
-
-                let line4 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line4.setAttribute('x1', '16');
-                line4.setAttribute('y1', '2');
-                line4.setAttribute('x2', '16');
-                line4.setAttribute('y2', '22');
-                svg.appendChild(line4);
-
-                cage.appendChild(svg);
-
-                let bird = document.createElement('div');
-                bird.classList.add('bird');
-                bird.innerHTML = `<i class="fas fa-dove"></i>`;
-                container.appendChild(bird);
-
-                container.addEventListener('click', () => {
-                    bird.style.color = 'green';
-                    setTimeout(() => {
-                        container.classList.add('hidden');
-                    }, 100);
-                    score++;
-                    document.getElementById('pepper-count').innerHTML = `<i class="fas fa-dove" style="color: #74C0FC; margin-right: 10px;"></i>${score}`;
-                    saveScore();
-                });
-
-                document.querySelector('main').appendChild(container);
-            }
-
-            function gameLoop() {
-                const currentTime = Date.now();
-                if (currentTime - startTime < duration) {
-                    createIcon();
-                    setTimeout(gameLoop, Math.random() * 2000);
-                }
-            }
-
-            gameLoop();
-        }
-
-        // Инициализация TON Connect
-        const tonConnect = new TonConnect();
-        const connectButton = document.getElementById('connect-btn');
-
-        connectButton.addEventListener('click', async () => {
-            try {
-                await tonConnect.connectWallet();
-                alert('TON wallet connected');
-                connectButton.style.display = 'none'; // Скрываем кнопку после успешного подключения
-            } catch (error) {
-                alert('Error connecting TON wallet');
-                console.error(error);
-            }
-        });
+        // Delay redirection by 3 seconds
+        setTimeout(function() {
+            window.location.href = 'your-second-page.html'; // Замените на URL вашей второй страницы
+        }, 3000);
     </script>
 </body>
 </html>
