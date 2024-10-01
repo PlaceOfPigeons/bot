@@ -17,25 +17,24 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            user-select: none; /* Запретить выделение текста */
-            -webkit-user-drag: none; /* Запретить перетаскивание изображений в WebKit-браузерах */
-            -moz-user-select: none; /* Запретить выделение текста в Firefox */
-            -ms-user-select: none; /* Запретить выделение текста в Internet Explorer */
+            user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
-        /* Контейнер для шапки */
         .header-container {
             background-color: black;
             padding: 0;
             position: fixed;
-            top: 5%; /* Отступ сверху 5% */
+            top: 5%;
             left: 0;
             width: 100%;
             z-index: 1000;
             outline: none; /* Убирает обводку */
+            box-shadow: none; /* Убирает тень и обводку */
         }
 
-        /* Синяя шапка с анимацией перелива и мерцанием */
         .header {
             background: linear-gradient(90deg, #007BFF, #000);
             background-size: 200% 100%;
@@ -69,12 +68,10 @@
             }
         }
 
-        /* Увеличенная высота */
         .header.expanded {
             height: 300px;
         }
 
-        /* Main content */
         .content {
             flex-grow: 1;
             display: flex;
@@ -89,7 +86,6 @@
             height: auto;
         }
 
-        /* Footer */
         .footer {
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
@@ -127,20 +123,16 @@
 </head>
 <body>
 
-    <!-- Контейнер для синей шапки -->
     <div class="header-container">
-        <!-- Синяя шапка -->
         <div class="header" id="header">
             ProjectPresident
         </div>
     </div>
 
-    <!-- Main content -->
     <div class="content" id="content">
         <img src="your-image.png" alt="Logo">
     </div>
 
-    <!-- Footer -->
     <div class="footer">
         <div>
             <span class="material-symbols-outlined">home</span>
@@ -161,16 +153,11 @@
     </div>
 
     <script>
-        // Получаем элементы шапки и контента
         const header = document.getElementById('header');
         const content = document.getElementById('content');
 
-        // Добавляем обработчик клика для шапки
         header.addEventListener('click', () => {
-            // Переключаем класс expanded для изменения высоты шапки
             header.classList.toggle('expanded');
-            
-            // Изменяем отступ для контента в зависимости от состояния шапки
             if (header.classList.contains('expanded')) {
                 content.style.marginTop = '300px';
             } else {
@@ -178,19 +165,14 @@
             }
         });
 
-        // Инициализация Telegram Web App
-        window.Telegram.WebApp.ready();
+        // Убираем обводку при фокусе
+        header.addEventListener('focus', () => {
+            header.style.outline = 'none';
+        });
 
-        // Установите черный цвет фона и заголовка
+        window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
-
-        // Проверка текущей темы и установка цветовой схемы, если необходимо
-        if (Telegram.WebApp.colorScheme === "dark") {
-            // Темная тема уже активирована
-        } else {
-            // Можно также установить другие элементы интерфейса на темные цвета
-        }
     </script>
 
 </body>
