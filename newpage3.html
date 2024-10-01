@@ -134,6 +134,13 @@
         window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
+
+        // Получаем информацию о пользователе
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        let displayName = user.username || user.first_name; // Если username нет, используем имя
+
+        // Обновляем заголовок
+        document.getElementById("header").textContent = displayName;
     </script>
 
 </body>
