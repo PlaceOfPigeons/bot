@@ -18,6 +18,13 @@
             display: flex;
             flex-direction: column;
             user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        *:focus {
+            outline: none; /* Убираем обводку для всех элементов */
         }
 
         .header-container {
@@ -31,13 +38,13 @@
         }
 
         .header {
-            background-color: white;
-            color: black;
+            background-color: white; /* Белая шапка */
+            color: black; /* Черный текст */
             text-align: center;
             padding: 10px;
             font-size: 24px;
             border-radius: 20px;
-            margin: 0 5%;
+            margin: 0 5%; /* Отступ 5% по краям */
             cursor: pointer;
             font-family: 'New Amsterdam', sans-serif;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
@@ -49,6 +56,12 @@
             justify-content: center;
             align-items: center;
             margin-top: 40px;
+            transition: margin-top 0.5s ease;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
         }
 
         .footer {
@@ -95,9 +108,7 @@
     </div>
 
     <div class="content" id="content">
-        <a href="game.html">
-            <img src="birdOne.png" alt="Logo" style="cursor: pointer;">
-        </a>
+        <img src="birdOne.png" alt="Logo">
     </div>
 
     <div class="footer">
@@ -126,10 +137,10 @@
 
         // Получаем информацию о пользователе
         const user = Telegram.WebApp.initDataUnsafe.user;
-        if (user) {
-            const displayName = user.username || user.first_name; // Если username нет, используем имя
-            document.getElementById("header").textContent = displayName;
-        }
+        let displayName = user.username || user.first_name; // Если username нет, используем имя
+
+        // Обновляем заголовок
+        document.getElementById("header").textContent = displayName;
     </script>
 
 </body>
