@@ -2,44 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProjectPresident</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap" />
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
+        body, html {
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black;
+            padding: 0;
             font-family: Arial, sans-serif;
-            overflow: hidden;
-            touch-action: manipulation; /* Отключает жесты масштабирования */
-            user-select: none; /* Убираем выделение текста */
-            -webkit-user-drag: none; /* Убираем перетаскивание */
-            -moz-user-select: none; /* Убираем выделение текста */
-            -ms-user-select: none; /* Убираем выделение текста */
+            background-color: black;
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            user-select: none; /* Запретить выделение текста */
+            -webkit-user-drag: none; /* Запретить перетаскивание изображений в WebKit-браузерах */
+            -moz-user-select: none; /* Запретить выделение текста в Firefox */
+            -ms-user-select: none; /* Запретить выделение текста в Internet Explorer */
         }
 
-        * {
-            outline: none; /* Убираем обводку для всех элементов */
-            box-shadow: none; /* Убираем тени */
-            border: none; /* Убираем границы */
-        }
-
+        /* Контейнер для шапки */
         .header-container {
             background-color: black;
             padding: 0;
             position: fixed;
-            top: 5%;
+            top: 5%; /* Отступ сверху 5% */
             left: 0;
             width: 100%;
             z-index: 1000;
         }
 
+        /* Синяя шапка с анимацией перелива и мерцанием */
         .header {
             background: linear-gradient(90deg, #007BFF, #000);
             background-size: 200% 100%;
@@ -49,7 +44,7 @@
             padding: 10px;
             font-size: 24px;
             border-radius: 20px;
-            transition: height 0.5s ease, transform 0.2s ease;
+            transition: height 0.5s ease;
             height: 40px;
             cursor: pointer;
             overflow: hidden;
@@ -72,10 +67,12 @@
             }
         }
 
+        /* Увеличенная высота */
         .header.expanded {
             height: 300px;
         }
 
+        /* Main content */
         .content {
             flex-grow: 1;
             display: flex;
@@ -85,6 +82,12 @@
             transition: margin-top 0.5s ease;
         }
 
+        .content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Footer */
         .footer {
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
@@ -118,23 +121,24 @@
             font-size: 12px;
             margin-top: 2px;
         }
-
-        .header:active {
-            transform: scale(0.95); /* Эффект сжатия при нажатии */
-        }
     </style>
 </head>
 <body>
+
+    <!-- Контейнер для синей шапки -->
     <div class="header-container">
+        <!-- Синяя шапка -->
         <div class="header" id="header">
             ProjectPresident
         </div>
     </div>
 
+    <!-- Main content -->
     <div class="content" id="content">
         <img src="your-image.png" alt="Logo">
     </div>
 
+    <!-- Footer -->
     <div class="footer">
         <div>
             <span class="material-symbols-outlined">home</span>
@@ -155,11 +159,16 @@
     </div>
 
     <script>
+        // Получаем элементы шапки и контента
         const header = document.getElementById('header');
         const content = document.getElementById('content');
 
+        // Добавляем обработчик клика для шапки
         header.addEventListener('click', () => {
+            // Переключаем класс expanded для изменения высоты шапки
             header.classList.toggle('expanded');
+            
+            // Изменяем отступ для контента в зависимости от состояния шапки
             if (header.classList.contains('expanded')) {
                 content.style.marginTop = '300px';
             } else {
@@ -167,9 +176,20 @@
             }
         });
 
+        // Инициализация Telegram Web App
         window.Telegram.WebApp.ready();
+
+        // Установите черный цвет фона и заголовка
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
+
+        // Проверка текущей темы и установка цветовой схемы, если необходимо
+        if (Telegram.WebApp.colorScheme === "dark") {
+            // Темная тема уже активирована
+        } else {
+            // Можно также установить другие элементы интерфейса на темные цвета
+        }
     </script>
+
 </body>
 </html>
