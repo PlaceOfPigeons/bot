@@ -90,7 +90,6 @@
             }
         }
     </style>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="shadow-container">
@@ -114,12 +113,8 @@
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
-        // Проверка текущей темы
-        if (Telegram.WebApp.colorScheme === "dark") {
-            // Действия для темной темы уже активированы
-        } else {
-            // Можно установить цветовую схему в зависимости от нужд
-        }
+        // Разворачивание приложения на весь экран
+        Telegram.WebApp.expand();
 
         // Задержка перед редиректом
         setTimeout(function() {
