@@ -23,6 +23,10 @@
             -ms-user-select: none;
         }
 
+        :focus {
+            outline: none; /* Убирает обводку для всех элементов при фокусе */
+        }
+
         .header-container {
             background-color: black;
             padding: 0;
@@ -31,8 +35,6 @@
             left: 0;
             width: 100%;
             z-index: 1000;
-            outline: none; /* Убирает обводку */
-            box-shadow: none; /* Убирает тень и обводку */
         }
 
         .header {
@@ -50,7 +52,7 @@
             overflow: hidden;
             font-family: 'New Amsterdam', sans-serif;
             box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
-            outline: none; /* Убирает обводку */
+            -webkit-appearance: none; /* Убирает стандартный стиль элемента */
         }
 
         @keyframes gradient {
@@ -163,11 +165,6 @@
             } else {
                 content.style.marginTop = '40px';
             }
-        });
-
-        // Убираем обводку при фокусе
-        header.addEventListener('focus', () => {
-            header.style.outline = 'none';
         });
 
         window.Telegram.WebApp.ready();
