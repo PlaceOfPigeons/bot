@@ -23,9 +23,8 @@
             -ms-user-select: none;
         }
 
-        /* Убираем обводку для всех элементов при фокусе */
         *:focus {
-            outline: none;
+            outline: none; /* Убираем обводку для всех элементов */
         }
 
         .header-container {
@@ -53,8 +52,11 @@
             overflow: hidden;
             font-family: 'New Amsterdam', sans-serif;
             box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
-            -webkit-appearance: none; /* Убирает стандартный стиль элемента */
-            outline: none; /* Убирает обводку */
+            pointer-events: auto; /* Позволяет клики по заголовку */
+        }
+
+        .header:focus {
+            box-shadow: none; /* Убираем обводку при фокусе */
         }
 
         @keyframes gradient {
