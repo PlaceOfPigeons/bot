@@ -55,19 +55,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative; /* Устанавливаем относительное позиционирование для контейнера */
-            overflow: hidden; /* Скрываем любые переполнения */
-            margin-top: 40px; /* Отступ от шапки */
+            margin-top: 40px;
+            transition: margin-top 0.5s ease;
         }
 
         .content img {
-            position: absolute; /* Фиксируем изображение */
-            top: 0; /* Устанавливаем верхнюю границу */
-            left: 0; /* Устанавливаем левую границу */
-            width: 100%; /* Занимаем всю ширину */
-            height: 100%; /* Занимаем всю высоту */
-            object-fit: cover; /* Сохраняем пропорции и обрезаем изображение, чтобы оно заполнило контейнер */
-            z-index: -1; /* Устанавливаем изображение на задний план */
+            max-width: 100%;
+            height: auto;
         }
 
         .footer {
