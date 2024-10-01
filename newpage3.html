@@ -38,43 +38,16 @@
         }
 
         .header {
-            background: linear-gradient(90deg, #007BFF, #000);
-            background-size: 200% 100%;
-            animation: gradient 3s ease infinite, shimmer 1.5s infinite alternate;
-            color: white;
+            background-color: white; /* Белая шапка */
+            color: black; /* Черный текст */
             text-align: center;
             padding: 10px;
             font-size: 24px;
             border-radius: 20px;
-            transition: height 0.5s ease;
-            height: 40px;
+            margin: 0 5%; /* Отступ 5% по краям */
             cursor: pointer;
-            overflow: hidden;
             font-family: 'New Amsterdam', sans-serif;
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
-        }
-
-        .header:focus {
-            box-shadow: none; /* Убираем обводку при фокусе */
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 100% 0%; }
-            100% { background-position: 0% 0%; }
-        }
-
-        @keyframes shimmer {
-            0% {
-                box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
-            }
-            100% {
-                box-shadow: 0 0 30px rgba(0, 123, 255, 1);
-            }
-        }
-
-        .header.expanded {
-            height: 300px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         .content {
@@ -158,18 +131,6 @@
     </div>
 
     <script>
-        const header = document.getElementById('header');
-        const content = document.getElementById('content');
-
-        header.addEventListener('click', () => {
-            header.classList.toggle('expanded');
-            if (header.classList.contains('expanded')) {
-                content.style.marginTop = '300px';
-            } else {
-                content.style.marginTop = '40px';
-            }
-        });
-
         window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
