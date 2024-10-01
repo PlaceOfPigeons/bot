@@ -17,6 +17,10 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            user-select: none; /* Запретить выделение текста */
+            -webkit-user-drag: none; /* Запретить перетаскивание изображений в WebKit-браузерах */
+            -moz-user-select: none; /* Запретить выделение текста в Firefox */
+            -ms-user-select: none; /* Запретить выделение текста в Internet Explorer */
         }
 
         /* Контейнер для шапки */
@@ -39,10 +43,7 @@
             text-align: center;
             padding: 10px;
             font-size: 24px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
+            border-radius: 20px;
             transition: height 0.5s ease;
             height: 40px;
             cursor: pointer;
