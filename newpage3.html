@@ -23,8 +23,9 @@
             -ms-user-select: none;
         }
 
-        :focus {
-            outline: none; /* Убирает обводку для всех элементов при фокусе */
+        /* Убираем обводку для всех элементов при фокусе */
+        *:focus {
+            outline: none;
         }
 
         .header-container {
@@ -53,6 +54,7 @@
             font-family: 'New Amsterdam', sans-serif;
             box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
             -webkit-appearance: none; /* Убирает стандартный стиль элемента */
+            outline: none; /* Убирает обводку */
         }
 
         @keyframes gradient {
@@ -126,7 +128,7 @@
 <body>
 
     <div class="header-container">
-        <div class="header" id="header">
+        <div class="header" id="header" tabindex="0">
             ProjectPresident
         </div>
     </div>
