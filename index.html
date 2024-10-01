@@ -49,7 +49,7 @@
             padding: 10px;
             font-size: 24px;
             border-radius: 20px;
-            transition: height 0.5s ease;
+            transition: height 0.5s ease, transform 0.2s ease;
             height: 40px;
             cursor: pointer;
             overflow: hidden;
@@ -117,6 +117,10 @@
             color: white;
             font-size: 12px;
             margin-top: 2px;
+        }
+
+        .header:active {
+            transform: scale(0.95); /* Эффект сжатия при нажатии */
         }
     </style>
 </head>
