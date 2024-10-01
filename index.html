@@ -86,6 +86,7 @@
             }
         }
     </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="shadow-container">
@@ -102,7 +103,21 @@
     </div>
 
     <script>
-        // Delay redirection by 3 seconds
+        // Инициализация Telegram Web App
+        window.Telegram.WebApp.ready();
+
+        // Установка черной темы
+        Telegram.WebApp.setBackgroundColor("#000000");
+        Telegram.WebApp.setHeaderColor("#000000");
+
+        // Проверка текущей темы
+        if (Telegram.WebApp.colorScheme === "dark") {
+            // Действия для темной темы уже активированы
+        } else {
+            // Можно установить цветовую схему в зависимости от нужд
+        }
+
+        // Задержка перед редиректом
         setTimeout(function() {
             window.location.href = 'newpage3.html'; // Замените на URL вашей второй страницы
         }, 3000);
