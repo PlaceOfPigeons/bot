@@ -53,10 +53,10 @@
         .content {
             flex-grow: 1;
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Меняем на вертикальное выравнивание */
             align-items: center;
             margin-top: 40px;
-            position: relative; /* Чтобы позиционировать счет */
+            position: relative;
             transition: margin-top 0.5s ease;
         }
 
@@ -67,8 +67,7 @@
         }
 
         #score {
-            position: absolute;
-            top: 20px;
+            margin: 10px 0; /* Отступ сверху и снизу */
             font-size: 24px;
             color: white;
         }
