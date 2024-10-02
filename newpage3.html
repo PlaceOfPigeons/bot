@@ -53,26 +53,16 @@
         .content {
             flex-grow: 1;
             display: flex;
-            flex-direction: column; /* Вертикальное выравнивание */
+            justify-content: center;
             align-items: center;
-            margin-top: 80px; /* Отступ для шапки */
-            position: relative;
+            margin-top: 40px;
             transition: margin-top 0.5s ease;
         }
 
         .content img {
             max-width: 100%;
             height: auto;
-            margin-top: 20px; /* Отступ сверху для изображения */
-            margin-bottom: 40px; /* Отступ снизу для расстояния от кнопок */
             cursor: pointer; /* Курсор меняется на указатель */
-        }
-
-        #score {
-            position: absolute; /* Абсолютное позиционирование */
-            top: 50px; /* Позиция ниже шапки */
-            font-size: 24px;
-            color: white;
         }
 
         .footer {
@@ -119,7 +109,6 @@
     </div>
 
     <div class="content" id="content">
-        <div id="score">Очки: 0</div>
         <img src="birdOne.png" alt="Logo" id="birdImage">
     </div>
 
@@ -153,17 +142,6 @@
 
         // Обновляем заголовок
         document.getElementById("header").textContent = displayName;
-
-        let score = 0;
-
-        // Функция для обновления очков
-        function updateScore(newScore) {
-            score = newScore;
-            document.getElementById("score").textContent = "Очки: " + score;
-        }
-
-        // Пример обновления очков
-        updateScore(10); // Замените на вашу логику
 
         // Обработчик клика для изображения
         document.getElementById("birdImage").addEventListener("click", function() {
