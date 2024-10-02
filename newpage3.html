@@ -53,9 +53,9 @@
         .content {
             flex-grow: 1;
             display: flex;
-            flex-direction: column; /* Меняем на вертикальное выравнивание */
+            flex-direction: column; /* Вертикальное выравнивание */
             align-items: center;
-            margin-top: 40px;
+            margin-top: 80px; /* Увеличиваем отступ, чтобы учесть шапку */
             position: relative;
             transition: margin-top 0.5s ease;
         }
@@ -67,7 +67,8 @@
         }
 
         #score {
-            margin: 10px 0; /* Отступ сверху и снизу */
+            position: absolute; /* Абсолютное позиционирование */
+            top: 50px; /* Позиция ниже шапки */
             font-size: 24px;
             color: white;
         }
@@ -170,3 +171,4 @@
 
 </body>
 </html>
+
