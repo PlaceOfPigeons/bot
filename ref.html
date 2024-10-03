@@ -4,41 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Mini App - Реферальная система</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        window.Telegram.WebApp.ready();
+        // Функция для загрузки данных из Local Storage
+        const getReferralData = () => {
+            const userId = localStorage.getItem('userId') || 'ваш_user_id'; // Замените на фактический ID
+            const userName = localStorage.getItem('userName') || 'ваше_имя'; // Замените на фактическое имя
 
-        const getReferralData = async () => {
-            try {
-                const userId = Telegram.WebApp.initDataUnsafe.user.id;
-                const userName = Telegram.WebApp.initDataUnsafe.user.first_name;
+            // Получаем сохраненный реферальный код
+            const savedReferral = localStorage.getItem('referralCode');
+            const referralsData = localStorage.getItem('referrals');
+            let referralsList = referralsData ? JSON.parse(referralsData) : [];
 
-                console.log('User ID:', userId);
-                console.log('User Name:', userName);
+            // Обновляем UI с сохраненным реферальным кодом
+            document.getElementById('referralCode').textContent = savedReferral || 'Реферальный код не найден';
 
-                const savedReferral = await Telegram.WebApp.storage.get('referralCode');
-                const referralsData = await Telegram.WebApp.storage.get('referrals');
-                let referralsList = referralsData ? JSON.parse(referralsData) : [];
+            // Генерация реферальной ссылки
+            const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
+            document.getElementById('referralLink').value = referralLink;
+            document.getElementById('referralLinkDisplay').textContent = referralLink;
 
-                document.getElementById('referralCode').textContent = savedReferral || 'Реферальный код не найден';
-
-                const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
-                document.getElementById('referralLink').value = referralLink;
-                document.getElementById('referralLinkDisplay').textContent = referralLink;
-
-                const ref = new URLSearchParams(window.location.search).get('ref');
-                console.log('Referral from URL:', ref);
-                if (ref && ref !== userId) {
-                    referralsList.push(userName);
-                    await Telegram.WebApp.storage.set({ 'referrals': JSON.stringify(referralsList) });
-                }
-
-                displayReferrals(referralsList);
-            } catch (error) {
-                console.error('Ошибка загрузки данных из Cloud Storage:', error);
+            // Проверка реферала из URL
+            const ref = new URLSearchParams(window.location.search).get('ref');
+            if (ref && ref !== userId) {
+                referralsList.push(userName);
+                localStorage.setItem('referrals', JSON.stringify(referralsList));
             }
+
+            // Отображаем список рефералов
+            displayReferrals(referralsList);
         };
 
+        // Функция для сохранения реферального кода в Local Storage
+        function saveReferralToLocal() {
+            const referral = localStorage.getItem('referral');
+            if (referral) {
+                localStorage.setItem('referralCode', referral);
+                alert("Реферальный код сохранен: " + referral);
+            } else {
+                alert("Реферального кода нет для сохранения");
+            }
+        }
+
+        // Функция для отображения списка рефералов
         function displayReferrals(referrals) {
             const referralsList = document.getElementById('referralsList');
             referralsList.innerHTML = '';
@@ -54,6 +61,7 @@
             }
         }
 
+        // Загрузка данных при загрузке страницы
         window.onload = () => {
             getReferralData();
         };
@@ -62,6 +70,8 @@
 <body>
     <h1>Telegram Mini App - Реферальная система</h1>
     <p>Ваш реферальный код: <span id="referralCode">Загрузка...</span></p>
+
+    <button onclick="saveReferralToLocal()">Сохранить реферальный код</button>
 
     <p>Поделитесь своей реферальной ссылкой:</p>
     <textarea id="referralLink" readonly></textarea>
