@@ -17,10 +17,10 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            user-select: none;
-            -webkit-user-drag: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            user-select: none; /* Запрет выделения текста */
+            -webkit-user-drag: none; /* Запрет перетаскивания в WebKit браузерах */
+            -moz-user-select: none; /* Запрет выделения для Firefox */
+            -ms-user-select: none; /* Запрет выделения для IE */
         }
 
         *:focus {
@@ -73,6 +73,7 @@
             height: auto;
             cursor: pointer;
             transition: transform 0.2s; /* Для эффекта нажатия */
+            border: none; /* Убираем рамку вокруг изображения */
         }
 
         .content img:active {
@@ -129,7 +130,7 @@
     <div class="content" id="content">
         <div style="position: relative;">
             <div class="score" id="score">Очки: 100</div>
-            <img src="birdOne.png" alt="Logo" id="birdImage">
+            <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false"> <!-- Добавлено draggable="false" -->
         </div>
     </div>
 
