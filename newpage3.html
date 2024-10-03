@@ -126,7 +126,7 @@
 
     <div class="content" id="content">
         <div style="position: relative;">
-            <div class="score" id="score">Очки: </div>
+            <div class="score" id="score">Очки: 0</div>
             <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false">
         </div>
     </div>
@@ -151,8 +151,8 @@
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const score = urlParams.get('score') || 0;
+        // Получаем текущие очки из локального хранилища или устанавливаем 0
+        let score = parseInt(localStorage.getItem('score')) || 0;
         document.getElementById("score").textContent = `Очки: ${score}`;
 
         window.Telegram.WebApp.ready();
@@ -161,12 +161,15 @@
 
         const user = Telegram.WebApp.initDataUnsafe.user;
         let displayName = user.username || user.first_name;
-
         document.getElementById("header").textContent = displayName;
 
         const birdImage = document.getElementById("birdImage");
 
         birdImage.addEventListener("click", function() {
+            // Увеличиваем очки и сохраняем в локальное хранилище
+            score += 10; // Пример добавления 10 очков
+            localStorage.setItem('score', score);
+            document.getElementById("score").textContent = `Очки: ${score}`;
             window.location.href = "game.html";
         });
 
