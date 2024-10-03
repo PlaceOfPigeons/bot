@@ -74,6 +74,7 @@
             cursor: pointer;
             transition: transform 0.2s; /* Для эффекта нажатия */
             border: none; /* Убираем рамку вокруг изображения */
+            pointer-events: none; /* Запрет на взаимодействие с изображением */
         }
 
         .content img:active {
@@ -130,7 +131,7 @@
     <div class="content" id="content">
         <div style="position: relative;">
             <div class="score" id="score">Очки: 100</div>
-            <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false"> <!-- Добавлено draggable="false" -->
+            <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false" oncontextmenu="return false;"> <!-- Добавлено oncontextmenu -->
         </div>
     </div>
 
