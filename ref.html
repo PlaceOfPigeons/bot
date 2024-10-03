@@ -37,6 +37,9 @@
                 // Генерация реферальной ссылки
                 const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
                 document.getElementById('referralLink').value = referralLink;
+
+                // Отображение реферальной ссылки
+                document.getElementById('referralLinkDisplay').textContent = referralLink;
             } catch (error) {
                 console.error('Ошибка загрузки данных из Cloud Storage:', error);
             }
@@ -106,6 +109,7 @@
 
     <p>Поделитесь своей реферальной ссылкой:</p>
     <textarea id="referralLink" readonly></textarea>
+    <p>Реферальная ссылка для копирования: <span id="referralLinkDisplay"></span></p>
 
     <h2>Добавить реферал вручную:</h2>
     <input type="text" id="manualReferralInput" placeholder="Введите реферальный код">
