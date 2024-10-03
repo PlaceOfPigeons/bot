@@ -170,11 +170,11 @@
             score += 10; // Пример добавления 10 очков
             localStorage.setItem('score', score);
             document.getElementById("score").textContent = `Очки: ${score}`;
-            window.location.href = "game.html";
+            window.location.href = `game.html?score=${score}`; // Передаем очки в URL
         });
 
         birdImage.addEventListener("touchstart", function() {
-            window.location.href = "game.html";
+            window.location.href = `game.html?score=${score}`; // Передаем очки в URL
         });
 
         birdImage.addEventListener("mousedown", function() {
