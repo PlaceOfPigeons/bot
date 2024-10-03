@@ -9,7 +9,6 @@
         // Инициализация приложения Telegram WebApp
         window.Telegram.WebApp.ready();
 
-        // Функция для загрузки данных из Telegram Cloud Storage
         const getReferralData = async () => {
             try {
                 const userId = Telegram.WebApp.initDataUnsafe.user.id;
@@ -17,12 +16,16 @@
 
                 // Получаем сохраненный реферальный код
                 const savedReferral = await Telegram.WebApp.storage.get('referralCode');
-                // Получаем список рефералов
                 const referralsData = await Telegram.WebApp.storage.get('referrals');
                 let referralsList = referralsData ? JSON.parse(referralsData) : [];
 
                 // Обновляем UI с сохраненным реферальным кодом
                 document.getElementById('referralCode').textContent = savedReferral || 'Реферальный код не найден';
+
+                // Генерация реферальной ссылки
+                const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
+                document.getElementById('referralLink').value = referralLink;
+                document.getElementById('referralLinkDisplay').textContent = referralLink;
 
                 // Проверяем, пришел ли пользователь по реферальной ссылке
                 const ref = new URLSearchParams(window.location.search).get('ref');
@@ -33,19 +36,11 @@
 
                 // Отображаем список рефералов
                 displayReferrals(referralsList);
-
-                // Генерация реферальной ссылки
-                const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
-                document.getElementById('referralLink').value = referralLink;
-
-                // Отображение реферальной ссылки
-                document.getElementById('referralLinkDisplay').textContent = referralLink;
             } catch (error) {
                 console.error('Ошибка загрузки данных из Cloud Storage:', error);
             }
         };
 
-        // Функция для сохранения реферального кода в Telegram Cloud Storage
         function saveReferralToCloud() {
             const referral = localStorage.getItem('referral');
             if (referral) {
@@ -61,7 +56,6 @@
             }
         }
 
-        // Функция для отображения списка рефералов
         function displayReferrals(referrals) {
             const referralsList = document.getElementById('referralsList');
             referralsList.innerHTML = '';
@@ -77,7 +71,6 @@
             }
         }
 
-        // Функция для добавления реферала вручную
         function addReferral() {
             const referralCode = document.getElementById('manualReferralInput').value;
             if (referralCode) {
@@ -86,7 +79,7 @@
                     referralsList.push(referralCode);
                     Telegram.WebApp.storage.set({ 'referrals': JSON.stringify(referralsList) });
                     alert("Реферальный код добавлен!");
-                    displayReferrals(referralsList); // Обновить список
+                    displayReferrals(referralsList);
                 }).catch((error) => {
                     console.error('Ошибка при получении списка рефералов:', error);
                 });
@@ -95,7 +88,6 @@
             }
         }
 
-        // Загрузка данных при загрузке страницы
         window.onload = () => {
             getReferralData();
         };
@@ -109,7 +101,7 @@
 
     <p>Поделитесь своей реферальной ссылкой:</p>
     <textarea id="referralLink" readonly></textarea>
-    <p>Реферальная ссылка для копирования: <span id="referralLinkDisplay"></span></p>
+    <p id="referralLinkDisplay"></p>
 
     <h2>Добавить реферал вручную:</h2>
     <input type="text" id="manualReferralInput" placeholder="Введите реферальный код">
