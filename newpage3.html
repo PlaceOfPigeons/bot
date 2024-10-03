@@ -126,8 +126,8 @@
 
     <div class="content" id="content">
         <div style="position: relative;">
-            <div class="score" id="score">Очки: 100</div>
-            <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false" oncontextmenu="return false;"> <!-- Добавлено oncontextmenu -->
+            <div class="score" id="score">Очки: </div>
+            <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false">
         </div>
     </div>
 
@@ -151,6 +151,10 @@
     </div>
 
     <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const score = urlParams.get('score') || 0;
+        document.getElementById("score").textContent = `Очки: ${score}`;
+
         window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
@@ -185,3 +189,4 @@
 
 </body>
 </html>
+
