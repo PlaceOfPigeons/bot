@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,10 +17,10 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            user-select: none; /* Запрет выделения текста */
-            -webkit-user-drag: none; /* Запрет перетаскивания в WebKit браузерах */
-            -moz-user-select: none; /* Запрет выделения для Firefox */
-            -ms-user-select: none; /* Запрет выделения для IE */
+            user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         *:focus {
@@ -72,13 +72,13 @@
             max-width: 100%;
             height: auto;
             cursor: pointer;
-            transition: transform 0.2s; /* Для эффекта нажатия */
-            border: none; /* Убираем рамку вокруг изображения */
-            outline: none; /* Убираем контур при фокусе */
+            transition: transform 0.2s;
+            border: none;
+            outline: none;
         }
 
         .content img:active {
-            transform: scale(0.95); /* Уменьшаем изображение при нажатии */
+            transform: scale(0.95);
         }
 
         .footer {
@@ -126,7 +126,7 @@
 
     <div class="content" id="content">
         <div style="position: relative;">
-            <div class="score" id="score">Очки: </div>
+            <div class="score" id="score">Очки: 0</div>
             <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false">
         </div>
     </div>
@@ -134,59 +134,68 @@
     <div class="footer">
         <div>
             <span class="material-symbols-outlined">home</span>
-            <div class="icon-label">Home</div>
+            <div class="icon-label">Главная</div>
         </div>
         <div>
             <span class="material-symbols-outlined">leaderboard</span>
-            <div class="icon-label">Leaderboard</div>
+            <div class="icon-label">Таблица лидеров</div>
         </div>
         <div>
             <span class="material-symbols-outlined">task</span>
-            <div class="icon-label">Tasks</div>
+            <div class="icon-label">Задания</div>
         </div>
         <div>
             <span class="material-symbols-outlined">people</span>
-            <div class="icon-label">Friends</div>
+            <div class="icon-label">Друзья</div>
         </div>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const score = urlParams.get('score') || 0;
-        document.getElementById("score").textContent = `Очки: ${score}`;
-
+        // Инициализация Telegram Web App
         window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
         const user = Telegram.WebApp.initDataUnsafe.user;
         let displayName = user.username || user.first_name;
-
         document.getElementById("header").textContent = displayName;
 
-        const birdImage = document.getElementById("birdImage");
+        // Получение и отображение сохранённых очков
+        const savedScore = Telegram.WebApp.storage.get('user_score') || 0;
+        document.getElementById("score").textContent = `Очки: ${savedScore}`;
 
+        // Функция для обновления очков и их сохранения
+        function updateScore(newScore) {
+            Telegram.WebApp.storage.set('user_score', newScore);
+            document.getElementById("score").textContent = `Очки: ${newScore}`;
+        }
+
+        // Пример обновления очков, замените на вашу логику
+        const birdImage = document.getElementById("birdImage");
         birdImage.addEventListener("click", function() {
-            window.location.href = "game.html";
+            const newScore = parseInt(savedScore) + 10; // Пример увеличения на 10
+            updateScore(newScore);
+            window.location.href = "game.html"; // Переход на страницу игры
         });
 
         birdImage.addEventListener("touchstart", function() {
-            window.location.href = "game.html";
+            const newScore = parseInt(savedScore) + 10; // Пример увеличения на 10
+            updateScore(newScore);
+            window.location.href = "game.html"; // Переход на страницу игры
         });
 
         birdImage.addEventListener("mousedown", function() {
-            this.classList.add("active"); // Добавляем класс при нажатии
+            this.classList.add("active");
         });
 
         birdImage.addEventListener("mouseup", function() {
-            this.classList.remove("active"); // Убираем класс при отпускании
+            this.classList.remove("active");
         });
 
         birdImage.addEventListener("mouseleave", function() {
-            this.classList.remove("active"); // Убираем класс, если мышь покинула область
+            this.classList.remove("active");
         });
     </script>
 
 </body>
 </html>
-
