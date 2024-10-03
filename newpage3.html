@@ -52,7 +52,7 @@
 
         .score {
             position: absolute;
-            top: -10%; /* Установлено на -10% для поднятия выше изображения */
+            top: -10%; 
             left: 50%;
             transform: translateX(-50%);
             font-size: 20px;
@@ -72,6 +72,15 @@
             max-width: 100%;
             height: auto;
             cursor: pointer;
+            transition: transform 0.2s; /* Для эффекта нажатия */
+        }
+
+        .content img:active {
+            transform: scale(0.95); /* Уменьшаем изображение при нажатии */
+        }
+
+        .active {
+            filter: brightness(0.8); /* Затемнение изображения при нажатии */
         }
 
         .footer {
@@ -153,8 +162,22 @@
 
         document.getElementById("header").textContent = displayName;
 
-        document.getElementById("birdImage").addEventListener("click", function() {
+        const birdImage = document.getElementById("birdImage");
+
+        birdImage.addEventListener("click", function() {
             window.location.href = "game.html";
+        });
+
+        birdImage.addEventListener("mousedown", function() {
+            this.classList.add("active"); // Добавляем класс при нажатии
+        });
+
+        birdImage.addEventListener("mouseup", function() {
+            this.classList.remove("active"); // Убираем класс при отпускании
+        });
+
+        birdImage.addEventListener("mouseleave", function() {
+            this.classList.remove("active"); // Убираем класс, если мышь покинула область
         });
     </script>
 
