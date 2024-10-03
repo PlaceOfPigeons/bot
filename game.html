@@ -146,7 +146,11 @@
         const sequenceDisplay = document.getElementById('sequence');
         const timerDisplay = document.getElementById('timer');
         const birds = ['birdOne.png', 'birdTwo.png', 'birdThree.png'];
-        let score = 0;
+        
+        // Считывание сохраненных очков из localStorage
+        let storedScore = parseInt(localStorage.getItem('score')) || 0;
+        let score = storedScore; // Инициализируем score сохраненным значением
+
         let currentSequence = [];
         let userSequence = [];
         let lastClickX = 0;
@@ -274,6 +278,7 @@
         }
 
         function endGame() {
+            localStorage.setItem('score', score); // Сохранение очков в локальное хранилище
             window.location.href = `newpage3.html?score=${score}`;
         }
 
@@ -287,6 +292,7 @@
             event.preventDefault();
         });
 
+        updateScoreDisplay(score); // Обновляем отображение очков
         startGame();
     </script>
 </body>
