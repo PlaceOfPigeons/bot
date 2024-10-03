@@ -144,7 +144,7 @@
             <span class="material-symbols-outlined">task</span>
             <div class="icon-label">Tasks</div>
         </div>
-        <div>
+        <div id="friends" style="cursor: pointer;">
             <span class="material-symbols-outlined">people</span>
             <div class="icon-label">Friends</div>
         </div>
@@ -184,6 +184,11 @@
 
         birdImage.addEventListener("mouseleave", function() {
             this.classList.remove("active"); // Убираем класс, если мышь покинула область
+        });
+
+        // Обработчик события для элемента "Friends"
+        document.getElementById("friends").addEventListener("click", function() {
+            window.location.href = 'ref.html'; // Переход на ref.html
         });
     </script>
 
