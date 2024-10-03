@@ -5,32 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Mini App - Реферальная система</title>
     <script>
+        // Функция для получения данных пользователя
+        const getUserData = () => {
+            // Здесь установите свой ID и имя пользователя
+            const userId = 'ваш_user_id'; // Замените на фактический ID
+            const userName = 'ваше_имя'; // Замените на фактическое имя
+
+            // Сохраняем ID и имя пользователя в localStorage
+            localStorage.setItem('userId', userId);
+            localStorage.setItem('userName', userName);
+        };
+
         const getReferralData = () => {
-            const userId = localStorage.getItem('userId') || 'ваш_user_id'; // Замените на фактический ID
-            const userName = localStorage.getItem('userName') || 'ваше_имя'; // Замените на фактическое имя
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName');
 
             const savedReferral = localStorage.getItem('referralCode');
             const referralsData = localStorage.getItem('referrals');
             let referralsList = referralsData ? JSON.parse(referralsData) : [];
 
-            document.getElementById('referralCode').textContent = savedReferral || 'Реферальный код не найден';
+            // Генерация реферального кода
+            const referralCode = userId; // ID пользователя как реферальный код
+            document.getElementById('referralCode').textContent = referralCode;
 
+            // Генерация реферальной ссылки
             const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
             document.getElementById('referralLink').value = referralLink;
             document.getElementById('referralLinkDisplay').textContent = referralLink;
 
+            // Проверка реферала из URL
+            const ref = new URLSearchParams(window.location.search).get('ref');
+            if (ref && ref !== userId) {
+                if (!referralsList.includes(userName)) {
+                    referralsList.push(userName);
+                    localStorage.setItem('referrals', JSON.stringify(referralsList));
+                    alert("Вы были добавлены в список рефералов!");
+                }
+            }
+
             displayReferrals(referralsList);
         };
-
-        function saveReferralToLocal() {
-            const referral = localStorage.getItem('referral');
-            if (referral) {
-                localStorage.setItem('referralCode', referral);
-                alert("Реферальный код сохранен: " + referral);
-            } else {
-                alert("Реферального кода нет для сохранения");
-            }
-        }
 
         function displayReferrals(referrals) {
             const referralsList = document.getElementById('referralsList');
@@ -49,10 +63,9 @@
 
         function addReferral() {
             const referralCode = document.getElementById('manualReferralInput').value;
-            const userId = localStorage.getItem('userId') || 'ваш_user_id'; // Замените на фактический ID
-            const userName = localStorage.getItem('userName') || 'ваше_имя'; // Замените на фактическое имя
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName');
 
-            // Проверяем, является ли введенный код реферальным кодом текущего пользователя
             if (referralCode !== userId) {
                 alert("Реферальный код неверный.");
                 return;
@@ -61,7 +74,6 @@
             const referralsData = localStorage.getItem('referrals');
             let referralsList = referralsData ? JSON.parse(referralsData) : [];
 
-            // Проверяем, есть ли уже этот пользователь в списке рефералов
             if (!referralsList.includes(userName)) {
                 referralsList.push(userName);
                 localStorage.setItem('referrals', JSON.stringify(referralsList));
@@ -74,7 +86,8 @@
         }
 
         window.onload = () => {
-            getReferralData();
+            getUserData(); // Получаем данные пользователя
+            getReferralData(); // Получаем реферальные данные
         };
     </script>
 </head>
