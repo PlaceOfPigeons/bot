@@ -5,36 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Mini App - Реферальная система</title>
     <script>
-        // Функция для загрузки данных из Local Storage
         const getReferralData = () => {
             const userId = localStorage.getItem('userId') || 'ваш_user_id'; // Замените на фактический ID
             const userName = localStorage.getItem('userName') || 'ваше_имя'; // Замените на фактическое имя
 
-            // Получаем сохраненный реферальный код
             const savedReferral = localStorage.getItem('referralCode');
             const referralsData = localStorage.getItem('referrals');
             let referralsList = referralsData ? JSON.parse(referralsData) : [];
 
-            // Обновляем UI с сохраненным реферальным кодом
             document.getElementById('referralCode').textContent = savedReferral || 'Реферальный код не найден';
 
-            // Генерация реферальной ссылки
             const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
             document.getElementById('referralLink').value = referralLink;
             document.getElementById('referralLinkDisplay').textContent = referralLink;
 
-            // Проверка реферала из URL
-            const ref = new URLSearchParams(window.location.search).get('ref');
-            if (ref && ref !== userId) {
-                referralsList.push(userName);
-                localStorage.setItem('referrals', JSON.stringify(referralsList));
-            }
-
-            // Отображаем список рефералов
             displayReferrals(referralsList);
         };
 
-        // Функция для сохранения реферального кода в Local Storage
         function saveReferralToLocal() {
             const referral = localStorage.getItem('referral');
             if (referral) {
@@ -45,7 +32,6 @@
             }
         }
 
-        // Функция для отображения списка рефералов
         function displayReferrals(referrals) {
             const referralsList = document.getElementById('referralsList');
             referralsList.innerHTML = '';
@@ -61,7 +47,32 @@
             }
         }
 
-        // Загрузка данных при загрузке страницы
+        function addReferral() {
+            const referralCode = document.getElementById('manualReferralInput').value;
+            const userId = localStorage.getItem('userId') || 'ваш_user_id'; // Замените на фактический ID
+            const userName = localStorage.getItem('userName') || 'ваше_имя'; // Замените на фактическое имя
+
+            // Проверяем, является ли введенный код реферальным кодом текущего пользователя
+            if (referralCode !== userId) {
+                alert("Реферальный код неверный.");
+                return;
+            }
+
+            const referralsData = localStorage.getItem('referrals');
+            let referralsList = referralsData ? JSON.parse(referralsData) : [];
+
+            // Проверяем, есть ли уже этот пользователь в списке рефералов
+            if (!referralsList.includes(userName)) {
+                referralsList.push(userName);
+                localStorage.setItem('referrals', JSON.stringify(referralsList));
+                alert("Вы успешно добавлены в список рефералов!");
+            } else {
+                alert("Вы уже добавлены как реферал.");
+            }
+
+            displayReferrals(referralsList);
+        }
+
         window.onload = () => {
             getReferralData();
         };
@@ -76,6 +87,10 @@
     <p>Поделитесь своей реферальной ссылкой:</p>
     <textarea id="referralLink" readonly></textarea>
     <p id="referralLinkDisplay"></p>
+
+    <h2>Добавить реферал вручную:</h2>
+    <input type="text" id="manualReferralInput" placeholder="Введите реферальный код">
+    <button onclick="addReferral()">Добавить реферал</button>
 
     <h2>Список рефералов:</h2>
     <ul id="referralsList"></ul>
