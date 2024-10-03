@@ -24,7 +24,7 @@
         }
 
         *:focus {
-            outline: none;
+            outline: none; /* Убираем обводку для всех элементов */
         }
 
         .header-container {
@@ -38,25 +38,16 @@
         }
 
         .header {
-            background-color: white;
-            color: black;
+            background-color: white; /* Белая шапка */
+            color: black; /* Черный текст */
             text-align: center;
             padding: 10px;
             font-size: 24px;
             border-radius: 20px;
-            margin: 0 5%;
+            margin: 0 5%; /* Отступ 5% по краям */
             cursor: pointer;
             font-family: 'New Amsterdam', sans-serif;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .score {
-            position: absolute;
-            top: -10%; 
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 20px;
-            color: white;
         }
 
         .content {
@@ -71,16 +62,7 @@
         .content img {
             max-width: 100%;
             height: auto;
-            cursor: pointer;
-            transition: transform 0.2s; /* Для эффекта нажатия */
-        }
-
-        .content img:active {
-            transform: scale(0.95); /* Уменьшаем изображение при нажатии */
-        }
-
-        .active {
-            filter: brightness(0.8); /* Затемнение изображения при нажатии */
+            cursor: pointer; /* Курсор меняется на указатель */
         }
 
         .footer {
@@ -127,10 +109,7 @@
     </div>
 
     <div class="content" id="content">
-        <div style="position: relative;">
-            <div class="score" id="score">Очки: 100</div>
-            <img src="birdOne.png" alt="Logo" id="birdImage">
-        </div>
+        <img src="birdOne.png" alt="Logo" id="birdImage">
     </div>
 
     <div class="footer">
@@ -157,27 +136,16 @@
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
+        // Получаем информацию о пользователе
         const user = Telegram.WebApp.initDataUnsafe.user;
-        let displayName = user.username || user.first_name;
+        let displayName = user.username || user.first_name; // Если username нет, используем имя
 
+        // Обновляем заголовок
         document.getElementById("header").textContent = displayName;
 
-        const birdImage = document.getElementById("birdImage");
-
-        birdImage.addEventListener("click", function() {
-            window.location.href = "game.html";
-        });
-
-        birdImage.addEventListener("mousedown", function() {
-            this.classList.add("active"); // Добавляем класс при нажатии
-        });
-
-        birdImage.addEventListener("mouseup", function() {
-            this.classList.remove("active"); // Убираем класс при отпускании
-        });
-
-        birdImage.addEventListener("mouseleave", function() {
-            this.classList.remove("active"); // Убираем класс, если мышь покинула область
+        // Обработчик клика для изображения
+        document.getElementById("birdImage").addEventListener("click", function() {
+            window.location.href = "game.html"; // Перенаправление на game.html
         });
     </script>
 
