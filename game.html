@@ -35,6 +35,15 @@
             font-weight: bold;
         }
 
+        #timer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 28px;
+            color: #fff;
+            font-weight: bold;
+        }
+
         #sequence {
             position: absolute;
             top: 10%;
@@ -123,6 +132,7 @@
 <body>
     <div id="game">
         <div id="score">Очки: 0</div>
+        <div id="timer">60</div>
         <div id="sequence"></div>
     </div>
 
@@ -134,6 +144,7 @@
         const game = document.getElementById('game');
         const scoreDisplay = document.getElementById('score');
         const sequenceDisplay = document.getElementById('sequence');
+        const timerDisplay = document.getElementById('timer');
         const birds = ['birdOne.png', 'birdTwo.png', 'birdThree.png'];
         let score = 0;
         let currentSequence = [];
@@ -143,6 +154,8 @@
         const birdWidth = 96;
         const screenWidth = window.innerWidth;
         const maxLeft = screenWidth - birdWidth;
+
+        let timerValue = 60;
 
         function createSequence() {
             currentSequence = [];
@@ -248,8 +261,25 @@
             }
         }
 
+        function startTimer() {
+            const timerInterval = setInterval(() => {
+                timerValue--;
+                timerDisplay.textContent = timerValue;
+
+                if (timerValue <= 0) {
+                    clearInterval(timerInterval);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            window.location.href = `newpage3.html?score=${score}`;
+        }
+
         function startGame() {
             createSequence();
+            startTimer();
             setInterval(createBird, 1000);
         }
 
