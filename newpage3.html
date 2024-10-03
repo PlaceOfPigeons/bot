@@ -74,6 +74,7 @@
             cursor: pointer;
             transition: transform 0.2s; /* Для эффекта нажатия */
             border: none; /* Убираем рамку вокруг изображения */
+            outline: none; /* Убираем контур при фокусе */
         }
 
         .content img:active {
@@ -162,6 +163,10 @@
         const birdImage = document.getElementById("birdImage");
 
         birdImage.addEventListener("click", function() {
+            window.location.href = "game.html";
+        });
+
+        birdImage.addEventListener("touchstart", function() {
             window.location.href = "game.html";
         });
 
