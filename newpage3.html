@@ -17,10 +17,10 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            user-select: none; /* Запрет выделения текста */
-            -webkit-user-drag: none; /* Запрет перетаскивания в WebKit браузерах */
-            -moz-user-select: none; /* Запрет выделения для Firefox */
-            -ms-user-select: none; /* Запрет выделения для IE */
+            user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         *:focus {
@@ -72,13 +72,13 @@
             max-width: 100%;
             height: auto;
             cursor: pointer;
-            transition: transform 0.2s; /* Для эффекта нажатия */
-            border: none; /* Убираем рамку вокруг изображения */
-            outline: none; /* Убираем контур при фокусе */
+            transition: transform 0.2s;
+            border: none;
+            outline: none;
         }
 
         .content img:active {
-            transform: scale(0.95); /* Уменьшаем изображение при нажатии */
+            transform: scale(0.95);
         }
 
         .footer {
@@ -165,16 +165,13 @@
 
         const birdImage = document.getElementById("birdImage");
 
+        // Убираем обработчик событий, который увеличивал очки и перенаправлял на страницу игры
         birdImage.addEventListener("click", function() {
-            // Увеличиваем очки и сохраняем в локальное хранилище
-            score += 10; // Пример добавления 10 очков
-            localStorage.setItem('score', score);
-            document.getElementById("score").textContent = `Очки: ${score}`;
-            window.location.href = `game.html?score=${score}`; // Передаем очки в URL
+            window.location.href = `game.html?score=${score}`; // Переход на страницу игры без изменения очков
         });
 
         birdImage.addEventListener("touchstart", function() {
-            window.location.href = `game.html?score=${score}`; // Передаем очки в URL
+            window.location.href = `game.html?score=${score}`; // Переход на страницу игры для сенсорных устройств
         });
 
         birdImage.addEventListener("mousedown", function() {
