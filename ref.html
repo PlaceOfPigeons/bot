@@ -29,14 +29,8 @@
             border: none;
             cursor: pointer;
         }
-        button:hover {
-            background-color: #777; /* Светлее при наведении */
-        }
-        #backButton {
-            position: absolute;
-            bottom: 5%; /* Отступ от низа */
-            left: 50%;
-            transform: translateX(-50%); /* Центрирование кнопки */
+        h1, h2, p {
+            margin: 10px 0; /* Отступы для заголовков и параграфов */
         }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -143,6 +137,6 @@
     <h2>Список рефералов:</h2>
     <ul id="referralsList"></ul>
 
-    <button id="backButton" onclick="goBack()">Back</button>
+    <button id="backButton" onclick="goBack()" style="background-color: #555; color: white; border: none; padding: 10px 15px; cursor: pointer;">Back</button>
 </body>
 </html>
