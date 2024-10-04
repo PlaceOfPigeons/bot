@@ -18,6 +18,9 @@
             display: flex;
             flex-direction: column;
             user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         *:focus {
@@ -42,9 +45,18 @@
             font-size: 24px;
             border-radius: 20px;
             margin: 0 5%;
-            cursor: default; /* Убираем курсор-указатель */
+            cursor: pointer;
             font-family: 'New Amsterdam', sans-serif;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .score {
+            position: absolute;
+            top: -10%; 
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            color: white;
         }
 
         .content {
@@ -53,10 +65,25 @@
             justify-content: center;
             align-items: center;
             margin-top: 40px;
+            transition: margin-top 0.5s ease;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: none;
+            outline: none;
+        }
+
+        .content img:active {
+            transform: scale(0.95);
         }
 
         .footer {
             background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 10px;
             position: fixed;
@@ -92,7 +119,9 @@
 <body>
 
     <div class="header-container">
-        <div class="header" id="header">ProjectPresident</div>
+        <div class="header" id="header">
+            ProjectPresident
+        </div>
     </div>
 
     <div class="content" id="content">
@@ -122,6 +151,7 @@
     </div>
 
     <script>
+        // Получаем текущие очки из локального хранилища или устанавливаем 0
         let score = parseInt(localStorage.getItem('score')) || 0;
         document.getElementById("score").textContent = `Очки: ${score}`;
 
@@ -132,6 +162,29 @@
         const user = Telegram.WebApp.initDataUnsafe.user;
         let displayName = user.username || user.first_name;
         document.getElementById("header").textContent = displayName;
+
+        const birdImage = document.getElementById("birdImage");
+
+        // Убираем обработчик событий, который увеличивал очки и перенаправлял на страницу игры
+        birdImage.addEventListener("click", function() {
+            window.location.href = `game.html?score=${score}`; // Переход на страницу игры без изменения очков
+        });
+
+        birdImage.addEventListener("touchstart", function() {
+            window.location.href = `game.html?score=${score}`; // Переход на страницу игры для сенсорных устройств
+        });
+
+        birdImage.addEventListener("mousedown", function() {
+            this.classList.add("active"); // Добавляем класс при нажатии
+        });
+
+        birdImage.addEventListener("mouseup", function() {
+            this.classList.remove("active"); // Убираем класс при отпускании
+        });
+
+        birdImage.addEventListener("mouseleave", function() {
+            this.classList.remove("active"); // Убираем класс, если мышь покинула область
+        });
 
         // Обработчик события для элемента "Friends"
         document.getElementById("friends").addEventListener("click", function() {
