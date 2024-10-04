@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Mini App - Реферальная система</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             background-color: #000; /* Черный фон */
@@ -13,15 +12,19 @@
             position: relative; /* Для позиционирования кнопки */
             min-height: 100vh; /* Минимальная высота страницы */
             padding-bottom: 5%; /* Отступ для кнопки */
+            overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
+            margin: 0; /* Убираем отступы по умолчанию */
         }
         textarea {
-            width: 100%;
+            width: calc(100% - 20px); /* Учитываем отступы */
             height: 100px;
             margin-top: 10px;
             margin-bottom: 10px;
             background-color: #444; /* Темный фон для текстового поля */
             color: white; /* Белый цвет текста в текстовом поле */
             border: 1px solid #666; /* Цвет границы */
+            padding: 10px; /* Отступ внутри текстового поля */
+            box-sizing: border-box; /* Учитываем отступы и границы в ширине */
         }
         button {
             padding: 10px 15px;
@@ -29,6 +32,8 @@
             color: white; /* Белый цвет текста на кнопке */
             border: none;
             cursor: pointer;
+            width: 100%; /* Кнопка на всю ширину */
+            box-sizing: border-box; /* Учитываем отступы и границы в ширине */
         }
         h1, h2, p {
             margin: 10px 0; /* Отступы для заголовков и параграфов */
@@ -132,12 +137,12 @@
     <p id="referralLinkDisplay"></p>
 
     <h2>Добавить реферал вручную:</h2>
-    <input type="text" id="manualReferralInput" placeholder="Введите реферальный код">
+    <input type="text" id="manualReferralInput" placeholder="Введите реферальный код" style="width: calc(100% - 20px); padding: 10px; box-sizing: border-box;">
     <button onclick="addReferral()">Добавить реферал</button>
 
     <h2>Список рефералов:</h2>
     <ul id="referralsList"></ul>
 
-    <button id="backButton" onclick="goBack()" style="background-color: #555; color: white; border: none; padding: 10px 15px; cursor: pointer;">Back</button>
+    <button id="backButton" onclick="goBack()" style="background-color: #555; color: white; border: none; padding: 10px 15px; cursor: pointer; width: 100%; box-sizing: border-box;">Back</button>
 </body>
 </html>
