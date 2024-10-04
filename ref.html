@@ -9,6 +9,9 @@
             background-color: #333; /* Темный фон для контраста */
             color: white; /* Белый цвет текста */
             font-family: Arial, sans-serif; /* Шрифт */
+            position: relative; /* Для позиционирования кнопки */
+            min-height: 100vh; /* Минимальная высота страницы */
+            padding-bottom: 5%; /* Отступ для кнопки */
         }
         textarea {
             width: 100%;
@@ -28,6 +31,12 @@
         }
         button:hover {
             background-color: #777; /* Светлее при наведении */
+        }
+        #backButton {
+            position: absolute;
+            bottom: 5%; /* Отступ от низа */
+            left: 50%;
+            transform: translateX(-50%); /* Центрирование кнопки */
         }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -111,6 +120,10 @@
         window.onload = () => {
             getReferralData(); // Получаем реферальные данные
         };
+        
+        function goBack() {
+            window.location.href = 'newpage3.html'; // Переход на новую страницу
+        }
     </script>
 </head>
 <body>
@@ -127,5 +140,7 @@
 
     <h2>Список рефералов:</h2>
     <ul id="referralsList"></ul>
+
+    <button id="backButton" onclick="goBack()">Back</button>
 </body>
 </html>
