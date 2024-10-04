@@ -43,6 +43,8 @@
     <script>
         // Инициализация приложения Telegram WebApp
         window.Telegram.WebApp.ready();
+        Telegram.WebApp.setBackgroundColor("#000000");
+        Telegram.WebApp.setHeaderColor("#000000");
 
         const getReferralData = () => {
             // Получаем ID и имя пользователя из Telegram
@@ -120,7 +122,7 @@
         window.onload = () => {
             getReferralData(); // Получаем реферальные данные
         };
-        
+
         function goBack() {
             window.location.href = 'newpage3.html'; // Переход на новую страницу
         }
