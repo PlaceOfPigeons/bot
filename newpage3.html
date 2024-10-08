@@ -24,7 +24,7 @@
         }
 
         *:focus {
-            outline: none;
+            outline: none; /* Убираем контур */
         }
 
         .header-container {
@@ -166,6 +166,12 @@
 
         // Обработчик события для элемента "Friends", который просто переходит на страницу
         document.getElementById("friends").addEventListener("click", function() {
+            window.location.href = 'ref.html'; // Переход на ref.html
+        });
+
+        // Убираем синий эффект при касании
+        document.getElementById("friends").addEventListener("touchstart", function(e) {
+            e.preventDefault(); // Предотвращаем стандартное поведение
             window.location.href = 'ref.html'; // Переход на ref.html
         });
     </script>
