@@ -72,13 +72,8 @@
             max-width: 100%;
             height: auto;
             cursor: pointer;
-            transition: transform 0.2s;
             border: none;
             outline: none;
-        }
-
-        .content img:active {
-            transform: scale(0.95);
         }
 
         .footer {
@@ -168,22 +163,6 @@
         // Убираем обработчик событий, который увеличивал очки и перенаправлял на страницу игры
         birdImage.addEventListener("click", function() {
             window.location.href = `game.html?score=${score}`; // Переход на страницу игры без изменения очков
-        });
-
-        birdImage.addEventListener("touchstart", function() {
-            window.location.href = `game.html?score=${score}`; // Переход на страницу игры для сенсорных устройств
-        });
-
-        birdImage.addEventListener("mousedown", function() {
-            this.classList.add("active"); // Добавляем класс при нажатии
-        });
-
-        birdImage.addEventListener("mouseup", function() {
-            this.classList.remove("active"); // Убираем класс при отпускании
-        });
-
-        birdImage.addEventListener("mouseleave", function() {
-            this.classList.remove("active"); // Убираем класс, если мышь покинула область
         });
 
         // Обработчик события для элемента "Friends"
