@@ -159,9 +159,14 @@
 
         const birdImage = document.getElementById("birdImage");
 
-        // Убираем обработчик событий, который увеличивал очки и перенаправлял на страницу игры
+        // Обработчики событий для изображения
         birdImage.addEventListener("click", function() {
             window.location.href = `game.html?score=${score}`; // Переход на страницу игры без изменения очков
+        });
+
+        birdImage.addEventListener("touchstart", function(e) {
+            e.preventDefault(); // Предотвращаем стандартное поведение
+            window.location.href = `game.html?score=${score}`; // Переход на страницу игры
         });
 
         // Обработчик события для элемента "Friends", который просто переходит на страницу
@@ -169,7 +174,6 @@
             window.location.href = 'ref.html'; // Переход на ref.html
         });
 
-        // Убираем синий эффект при касании
         document.getElementById("friends").addEventListener("touchstart", function(e) {
             e.preventDefault(); // Предотвращаем стандартное поведение
             window.location.href = 'ref.html'; // Переход на ref.html
