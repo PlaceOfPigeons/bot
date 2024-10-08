@@ -50,15 +50,6 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
-        .score {
-            position: absolute;
-            top: -10%; 
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 20px;
-            color: white;
-        }
-
         .content {
             flex-grow: 1;
             display: flex;
@@ -66,19 +57,6 @@
             align-items: center;
             margin-top: 40px;
             transition: margin-top 0.5s ease;
-        }
-
-        .content img {
-            max-width: 100%;
-            height: auto;
-            cursor: pointer;
-            transition: transform 0.2s;
-            border: none;
-            outline: none;
-        }
-
-        .content img:active {
-            transform: scale(0.95);
         }
 
         .footer {
@@ -102,6 +80,7 @@
         .footer div {
             text-align: center;
             margin: 0 5px;
+            cursor: pointer;
         }
 
         .footer .material-symbols-outlined {
@@ -113,12 +92,6 @@
             color: white;
             font-size: 12px;
             margin-top: 2px;
-        }
-
-        /* Убираем выделение при нажатии */
-        .footer div:active, .footer div:focus {
-            background: transparent; /* Убираем фон при нажатии */
-            outline: none; /* Убираем обводку */
         }
     </style>
 </head>
@@ -132,7 +105,6 @@
 
     <div class="content" id="content">
         <div style="position: relative;">
-            <div class="score" id="score">Очки: 0</div>
             <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false">
         </div>
     </div>
@@ -150,40 +122,17 @@
             <span class="material-symbols-outlined">task</span>
             <div class="icon-label">Tasks</div>
         </div>
-        <div id="friends" style="cursor: pointer;">
+        <div id="friends">
             <span class="material-symbols-outlined">people</span>
             <div class="icon-label">Friends</div>
         </div>
     </div>
 
     <script>
-        // Получаем текущие очки из локального хранилища или устанавливаем 0
-        let score = parseInt(localStorage.getItem('score')) || 0;
-        document.getElementById("score").textContent = `Очки: ${score}`;
-
-        window.Telegram.WebApp.ready();
-        Telegram.WebApp.setBackgroundColor("#000000");
-        Telegram.WebApp.setHeaderColor("#000000");
-
-        const user = Telegram.WebApp.initDataUnsafe.user;
-        let displayName = user.username || user.first_name;
-        document.getElementById("header").textContent = displayName;
-
-        const birdImage = document.getElementById("birdImage");
-
-        // Убираем обработчик событий, который увеличивал очки и перенаправлял на страницу игры
-        birdImage.addEventListener("click", function() {
-            window.location.href = `game.html?score=${score}`; // Переход на страницу игры без изменения очков
-        });
-
-        birdImage.addEventListener("touchstart", function() {
-            window.location.href = `game.html?score=${score}`; // Переход на страницу игры для сенсорных устройств
-        });
-
         // Обработчик события для элемента "Friends"
-        document.getElementById("friends").addEventListener("click", function() {
+        document.getElementById("friends").onclick = function() {
             window.location.href = 'ref.html'; // Переход на ref.html
-        });
+        };
     </script>
 
 </body>
