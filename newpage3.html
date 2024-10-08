@@ -145,7 +145,9 @@
     </div>
 
     <script>
-        let score = 0;
+        // Получаем текущие очки из Telegram Web App
+        let score = 0; // Инициализируем очки
+        document.getElementById("score").textContent = `Очки: ${score}`;
 
         window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
@@ -155,44 +157,19 @@
         let displayName = user.username || user.first_name;
         document.getElementById("header").textContent = displayName;
 
-        const scoreElement = document.getElementById("score");
-
-        // Загрузка данных из Telegram Cloud Storage
-        window.Telegram.WebApp.loadData().then(data => {
-            const parsedData = JSON.parse(data);
-            score = parsedData?.points || 0; // Получаем очки
-            scoreElement.textContent = `Очки: ${score}`;
-        });
-
-        // Сохранение данных в Telegram Cloud Storage
-        function savePoints() {
-            const data = { points: score };
-            window.Telegram.WebApp.saveData(JSON.stringify(data)).then(() => {
-                console.log('Очки сохранены');
-            }).catch(err => {
-                console.error('Ошибка при сохранении очков:', err);
-            });
-        }
-
         const birdImage = document.getElementById("birdImage");
 
         // Обработчики событий для изображения
         birdImage.addEventListener("click", function() {
-            score += 1; // Пример увеличения очков
-            scoreElement.textContent = `Очки: ${score}`;
-            savePoints(); // Сохраняем очки
-            window.location.href = `game.html?score=${score}`; // Переход на страницу игры
+            window.location.href = `game.html?score=${score}`; // Переход на страницу игры без изменения очков
         });
 
         birdImage.addEventListener("touchstart", function(e) {
             e.preventDefault(); // Предотвращаем стандартное поведение
-            score += 1; // Пример увеличения очков
-            scoreElement.textContent = `Очки: ${score}`;
-            savePoints(); // Сохраняем очки
             window.location.href = `game.html?score=${score}`; // Переход на страницу игры
         });
 
-        // Обработчик события для элемента "Friends"
+        // Обработчик события для элемента "Friends", который просто переходит на страницу
         document.getElementById("friends").addEventListener("click", function() {
             window.location.href = 'ref.html'; // Переход на ref.html
         });
@@ -201,6 +178,18 @@
             e.preventDefault(); // Предотвращаем стандартное поведение
             window.location.href = 'ref.html'; // Переход на ref.html
         });
+
+        function saveScore() {
+            const data = { score: score };
+            Telegram.WebApp.saveData(JSON.stringify(data)).then(() => {
+                console.log('Очки сохранены');
+            }).catch(err => {
+                console.error('Ошибка при сохранении очков:', err);
+            });
+        }
+
+        // Сохранение очков при переходе на страницу игры
+        window.addEventListener('beforeunload', saveScore);
     </script>
 
 </body>
