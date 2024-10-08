@@ -145,8 +145,8 @@
     </div>
 
     <script>
-        // Получаем текущие очки из Telegram Web App
-        let score = 0; // Инициализируем очки
+        // Получаем текущие очки из локального хранилища или устанавливаем 0
+        let score = parseInt(localStorage.getItem('score')) || 0;
         document.getElementById("score").textContent = `Очки: ${score}`;
 
         window.Telegram.WebApp.ready();
@@ -178,18 +178,6 @@
             e.preventDefault(); // Предотвращаем стандартное поведение
             window.location.href = 'ref.html'; // Переход на ref.html
         });
-
-        function saveScore() {
-            const data = { score: score };
-            Telegram.WebApp.saveData(JSON.stringify(data)).then(() => {
-                console.log('Очки сохранены');
-            }).catch(err => {
-                console.error('Ошибка при сохранении очков:', err);
-            });
-        }
-
-        // Сохранение очков при переходе на страницу игры
-        window.addEventListener('beforeunload', saveScore);
     </script>
 
 </body>
