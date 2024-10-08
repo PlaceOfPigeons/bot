@@ -146,10 +146,8 @@
         const sequenceDisplay = document.getElementById('sequence');
         const timerDisplay = document.getElementById('timer');
         const birds = ['birdOne.png', 'birdTwo.png', 'birdThree.png'];
-        
-        // Считывание сохраненных очков из localStorage
-        let storedScore = parseInt(localStorage.getItem('score')) || 0;
-        let score = storedScore; // Инициализируем score сохраненным значением
+
+        let score = 0; // Инициализируем очки
 
         let currentSequence = [];
         let userSequence = [];
@@ -277,8 +275,17 @@
             }, 1000);
         }
 
+        function saveScore() {
+            const data = { score: score };
+            Telegram.WebApp.saveData(JSON.stringify(data)).then(() => {
+                console.log('Очки сохранены');
+            }).catch(err => {
+                console.error('Ошибка при сохранении очков:', err);
+            });
+        }
+
         function endGame() {
-            localStorage.setItem('score', score); // Сохранение очков в локальное хранилище
+            saveScore(); // Сохранение очков в Telegram
             window.location.href = `newpage3.html?score=${score}`;
         }
 
