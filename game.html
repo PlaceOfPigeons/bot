@@ -286,7 +286,9 @@
 
         function endGame() {
             saveScore(); // Сохранение очков в Telegram
-            window.location.href = `newpage3.html?score=${score}`;
+            setTimeout(() => {
+                window.location.href = `newpage3.html?score=${score}`; // Переход на новую страницу после задержки
+            }, 1000); // Задержка в 1 секунду, чтобы сохранить данные
         }
 
         function startGame() {
