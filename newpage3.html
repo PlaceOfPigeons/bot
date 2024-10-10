@@ -96,6 +96,7 @@
         .footer div {
             text-align: center;
             margin: 0 5px;
+            cursor: pointer; /* Указатель на кнопки */
         }
 
         .footer .material-symbols-outlined {
@@ -130,15 +131,15 @@
             <span class="material-symbols-outlined">home</span>
             <div class="icon-label">Home</div>
         </div>
-        <div>
+        <div id="wallet">
             <span class="material-symbols-outlined">wallet</span>
             <div class="icon-label">Wallet</div>
         </div>
-        <div>
+        <div id="tasks">
             <span class="material-symbols-outlined">task</span>
             <div class="icon-label">Tasks</div>
         </div>
-        <div id="friends" style="cursor: pointer;">
+        <div id="friends">
             <span class="material-symbols-outlined">people</span>
             <div class="icon-label">Friends</div>
         </div>
@@ -169,7 +170,7 @@
             window.location.href = `game.html?score=${score}`; // Переход на страницу игры
         });
 
-        // Обработчик события для элемента "Friends", который просто переходит на страницу
+        // Обработчик события для элемента "Friends"
         document.getElementById("friends").addEventListener("click", function() {
             window.location.href = 'ref.html'; // Переход на ref.html
         });
@@ -177,6 +178,25 @@
         document.getElementById("friends").addEventListener("touchstart", function(e) {
             e.preventDefault(); // Предотвращаем стандартное поведение
             window.location.href = 'ref.html'; // Переход на ref.html
+        });
+
+        // Обработчики событий для "Wallet" и "Tasks"
+        document.getElementById("wallet").addEventListener("click", function() {
+            window.location.href = 'wallet.html'; // Переход на wallet.html
+        });
+
+        document.getElementById("wallet").addEventListener("touchstart", function(e) {
+            e.preventDefault(); // Предотвращаем стандартное поведение
+            window.location.href = 'wallet.html'; // Переход на wallet.html
+        });
+
+        document.getElementById("tasks").addEventListener("click", function() {
+            window.location.href = 'tasks.html'; // Переход на tasks.html
+        });
+
+        document.getElementById("tasks").addEventListener("touchstart", function(e) {
+            e.preventDefault(); // Предотвращаем стандартное поведение
+            window.location.href = 'tasks.html'; // Переход на tasks.html
         });
     </script>
 
