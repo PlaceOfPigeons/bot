@@ -95,7 +95,6 @@
         .bird.clicked {
             transform: scale(1.5) rotate(10deg);
             opacity: 0;
-            outline: none; /* Убираем обводку при клике на птицу */
         }
 
         .points {
@@ -137,6 +136,10 @@
     </div>
 
     <script>
+        // Инициализируем WebApp
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+
         // Установка черной темы
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
@@ -146,10 +149,8 @@
         const sequenceDisplay = document.getElementById('sequence');
         const timerDisplay = document.getElementById('timer');
         const birds = ['birdOne.png', 'birdTwo.png', 'birdThree.png'];
-        
-        // Считывание сохраненных очков из localStorage
-        let storedScore = parseInt(localStorage.getItem('score')) || 0;
-        let score = storedScore; // Инициализируем score сохраненным значением
+
+        let score = 0; // Инициализируем score как 0
 
         let currentSequence = [];
         let userSequence = [];
@@ -278,8 +279,12 @@
         }
 
         function endGame() {
-            localStorage.setItem('score', score); // Сохранение очков в локальное хранилище
-            window.location.href = `newpage3.html?score=${score}`;
+            // Сохранение очков в Telegram Cloud Storage
+            tg.Storage.set('score', score).then(() => {
+                window.location.href = `newpage3.html?score=${score}`;
+            }).catch(error => {
+                console.error('Ошибка сохранения очков:', error);
+            });
         }
 
         function startGame() {
