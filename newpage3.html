@@ -145,15 +145,23 @@
     </div>
 
     <script>
-        // Получаем текущие очки из локального хранилища или устанавливаем 0
-        let score = parseInt(localStorage.getItem('score')) || 0;
-        document.getElementById("score").textContent = `Очки: ${score}`;
+        // Инициализируем WebApp
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        
+        // Получаем текущие очки из Telegram Cloud Storage
+        let score = 0;
+        tg.Storage.get('score').then(savedScore => {
+            score = savedScore || 0;
+            document.getElementById("score").textContent = `Очки: ${score}`;
+        }).catch(error => {
+            console.error('Ошибка загрузки очков:', error);
+        });
 
-        window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
-        const user = Telegram.WebApp.initDataUnsafe.user;
+        const user = tg.initDataUnsafe.user;
         let displayName = user.username || user.first_name;
         document.getElementById("header").textContent = displayName;
 
