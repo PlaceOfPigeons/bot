@@ -85,12 +85,16 @@
 
         // Обработчик событий для кнопки Back
         document.getElementById("back-button").addEventListener("click", function() {
-            window.location.href = 'newpage3.html'; // Переход на newpage3.html
+            setTimeout(function() {
+                window.location.href = 'newpage3.html'; // Переход на newpage3.html
+            }, 500); // Задержка 500 миллисекунд
         });
 
         document.getElementById("back-button").addEventListener("touchstart", function(e) {
             e.preventDefault(); // Предотвращаем стандартное поведение
-            window.location.href = 'newpage3.html'; // Переход на newpage3.html
+            setTimeout(function() {
+                window.location.href = 'newpage3.html'; // Переход на newpage3.html
+            }, 500); // Задержка 500 миллисекунд
         });
     </script>
 </body>
