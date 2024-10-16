@@ -1,148 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Mini App - Реферальная система</title>
+    <title>Telegram Web App</title>
     <style>
         body {
-            background-color: #000; /* Черный фон */
-            color: white; /* Белый цвет текста */
-            font-family: Arial, sans-serif; /* Шрифт */
-            position: relative; /* Для позиционирования кнопки */
-            min-height: 100vh; /* Минимальная высота страницы */
-            padding: 0 5%; /* Горизонтальные отступы */
-            overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
-            margin: 0; /* Убираем отступы по умолчанию */
+            background-color: #000000;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
         }
-        textarea {
-            width: 100%; /* На всю ширину с учетом отступов */
-            height: 100px;
-            margin: 10px 0; /* Отступы сверху и снизу */
-            background-color: #444; /* Темный фон для текстового поля */
-            color: white; /* Белый цвет текста в текстовом поле */
-            border: 1px solid #666; /* Цвет границы */
-            padding: 10px; /* Отступ внутри текстового поля */
-            box-sizing: border-box; /* Учитываем отступы и границы в ширине */
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #555; /* Темный фон для кнопки */
-            color: white; /* Белый цвет текста на кнопке */
-            border: none;
-            cursor: pointer;
-            width: 100%; /* Кнопка на всю ширину */
-            box-sizing: border-box; /* Учитываем отступы и границы в ширине */
-            margin: 10px 0; /* Отступы сверху и снизу */
-        }
-        h1, h2, p {
-            margin: 10px 0; /* Отступы для заголовков и параграфов */
+        h1 {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffffff;
         }
     </style>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        // Инициализация приложения Telegram WebApp
-        window.Telegram.WebApp.ready();
-        Telegram.WebApp.setBackgroundColor("#000000");
-        Telegram.WebApp.setHeaderColor("#000000");
-
-        const getReferralData = () => {
-            // Получаем ID и имя пользователя из Telegram
-            const userId = Telegram.WebApp.initDataUnsafe.user.id;
-            const userName = Telegram.WebApp.initDataUnsafe.user.first_name;
-
-            // Сохраняем ID и имя пользователя в localStorage
-            localStorage.setItem('userId', userId);
-            localStorage.setItem('userName', userName);
-
-            // Генерация реферального кода
-            const referralCode = userId; // ID пользователя как реферальный код
-            document.getElementById('referralCode').textContent = referralCode;
-
-            // Генерация реферальной ссылки
-            const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
-            document.getElementById('referralLink').value = referralLink;
-            document.getElementById('referralLinkDisplay').textContent = referralLink;
-
-            // Проверка реферала из URL
-            const ref = new URLSearchParams(window.location.search).get('ref');
-            if (ref && ref !== userId) {
-                const referralsData = localStorage.getItem('referrals');
-                let referralsList = referralsData ? JSON.parse(referralsData) : [];
-
-                // Добавляем пользователя в список рефералов
-                if (!referralsList.includes(userName)) {
-                    referralsList.push(userName);
-                    localStorage.setItem('referrals', JSON.stringify(referralsList));
-                    alert("Вы были добавлены в список рефералов!");
-                }
-                displayReferrals(referralsList);
-            }
-        };
-
-        function displayReferrals(referrals) {
-            const referralsList = document.getElementById('referralsList');
-            referralsList.innerHTML = '';
-
-            if (referrals.length === 0) {
-                referralsList.innerHTML = '<p>Нет рефералов.</p>';
-            } else {
-                referrals.forEach(referral => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = referral;
-                    referralsList.appendChild(listItem);
-                });
-            }
-        }
-
-        function addReferral() {
-            const referralCode = document.getElementById('manualReferralInput').value;
-            const userId = localStorage.getItem('userId');
-            const userName = localStorage.getItem('userName');
-
-            if (referralCode !== userId) {
-                alert("Реферальный код неверный.");
-                return;
-            }
-
-            const referralsData = localStorage.getItem('referrals');
-            let referralsList = referralsData ? JSON.parse(referralsData) : [];
-
-            if (!referralsList.includes(userName)) {
-                referralsList.push(userName);
-                localStorage.setItem('referrals', JSON.stringify(referralsList));
-                alert("Вы успешно добавлены в список рефералов!");
-            } else {
-                alert("Вы уже добавлены как реферал.");
-            }
-
-            displayReferrals(referralsList);
-        }
-
-        window.onload = () => {
-            getReferralData(); // Получаем реферальные данные
-        };
-
-        function goBack() {
-            window.location.href = 'newpage3.html'; // Переход на новую страницу
-        }
-    </script>
 </head>
 <body>
-    <h1>Telegram Mini App - Реферальная система</h1>
-    <p>Ваш реферальный код: <span id="referralCode">Загрузка...</span></p>
+    <h1>TASKS</h1>
+    <p>Добро пожаловать в Telegram Web App!</p>
+    
+    <script>
+        // Убедимся, что Telegram Web App готов
+        window.Telegram.WebApp.ready();
 
-    <p>Поделитесь своей реферальной ссылкой:</p>
-    <textarea id="referralLink" readonly></textarea>
-    <p id="referralLinkDisplay"></p>
-
-    <h2>Добавить реферал вручную:</h2>
-    <input type="text" id="manualReferralInput" placeholder="Введите реферальный код" style="width: calc(100% - 20px); padding: 10px; box-sizing: border-box; margin: 10px 0;">
-    <button onclick="addReferral()">Добавить реферал</button>
-
-    <h2>Список рефералов:</h2>
-    <ul id="referralsList"></ul>
-
-    <button id="backButton" onclick="goBack()">Back</button>
+        // Устанавливаем цвета
+        Telegram.WebApp.setBackgroundColor("#000000");
+        Telegram.WebApp.setHeaderColor("#000000");
+    </script>
 </body>
 </html>
