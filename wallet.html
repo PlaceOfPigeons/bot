@@ -35,9 +35,17 @@
             cursor: pointer;
             font-size: 16px;
         }
+        .money-image {
+            position: absolute;
+            top: 5%; /* Расположение изображения сверху */
+            left: 50%; /* Центрируем по горизонтали */
+            transform: translateX(-50%); /* Центрируем изображение */
+        }
     </style>
 </head>
 <body>
+    <img src="money.png" alt="Money" class="money-image">
+
     <div id="ton-connect-button"></div>
 
     <button id="back-button" class="back-button">Back</button>
