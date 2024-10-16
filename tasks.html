@@ -25,9 +25,22 @@
             color: #ffffff;
         }
         img {
-            margin-top: 60px; /* Отступ между текстом и изображением */
-            max-width: 90%; /* Ограничиваем ширину изображения для мобильных устройств */
-            height: auto; /* Сохраняем пропорции изображения */
+            margin-top: 60px;
+            max-width: 90%;
+            height: auto;
+        }
+        .back-button {
+            position: absolute;
+            bottom: 5%; /* Отступ от низа 5% */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffffff; /* Белый фон */
+            color: #000000; /* Черный текст */
+            border: none;
+            border-radius: 25px; /* Овальная форма */
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -35,6 +48,8 @@
     <h1>TASKS</h1>
     <img src="tasks.png" alt="Tasks Image">
     
+    <button id="back-button" class="back-button">Back</button>
+
     <script>
         // Убедимся, что Telegram Web App готов
         window.Telegram.WebApp.ready();
@@ -42,6 +57,20 @@
         // Устанавливаем цвета
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
+
+        // Обработчик событий для кнопки Back
+        document.getElementById("back-button").addEventListener("click", function() {
+            setTimeout(function() {
+                window.location.href = 'newpage3.html'; // Переход на newpage3.html
+            }, 500); // Задержка 500 миллисекунд
+        });
+
+        document.getElementById("back-button").addEventListener("touchstart", function(e) {
+            e.preventDefault(); // Предотвращаем стандартное поведение
+            setTimeout(function() {
+                window.location.href = 'newpage3.html'; // Переход на newpage3.html
+            }, 500); // Задержка 500 миллисекунд
+        });
     </script>
 </body>
 </html>
