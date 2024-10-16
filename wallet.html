@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden; /* Запрет на скроллинг */
+            position: relative;
         }
         #ton-connect-button {
             display: flex;
@@ -24,7 +25,8 @@
             height: calc(100% - 70px); /* Уменьшаем высоту для кнопки */
         }
         .back-button {
-            margin-top: 17%; /* Отступ сверху увеличен на 10% */
+            position: absolute;
+            top: 10%; /* Положение кнопки на 10% от верхней границы */
             padding: 10px 20px;
             background-color: white;
             color: black;
