@@ -11,6 +11,7 @@
             height: 100%;
             margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
@@ -21,10 +22,22 @@
             width: 100%;
             height: 100%;
         }
+        .back-button {
+            margin-top: 7%; /* Отступ сверху */
+            padding: 10px 20px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 25px; /* Овальная форма */
+            cursor: pointer;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
     <div id="ton-connect-button"></div>
+
+    <button id="back-button" class="back-button">Back</button>
 
     <script>
         // Убедимся, что Telegram Web App готов
@@ -48,6 +61,16 @@
                 console.error('Ошибка при открытии модального окна:', e);
             }
         }
+
+        // Обработчик событий для кнопки Back
+        document.getElementById("back-button").addEventListener("click", function() {
+            window.location.href = 'newpage3.html'; // Переход на newpage3.html
+        });
+
+        document.getElementById("back-button").addEventListener("touchstart", function(e) {
+            e.preventDefault(); // Предотвращаем стандартное поведение
+            window.location.href = 'newpage3.html'; // Переход на newpage3.html
+        });
     </script>
 </body>
 </html>
