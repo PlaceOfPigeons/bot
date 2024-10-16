@@ -27,10 +27,17 @@
     <div id="ton-connect-button"></div>
 
     <script>
+        // Убедимся, что Telegram Web App готов
+        window.Telegram.WebApp.ready();
+
+        // Устанавливаем цвета
+        Telegram.WebApp.setBackgroundColor("#000000");
+        Telegram.WebApp.setHeaderColor("#000000");
+
         // Создаем экземпляр TonConnect UI
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://placeofpigeons.github.io/walettton/tonconnect-manifest.json', // Относительный путь к манифесту
-            buttonRootId: 'ton-connect-button' // ID элемента для размещения кнопки
+            manifestUrl: 'https://placeofpigeons.github.io/walettton/tonconnect-manifest.json',
+            buttonRootId: 'ton-connect-button'
         });
 
         // Пример: Открытие модального окна программно (при необходимости)
