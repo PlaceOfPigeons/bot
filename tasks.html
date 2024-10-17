@@ -69,10 +69,10 @@
     <div class="icon-text">
         <span class="material-symbols-outlined">done_all</span>
         <div>Place of Pageons</div>
-        <button class="follow-button">FOLLOW</button>
+        <button class="follow-button" onclick="follow()">FOLLOW</button>
     </div>
 
-    <button id="back-button" class="back-button">Back</button>
+    <button id="back-button" class="back-button">BACK</button>
 
     <script>
         // Убедимся, что Telegram Web App готов
@@ -82,22 +82,13 @@
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
-        // Обработчик событий для кнопки Back
+        // Функция для обработки кнопки FOLLOW
+        function follow() {
+            window.open('https://t.me/PlaceOfPigeons', '_blank');
+        }
+
+        // Обработчик событий для кнопки BACK
         document.getElementById("back-button").addEventListener("click", function() {
-            setTimeout(function() {
-                window.location.href = 'newpage3.html'; // Переход на newpage3.html
-            }, 500); // Задержка 500 миллисекунд
-        });
-
-        // Обработчик событий для кнопки FOLLOW
-        document.querySelector(".follow-button").addEventListener("click", function() {
-            setTimeout(function() {
-                window.location.href = 'followpage.html'; // Переход на страницу следования
-            }, 500); // Задержка 500 миллисекунд
-        });
-
-        document.getElementById("back-button").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
             setTimeout(function() {
                 window.location.href = 'newpage3.html'; // Переход на newpage3.html
             }, 500); // Задержка 500 миллисекунд
