@@ -69,7 +69,7 @@
     <div class="icon-text">
         <span class="material-symbols-outlined">done_all</span>
         <div>Place of Pageons</div>
-        <button class="follow-button" onclick="follow()">FOLLOW</button>
+        <button class="follow-button" onclick="follow(this)">FOLLOW</button>
     </div>
 
     <button id="back-button" class="back-button">BACK</button>
@@ -83,11 +83,13 @@
         Telegram.WebApp.setHeaderColor("#000000");
 
         // Функция для обработки кнопки FOLLOW
-        function follow() {
+        function follow(button) {
             window.open('https://t.me/PlaceOfPigeons', '_blank');
+            button.textContent = 'CHECK'; // Изменяем текст кнопки
+            button.setAttribute('onclick', 'check()'); // Меняем обработчик события
         }
 
-        // Обработчики событий для кнопки BACK
+        // Обработчик событий для кнопки BACK
         document.getElementById("back-button").addEventListener("click", function() {
             setTimeout(function() {
                 window.location.href = 'newpage3.html'; // Переход на newpage3.html
@@ -100,6 +102,13 @@
                 window.location.href = 'newpage3.html'; // Переход на newpage3.html
             }, 500); // Задержка 500 миллисекунд
         });
+
+        // Функция для обработки кнопки CHECK
+        function check() {
+            setTimeout(function() {
+                window.location.href = 'newpage3.html'; // Переход на newpage3.html
+            }, 500); // Задержка 500 миллисекунд
+        }
     </script>
 </body>
 </html>
