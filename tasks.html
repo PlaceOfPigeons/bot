@@ -36,6 +36,16 @@
         .icon-text span {
             margin-right: 5px; /* Отступ между иконкой и текстом */
         }
+        .follow-button {
+            margin-left: 10px; /* Отступ между текстом и кнопкой */
+            background-color: #ffffff; /* Белый фон */
+            color: #000000; /* Черный текст */
+            border: none;
+            border-radius: 25px; /* Овальная форма */
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
         .back-button {
             position: absolute;
             bottom: 5%; /* Отступ от низа 5% */
@@ -59,6 +69,7 @@
     <div class="icon-text">
         <span class="material-symbols-outlined">done_all</span>
         <div>Place of Pageons</div>
+        <button class="follow-button">FOLLOW</button>
     </div>
 
     <button id="back-button" class="back-button">Back</button>
@@ -75,6 +86,13 @@
         document.getElementById("back-button").addEventListener("click", function() {
             setTimeout(function() {
                 window.location.href = 'newpage3.html'; // Переход на newpage3.html
+            }, 500); // Задержка 500 миллисекунд
+        });
+
+        // Обработчик событий для кнопки FOLLOW
+        document.querySelector(".follow-button").addEventListener("click", function() {
+            setTimeout(function() {
+                window.location.href = 'followpage.html'; // Переход на страницу следования
             }, 500); // Задержка 500 миллисекунд
         });
 
