@@ -19,18 +19,11 @@
             text-align: center;
         }
         h1 {
-            position: absolute;
-            top: 5%; /* Отступ от верха 5% */
-            left: 50%;
-            transform: translateX(-50%);
-            color: #ffffff;
+            margin: 0; /* Убираем стандартный отступ */
+            padding-top: 5%; /* Отступ от верха 5% */
         }
         img {
             margin-top: 5%; /* Отступ между текстом и изображением */
-            max-width: 90%; /* Ограничиваем ширину изображения для мобильных устройств */
-            height: auto; /* Сохраняем пропорции изображения */
-        }
-        .tasks-image {
             width: 25%; /* Уменьшаем ширину изображения в два раза */
             height: auto; /* Сохраняем пропорции изображения */
         }
@@ -51,7 +44,7 @@
 </head>
 <body>
     <h1>TASKS</h1>
-    <img src="tasks.png" alt="Wallet Image" class="tasks-image">
+    <img src="tasks.png" alt="Wallet Image">
 
     <button id="back-button" class="back-button">Back</button>
 
