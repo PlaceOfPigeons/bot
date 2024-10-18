@@ -13,48 +13,48 @@
             font-family: Arial, sans-serif;
             margin: 0;
             text-align: center;
-            padding-top: 5%; /* Отступ сверху для заголовка */
+            padding-top: 5%;
         }
         h1 {
-            margin: 0; /* Убираем стандартный отступ */
+            margin: 0;
         }
         img {
-            margin-top: 5%; /* Отступ между текстом и изображением */
-            width: 25%; /* Уменьшаем ширину изображения в два раза */
-            height: auto; /* Сохраняем пропорции изображения */
+            margin-top: 5%;
+            width: 25%;
+            height: auto;
         }
         .available-text {
-            margin-top: 10px; /* Отступ между изображением и текстом */
-            font-size: 18px; /* Размер шрифта для текста */
+            margin-top: 10px;
+            font-size: 18px;
         }
         .icon-text {
             display: flex;
-            align-items: center; /* Вертикальное выравнивание иконки и текста */
-            justify-content: center; /* Центрируем содержимое */
-            margin-top: 10px; /* Отступ между текстом и иконкой */
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
         }
         .icon-text span {
-            margin-right: 5px; /* Отступ между иконкой и текстом */
+            margin-right: 5px;
         }
         .follow-button {
-            margin-left: 10px; /* Отступ между текстом и кнопкой */
-            background-color: #ffffff; /* Белый фон */
-            color: #000000; /* Черный текст */
+            margin-left: 10px;
+            background-color: #ffffff;
+            color: #000000;
             border: none;
-            border-radius: 25px; /* Овальная форма */
+            border-radius: 25px;
             padding: 10px 20px;
             cursor: pointer;
             font-size: 16px;
         }
         .back-button {
             position: absolute;
-            bottom: 5%; /* Отступ от низа 5% */
+            bottom: 5%;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #ffffff; /* Белый фон */
-            color: #000000; /* Черный текст */
+            background-color: #ffffff;
+            color: #000000;
             border: none;
-            border-radius: 25px; /* Овальная форма */
+            border-radius: 25px;
             padding: 10px 20px;
             cursor: pointer;
             font-size: 16px;
@@ -64,7 +64,7 @@
 <body>
     <h1>TASKS</h1>
     <img src="tasks.png" alt="Wallet Image">
-    <div class="available-text">Available</div>
+    <div id="score" class="available-text">Очки: 0</div>
     
     <div class="icon-text">
         <span class="material-symbols-outlined">done_all</span>
@@ -82,32 +82,33 @@
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
+        // Получаем текущие очки из локального хранилища или устанавливаем 0
+        let score = parseInt(localStorage.getItem('score')) || 0;
+        document.getElementById("score").textContent = `Очки: ${score}`;
+
         // Функция для обработки кнопки FOLLOW
         function follow(button) {
             window.open('https://t.me/PlaceOfPigeons', '_blank');
-            button.textContent = 'CHECK'; // Изменяем текст кнопки
-            button.setAttribute('onclick', 'check()'); // Меняем обработчик события
+            button.textContent = 'CHECK';
+            button.setAttribute('onclick', 'check()');
         }
 
         // Обработчик событий для кнопки BACK
         document.getElementById("back-button").addEventListener("click", function() {
-            setTimeout(function() {
-                window.location.href = 'newpage3.html'; // Переход на newpage3.html
-            }, 500); // Задержка 500 миллисекунд
-        });
-
-        document.getElementById("back-button").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
-            setTimeout(function() {
-                window.location.href = 'newpage3.html'; // Переход на newpage3.html
-            }, 500); // Задержка 500 миллисекунд
+            endGame();
         });
 
         // Функция для обработки кнопки CHECK
         function check() {
-            setTimeout(function() {
-                window.location.href = 'newpage3.html'; // Переход на newpage3.html
-            }, 500); // Задержка 500 миллисекунд
+            score += 1000; // Добавляем 1000 очков
+            localStorage.setItem('score', score); // Сохраняем в локальное хранилище
+            document.getElementById("score").textContent = `Очки: ${score}`; // Обновляем отображение очков
+        }
+
+        // Функция для завершения игры
+        function endGame() {
+            localStorage.setItem('score', score); // Сохранение очков в локальное хранилище
+            window.location.href = `newpage3.html?score=${score}`;
         }
     </script>
 </body>
