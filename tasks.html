@@ -77,23 +77,15 @@
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
-        // Получаем текущие очки и флаги из локального хранилища
+        // Получаем текущие очки из локального хранилища или устанавливаем 0
         let score = parseInt(localStorage.getItem('score')) || 0;
         let hasChecked = localStorage.getItem('hasChecked') === 'true';
-        let hasFollowed = localStorage.getItem('hasFollowed') === 'true';
-
-        // Проверяем, была ли кнопка FOLLOW уже нажата
-        if (hasFollowed) {
-            document.getElementById("action-button").style.display = 'none'; // Скрываем кнопку FOLLOW
-        }
 
         // Функция для обработки кнопки FOLLOW
         function follow(button) {
             window.open('https://t.me/PlaceOfPigeons', '_blank');
             button.textContent = 'CHECK';
             button.setAttribute('onclick', 'check()');
-            localStorage.setItem('hasFollowed', 'true'); // Устанавливаем флаг, что FOLLOW была нажата
-            button.style.display = 'none'; // Скрываем кнопку FOLLOW
         }
 
         // Обработчик событий для кнопки BACK
@@ -107,7 +99,7 @@
                 score += 1000; // Добавляем 1000 очков
                 localStorage.setItem('score', score); // Сохраняем в локальное хранилище
                 localStorage.setItem('hasChecked', 'true'); // Устанавливаем флаг, что проверка была
-                document.getElementById("action-button").style.display = 'none'; // Скрываем кнопку CHECK
+                document.getElementById("action-button").style.display = 'none'; // Скрываем кнопку
             }
         }
 
