@@ -80,20 +80,12 @@
         // Получаем текущие очки из локального хранилища или устанавливаем 0
         let score = parseInt(localStorage.getItem('score')) || 0;
         let hasChecked = localStorage.getItem('hasChecked') === 'true';
-        let buttonClicked = localStorage.getItem('buttonClicked') === 'true';
-
-        // Инициализация состояния кнопки
-        if (buttonClicked) {
-            document.getElementById("action-button").style.display = 'none'; // Скрываем кнопку, если она уже была нажата
-        }
 
         // Функция для обработки кнопки FOLLOW
         function follow(button) {
             window.open('https://t.me/PlaceOfPigeons', '_blank');
             button.textContent = 'CHECK';
             button.setAttribute('onclick', 'check()');
-            localStorage.setItem('buttonClicked', 'true'); // Сохраняем состояние кнопки
-            button.style.display = 'none'; // Скрываем кнопку после нажатия
         }
 
         // Обработчик событий для кнопки BACK
@@ -107,6 +99,7 @@
                 score += 1000; // Добавляем 1000 очков
                 localStorage.setItem('score', score); // Сохраняем в локальное хранилище
                 localStorage.setItem('hasChecked', 'true'); // Устанавливаем флаг, что проверка была
+                document.getElementById("action-button").style.display = 'none'; // Скрываем кнопку
             }
         }
 
