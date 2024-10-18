@@ -9,14 +9,14 @@
     <style>
         body, html {
             background-color: #000;
-            color: #fff; /* Белый цвет текста */
+            color: #fff;
             height: 100%;
             margin: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Запрет на скроллинг */
+            overflow: hidden;
             position: relative;
         }
         #ton-connect-button {
@@ -24,59 +24,56 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            height: 100px; /* Увеличиваем высоту для кнопки */
+            height: 100px;
         }
         .back-button {
             position: absolute;
-            bottom: 40%; /* Опускаем кнопку на 15% ниже */
-            padding: 10px 20px;
-            background-color: white;
-            color: black;
+            bottom: 5%; /* Отступ от низа 5% */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffffff;
+            color: #000000;
             border: none;
             border-radius: 25px; /* Овальная форма */
+            padding: 10px 20px;
             cursor: pointer;
             font-size: 16px;
         }
         .money-image {
             position: absolute;
-            top: 5%; /* Расположение изображения сверху */
-            left: 50%; /* Центрируем по горизонтали */
-            transform: translateX(-50%); /* Центрируем изображение */
-            width: 90%; /* Устанавливаем ширину 90% */
-            max-width: 500px; /* Максимальная ширина для контроля */
-            height: auto; /* Сохраняем пропорции */
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            height: auto;
         }
         .forget-text {
-            margin-top: -20%; /* Отрицательный отступ 20% от высоты изображения */
-            color: white; /* Цвет текста */
-            font-size: 18px; /* Размер шрифта */
-            text-align: center; /* Центрируем текст */
+            margin-top: -20%;
+            color: white;
+            font-size: 18px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <img src="money.png" alt="Money" class="money-image">
-    <div class="forget-text">Forget something?</div> <!-- Добавленный текст -->
+    <div class="forget-text">Forget something?</div>
 
     <div id="ton-connect-button"></div>
 
-    <button id="back-button" class="back-button">Back</button>
+    <button id="back-button" class="back-button">BACK</button>
 
     <script>
-        // Убедимся, что Telegram Web App готов
         window.Telegram.WebApp.ready();
-
-        // Устанавливаем цвета
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
-        // Создаем экземпляр TonConnect UI
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://placeofpigeons.github.io/walettton/tonconnect-manifest.json',
             buttonRootId: 'ton-connect-button'
         });
 
-        // Пример: Открытие модального окна программно (при необходимости)
         async function openConnectModal() {
             try {
                 await tonConnectUI.openModal();
@@ -85,18 +82,17 @@
             }
         }
 
-        // Обработчик событий для кнопки Back
         document.getElementById("back-button").addEventListener("click", function() {
             setTimeout(function() {
-                window.location.href = 'newpage3.html'; // Переход на newpage3.html
-            }, 500); // Задержка 500 миллисекунд
+                window.location.href = 'newpage3.html';
+            }, 500);
         });
 
         document.getElementById("back-button").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
+            e.preventDefault();
             setTimeout(function() {
-                window.location.href = 'newpage3.html'; // Переход на newpage3.html
-            }, 500); // Задержка 500 миллисекунд
+                window.location.href = 'newpage3.html';
+            }, 500);
         });
     </script>
 </body>
