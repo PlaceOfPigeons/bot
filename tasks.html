@@ -88,9 +88,18 @@
             button.setAttribute('onclick', 'check()');
         }
 
-        // Обработчик событий для кнопки BACK
+        // Обработчик событий для кнопки BACK с задержкой
         document.getElementById("back-button").addEventListener("click", function() {
-            endGame();
+            setTimeout(function() {
+                window.location.href = 'newpage3.html';
+            }, 500);
+        });
+
+        document.getElementById("back-button").addEventListener("touchstart", function(e) {
+            e.preventDefault();
+            setTimeout(function() {
+                window.location.href = 'newpage3.html';
+            }, 500);
         });
 
         // Функция для обработки кнопки CHECK
