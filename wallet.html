@@ -6,10 +6,13 @@
     <title>TonConnect Integration</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
+    <!-- Задаем стили максимально рано, чтобы предотвратить мелькание -->
     <style>
-        body, html {
-            background-color: #000;
-            color: #fff;
+        /* Устанавливаем нужный фон и цвета сразу */
+        html, body {
+            background-color: #000 !important;
+            color: #fff !important;
             height: 100%;
             margin: 0;
             display: flex;
@@ -17,8 +20,13 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            position: relative;
         }
+
+        /* Скрываем заголовок по умолчанию, который может мешать */
+        .tg-header {
+            display: none;
+        }
+
         #ton-connect-button {
             display: flex;
             justify-content: center;
@@ -26,19 +34,21 @@
             width: 100%;
             height: 100px;
         }
+
         .back-button {
             position: absolute;
-            bottom: 5%; /* Отступ от низа 5% */
+            bottom: 5%;
             left: 50%;
             transform: translateX(-50%);
             background-color: #ffffff;
             color: #000000;
             border: none;
-            border-radius: 25px; /* Овальная форма */
+            border-radius: 25px;
             padding: 10px 20px;
             cursor: pointer;
             font-size: 16px;
         }
+
         .money-image {
             position: absolute;
             top: 5%;
@@ -48,6 +58,7 @@
             max-width: 500px;
             height: auto;
         }
+
         .forget-text {
             margin-top: -20%;
             color: white;
@@ -65,22 +76,17 @@
     <button id="back-button" class="back-button">BACK</button>
 
     <script>
-        window.Telegram.WebApp.ready();
-        Telegram.WebApp.setBackgroundColor("#000000");
-        Telegram.WebApp.setHeaderColor("#000000");
+        // Ждем полной загрузки Telegram Web App
+        window.Telegram.WebApp.ready(function() {
+            // Применяем цвета через JavaScript, чтобы точно настроить тему
+            Telegram.WebApp.setBackgroundColor("#000000");
+            Telegram.WebApp.setHeaderColor("#000000");
+        });
 
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://placeofpigeons.github.io/walettton/tonconnect-manifest.json',
             buttonRootId: 'ton-connect-button'
         });
-
-        async function openConnectModal() {
-            try {
-                await tonConnectUI.openModal();
-            } catch (e) {
-                console.error('Ошибка при открытии модального окна:', e);
-            }
-        }
 
         document.getElementById("back-button").addEventListener("click", function() {
             setTimeout(function() {
