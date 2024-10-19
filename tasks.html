@@ -70,25 +70,19 @@
     <button id="back-button" class="back-button">BACK</button>
 
     <script>
-        // Убедимся, что Telegram Web App готов
         window.Telegram.WebApp.ready();
-
-        // Устанавливаем цвета
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
-        // Получаем текущие очки из локального хранилища или устанавливаем 0
         let score = parseInt(localStorage.getItem('score')) || 0;
         let hasChecked = localStorage.getItem('hasChecked') === 'true';
 
-        // Функция для обработки кнопки FOLLOW
         function follow(button) {
             window.open('https://t.me/PlaceOfPigeons', '_blank');
             button.textContent = 'CHECK';
             button.setAttribute('onclick', 'check()');
         }
 
-        // Обработчик событий для кнопки BACK с задержкой
         document.getElementById("back-button").addEventListener("click", function() {
             setTimeout(function() {
                 window.location.href = 'newpage3.html';
@@ -102,19 +96,23 @@
             }, 500);
         });
 
-        // Функция для обработки кнопки CHECK
+        const actionButton = document.getElementById("action-button");
+        actionButton.addEventListener("touchstart", function(e) {
+            e.preventDefault();
+            follow(actionButton);
+        });
+
         function check() {
-            if (!hasChecked) { // Проверяем, было ли уже нажатие
-                score += 1000; // Добавляем 1000 очков
-                localStorage.setItem('score', score); // Сохраняем в локальное хранилище
-                localStorage.setItem('hasChecked', 'true'); // Устанавливаем флаг, что проверка была
-                document.getElementById("action-button").style.display = 'none'; // Скрываем кнопку
+            if (!hasChecked) {
+                score += 1000;
+                localStorage.setItem('score', score);
+                localStorage.setItem('hasChecked', 'true');
+                document.getElementById("action-button").style.display = 'none';
             }
         }
 
-        // Функция для завершения игры
         function endGame() {
-            localStorage.setItem('score', score); // Сохранение очков в локальное хранилище
+            localStorage.setItem('score', score);
             window.location.href = `newpage3.html?score=${score}`;
         }
     </script>
