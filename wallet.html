@@ -8,8 +8,8 @@
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
         body, html {
-            background-color: #000 !important;
-            color: #fff !important;
+            background-color: #000;
+            color: #fff;
             height: 100%;
             margin: 0;
             display: flex;
@@ -73,6 +73,14 @@
             manifestUrl: 'https://placeofpigeons.github.io/walettton/tonconnect-manifest.json',
             buttonRootId: 'ton-connect-button'
         });
+
+        async function openConnectModal() {
+            try {
+                await tonConnectUI.openModal();
+            } catch (e) {
+                console.error('Ошибка при открытии модального окна:', e);
+            }
+        }
 
         document.getElementById("back-button").addEventListener("click", function() {
             setTimeout(function() {
