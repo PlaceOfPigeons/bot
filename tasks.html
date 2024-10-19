@@ -64,7 +64,7 @@
     <div class="icon-text">
         <span class="material-symbols-outlined">done_all</span>
         <div>Place of Pageons</div>
-        <button id="action-button" class="follow-button" onclick="follow(this)">FOLLOW</button>
+        <button id="action-button" class="follow-button" style="display: none;" onclick="follow(this)">FOLLOW</button>
     </div>
 
     <button id="back-button" class="back-button">BACK</button>
@@ -77,8 +77,15 @@
         let score = parseInt(localStorage.getItem('score')) || 0;
         let hasChecked = localStorage.getItem('hasChecked') === 'true';
 
+        // Проверяем, была ли уже нажата кнопка CHECK
+        if (!hasChecked) {
+            document.getElementById("action-button").style.display = 'block'; // Показываем кнопку FOLLOW
+        }
+
         function follow(button) {
             window.open('https://t.me/PlaceOfPigeons', '_blank');
+
+            // Изменяем текст кнопки на CHECK
             button.textContent = 'CHECK';
             button.setAttribute('onclick', 'check()');
         }
@@ -96,18 +103,12 @@
             }, 500);
         });
 
-        const actionButton = document.getElementById("action-button");
-        actionButton.addEventListener("touchstart", function(e) {
-            e.preventDefault();
-            follow(actionButton);
-        });
-
         function check() {
             if (!hasChecked) {
-                score += 1000;
+                score += 1000; // Добавляем 1000 очков
                 localStorage.setItem('score', score);
-                localStorage.setItem('hasChecked', 'true');
-                document.getElementById("action-button").style.display = 'none';
+                localStorage.setItem('hasChecked', 'true'); // Устанавливаем флаг, что проверка была
+                document.getElementById("action-button").style.display = 'none'; // Скрываем кнопку
             }
         }
 
