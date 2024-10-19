@@ -88,12 +88,6 @@
             button.setAttribute('onclick', 'check()');
         }
 
-        // Добавляем обработчики событий для кнопки FOLLOW
-        document.getElementById("action-button").addEventListener("touchstart", function(e) {
-            e.preventDefault();
-            follow(this);
-        });
-
         // Обработчик событий для кнопки BACK с задержкой
         document.getElementById("back-button").addEventListener("click", function() {
             setTimeout(function() {
