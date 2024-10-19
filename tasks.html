@@ -32,7 +32,7 @@
         .icon-text span {
             margin-right: 5px;
         }
-        .follow-button, .check-button {
+        .follow-button {
             margin-left: 10px;
             background-color: #ffffff;
             color: #000000;
@@ -111,12 +111,6 @@
                 document.getElementById("action-button").style.display = 'none'; // Скрываем кнопку
             }
         }
-
-        // Добавляем обработчики событий для кнопки CHECK
-        document.getElementById("action-button").addEventListener("touchstart", function(e) {
-            e.preventDefault();
-            check();
-        });
 
         // Функция для завершения игры
         function endGame() {
