@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TonConnect Integration</title>
+
+    <!-- Telegram WebApp script -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
+    <!-- Async loading of TonConnect UI -->
+    <script async src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
     <style>
         body, html {
             background-color: #000;
@@ -65,23 +70,24 @@
     <button id="back-button" class="back-button">BACK</button>
 
     <script>
+        // Telegram WebApp initialization and setting theme
         window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
-        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://placeofpigeons.github.io/walettton/tonconnect-manifest.json',
-            buttonRootId: 'ton-connect-button'
+        // Wait for TonConnect script to be loaded and then initialize
+        window.addEventListener('load', () => {
+            if (typeof TON_CONNECT_UI !== 'undefined') {
+                const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+                    manifestUrl: 'https://placeofpigeons.github.io/walettton/tonconnect-manifest.json',
+                    buttonRootId: 'ton-connect-button'
+                });
+            } else {
+                console.error('TonConnect UI script not loaded.');
+            }
         });
 
-        async function openConnectModal() {
-            try {
-                await tonConnectUI.openModal();
-            } catch (e) {
-                console.error('Ошибка при открытии модального окна:', e);
-            }
-        }
-
+        // Back button functionality
         document.getElementById("back-button").addEventListener("click", function() {
             setTimeout(function() {
                 window.location.href = 'newpage3.html';
