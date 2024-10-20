@@ -178,55 +178,40 @@
             window.location.href = `game.html?score=${score}`; // Переход на страницу игры
         });
 
-        // Функция для вибрации
-        function vibrate() {
-            if (navigator.vibrate) {
-                navigator.vibrate(50); // Вибрация на 50 миллисекунд
-            }
-        }
-
         // Обработчики событий для кнопок
         document.getElementById("home").addEventListener("click", function() {
-            vibrate(); // Вибрация
             window.location.href = 'newpage3.html'; // Переход на newpage3.html
         });
 
         document.getElementById("home").addEventListener("touchstart", function(e) {
             e.preventDefault(); // Предотвращаем стандартное поведение
-            vibrate(); // Вибрация
             window.location.href = 'newpage3.html'; // Переход на newpage3.html
         });
 
         document.getElementById("friends").addEventListener("click", function() {
-            vibrate(); // Вибрация
             window.location.href = 'ref.html'; // Переход на ref.html
         });
 
         document.getElementById("friends").addEventListener("touchstart", function(e) {
             e.preventDefault(); // Предотвращаем стандартное поведение
-            vibrate(); // Вибрация
             window.location.href = 'ref.html'; // Переход на ref.html
         });
 
         document.getElementById("wallet").addEventListener("click", function() {
-            vibrate(); // Вибрация
             window.location.href = 'wallet.html'; // Переход на wallet.html
         });
 
         document.getElementById("wallet").addEventListener("touchstart", function(e) {
             e.preventDefault(); // Предотвращаем стандартное поведение
-            vibrate(); // Вибрация
             window.location.href = 'wallet.html'; // Переход на wallet.html
         });
 
         document.getElementById("tasks").addEventListener("click", function() {
-            vibrate(); // Вибрация
             window.location.href = 'tasks.html'; // Переход на tasks.html
         });
 
         document.getElementById("tasks").addEventListener("touchstart", function(e) {
             e.preventDefault(); // Предотвращаем стандартное поведение
-            vibrate(); // Вибрация
             window.location.href = 'tasks.html'; // Переход на tasks.html
         });
     </script>
