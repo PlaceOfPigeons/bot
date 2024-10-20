@@ -41,23 +41,33 @@
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // Инициализация приложения Telegram WebApp
         window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
         const getReferralData = () => {
-            // Получаем ID и имя пользователя из Telegram
             const userId = Telegram.WebApp.initDataUnsafe.user.id;
+            const userName = Telegram.WebApp.initDataUnsafe.user.first_name;
 
-            // Генерация реферального кода
             const referralCode = userId; // ID пользователя как реферальный код
             document.getElementById('referralCode').textContent = referralCode;
 
-            // Генерация реферальной ссылки
             const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
             document.getElementById('referralLink').value = referralLink;
             document.getElementById('referralLinkDisplay').textContent = referralLink;
+
+            // Проверка реферала из URL
+            const ref = new URLSearchParams(window.location.search).get('ref');
+            if (ref && ref !== userId) {
+                localStorage.setItem('inviterName', userName);
+                document.getElementById('referralMessage').textContent = `Вас пригласил: ${userName}`;
+            } else {
+                // Если пользователь не был приглашён, извлекаем имя из localStorage
+                const storedInviterName = localStorage.getItem('inviterName');
+                if (storedInviterName) {
+                    document.getElementById('referralMessage').textContent = `Вас пригласил: ${storedInviterName}`;
+                }
+            }
         };
 
         window.onload = () => {
@@ -71,11 +81,12 @@
 </head>
 <body>
     <h1>Telegram Mini App - Реферальная система</h1>
+    <p id="referralMessage"></p>
     <p>Ваш реферальный код: <span id="referralCode">Загрузка...</span></p>
 
     <p>Поделитесь своей реферальной ссылкой:</p>
     <textarea id="referralLink" readonly></textarea>
-   
+    <p id="referralLinkDisplay"></p>
 
     <button id="backButton" onclick="goBack()">Back</button>
 </body>
