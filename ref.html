@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <title>Telegram Mini App - Реферальная система</title>
     <style>
         body {
@@ -46,27 +47,28 @@
         Telegram.WebApp.setHeaderColor("#000000");
 
         const getReferralData = () => {
-            const userId = Telegram.WebApp.initDataUnsafe.user.id;
-            const userName = Telegram.WebApp.initDataUnsafe.user.first_name;
+            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID текущего пользователя
+            const userName = Telegram.WebApp.initDataUnsafe.user.first_name; // Получаем имя текущего пользователя
 
             const referralCode = userId; // ID пользователя как реферальный код
             document.getElementById('referralCode').textContent = referralCode;
 
-            const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
+            const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`; // Формируем реферальную ссылку
             document.getElementById('referralLink').value = referralLink;
             document.getElementById('referralLinkDisplay').textContent = referralLink;
 
             // Проверка реферала из URL
-            const ref = new URLSearchParams(window.location.search).get('ref');
-            if (ref && ref !== userId) {
+            const ref = new URLSearchParams(window.location.search).get('ref'); // Получаем значение параметра ref из URL
+            if (ref) {
+                // Если есть реферальный код в URL
                 localStorage.setItem('inviterId', ref); // Сохраняем ID пригласившего
-                localStorage.setItem('inviterName', userName);
-                document.getElementById('referralMessage').textContent = `Вас пригласил: ${userName}`;
+                localStorage.setItem('inviterName', userName); // Сохраняем имя текущего пользователя как имя пригласившего
+                document.getElementById('referralMessage').textContent = `Вас пригласил: ${userName}`; // Отображаем сообщение о пригласившем
             } else {
-                // Если пользователь не был приглашён, извлекаем имя из localStorage
-                const storedInviterName = localStorage.getItem('inviterName');
+                // Если пользователь зашел без реферальной ссылки
+                const storedInviterName = localStorage.getItem('inviterName'); // Получаем имя пригласившего из localStorage
                 if (storedInviterName) {
-                    document.getElementById('referralMessage').textContent = `Вас пригласил: ${storedInviterName}`;
+                    document.getElementById('referralMessage').textContent = `Вас пригласил: ${storedInviterName}`; // Отображаем сохраненное имя
                 }
             }
         };
