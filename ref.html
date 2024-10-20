@@ -15,6 +15,10 @@
             padding: 0 5%; /* Горизонтальные отступы */
             overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
             margin: 0; /* Убираем отступы по умолчанию */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         textarea {
             width: 100%; /* На всю ширину с учетом отступов */
@@ -26,21 +30,27 @@
             padding: 10px; /* Отступ внутри текстового поля */
             box-sizing: border-box; /* Учитываем отступы и границы в ширине */
         }
-        button {
-            padding: 10px 15px;
-            background-color: #555; /* Темный фон для кнопки */
-            color: white; /* Белый цвет текста на кнопке */
+        .back-button {
+            position: absolute;
+            bottom: 5%; /* Отступ от низа 5% */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffffff;
+            color: #000000;
             border: none;
+            border-radius: 25px; /* Овальная форма */
+            padding: 10px 20px;
             cursor: pointer;
-            width: 100%; /* Кнопка на всю ширину */
-            box-sizing: border-box; /* Учитываем отступы и границы в ширине */
-            margin: 10px 0; /* Отступы сверху и снизу */
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #e0e0e0; /* Изменение цвета при наведении */
         }
         h1, p {
             margin: 10px 0; /* Отступы для заголовков и параграфов */
         }
     </style>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
@@ -77,9 +87,22 @@
             getReferralData(); // Получаем реферальные данные
         };
 
-        function goBack() {
-            window.location.href = 'newpage3.html'; // Переход на новую страницу
-        }
+        document.addEventListener("DOMContentLoaded", function() {
+            const backButton = document.querySelector(".back-button");
+            
+            backButton.addEventListener("click", function() {
+                setTimeout(function() {
+                    window.location.href = 'newpage3.html'; // Переход на новую страницу
+                }, 500);
+            });
+
+            backButton.addEventListener("touchstart", function(e) {
+                e.preventDefault(); // Отменяем стандартное поведение
+                setTimeout(function() {
+                    window.location.href = 'newpage3.html'; // Переход на новую страницу
+                }, 500);
+            });
+        });
     </script>
 </head>
 <body>
@@ -89,7 +112,7 @@
 
     <p>Поделитесь своей реферальной ссылкой:</p>
     <textarea id="referralLink" readonly></textarea>
-   
-    <button id="backButton" onclick="goBack()">Back</button>
+
+    <button class="back-button">BACK</button>
 </body>
 </html>
