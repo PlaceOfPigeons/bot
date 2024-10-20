@@ -50,6 +50,13 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
+        .score-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px; /* Отступы для контента */
+        }
+
         .score {
             display: flex;
             align-items: center;
@@ -124,12 +131,15 @@
     </div>
 
     <div class="content" id="content">
-        <div style="position: relative;">
-            <div class="score" id="score">
-                <img src="tonicon2.png" alt="Очки" id="scoreImage">
-                <span id="scoreValue">0</span>
+        <div style="display: flex; align-items: center;">
+            <div id="userName" style="margin-right: 10px;"></div> <!-- Элемент для имени пользователя -->
+            <div class="score-container">
+                <div class="score" id="score">
+                    <img src="tonicon2.png" alt="Очки" id="scoreImage">
+                    <span id="scoreValue">0</span>
+                </div>
             </div>
-            <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false">
+            <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false" style="margin-left: 10px;">
         </div>
     </div>
 
@@ -163,7 +173,7 @@
 
         const user = Telegram.WebApp.initDataUnsafe.user;
         let displayName = user.username || user.first_name;
-        document.getElementById("header").textContent = displayName;
+        document.getElementById("userName").textContent = displayName; // Устанавливаем имя пользователя
 
         const birdImage = document.getElementById("birdImage");
 
