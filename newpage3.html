@@ -50,6 +50,14 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
+        .content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between; /* Равномерно распределяем элементы */
+            align-items: center; /* Выравниваем по вертикали */
+            margin-top: 40px;
+        }
+
         .score {
             display: flex;
             align-items: center;
@@ -62,14 +70,6 @@
             width: 30px; /* 50% больше исходного 20px */
             height: auto;
             margin-right: 5px; /* Отступ справа от изображения */
-        }
-
-        .content {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 40px;
         }
 
         .content img {
@@ -125,12 +125,10 @@
     </div>
 
     <div class="content" id="content">
-        <div style="position: relative;">
-            <div class="score" id="score">
-                <img src="tonicon2.png" alt="Очки" id="scoreImage">
-                <span id="scoreValue">0</span>
-            </div>
-            <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false">
+        <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false">
+        <div class="score" id="score">
+            <img src="tonicon2.png" alt="Очки" id="scoreImage">
+            <span id="scoreValue">0</span>
         </div>
     </div>
 
