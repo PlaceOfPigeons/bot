@@ -59,6 +59,7 @@
             // Проверка реферала из URL
             const ref = new URLSearchParams(window.location.search).get('ref');
             if (ref && ref !== userId) {
+                localStorage.setItem('inviterId', ref); // Сохраняем ID пригласившего
                 localStorage.setItem('inviterName', userName);
                 document.getElementById('referralMessage').textContent = `Вас пригласил: ${userName}`;
             } else {
