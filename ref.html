@@ -35,7 +35,7 @@
             box-sizing: border-box; /* Учитываем отступы и границы в ширине */
             margin: 10px 0; /* Отступы сверху и снизу */
         }
-        h1, h2, p {
+        h1, p {
             margin: 10px 0; /* Отступы для заголовков и параграфов */
         }
     </style>
@@ -49,11 +49,6 @@
         const getReferralData = () => {
             // Получаем ID и имя пользователя из Telegram
             const userId = Telegram.WebApp.initDataUnsafe.user.id;
-            const userName = Telegram.WebApp.initDataUnsafe.user.first_name;
-
-            // Сохраняем ID и имя пользователя в localStorage
-            localStorage.setItem('userId', userId);
-            localStorage.setItem('userName', userName);
 
             // Генерация реферального кода
             const referralCode = userId; // ID пользователя как реферальный код
@@ -63,61 +58,7 @@
             const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`;
             document.getElementById('referralLink').value = referralLink;
             document.getElementById('referralLinkDisplay').textContent = referralLink;
-
-            // Проверка реферала из URL
-            const ref = new URLSearchParams(window.location.search).get('ref');
-            if (ref && ref !== userId) {
-                const referralsData = localStorage.getItem('referrals');
-                let referralsList = referralsData ? JSON.parse(referralsData) : [];
-
-                // Добавляем пользователя в список рефералов
-                if (!referralsList.includes(userName)) {
-                    referralsList.push(userName);
-                    localStorage.setItem('referrals', JSON.stringify(referralsList));
-                    alert("Вы были добавлены в список рефералов!");
-                }
-                displayReferrals(referralsList);
-            }
         };
-
-        function displayReferrals(referrals) {
-            const referralsList = document.getElementById('referralsList');
-            referralsList.innerHTML = '';
-
-            if (referrals.length === 0) {
-                referralsList.innerHTML = '<p>Нет рефералов.</p>';
-            } else {
-                referrals.forEach(referral => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = referral;
-                    referralsList.appendChild(listItem);
-                });
-            }
-        }
-
-        function addReferral() {
-            const referralCode = document.getElementById('manualReferralInput').value;
-            const userId = localStorage.getItem('userId');
-            const userName = localStorage.getItem('userName');
-
-            if (referralCode !== userId) {
-                alert("Реферальный код неверный.");
-                return;
-            }
-
-            const referralsData = localStorage.getItem('referrals');
-            let referralsList = referralsData ? JSON.parse(referralsData) : [];
-
-            if (!referralsList.includes(userName)) {
-                referralsList.push(userName);
-                localStorage.setItem('referrals', JSON.stringify(referralsList));
-                alert("Вы успешно добавлены в список рефералов!");
-            } else {
-                alert("Вы уже добавлены как реферал.");
-            }
-
-            displayReferrals(referralsList);
-        }
 
         window.onload = () => {
             getReferralData(); // Получаем реферальные данные
@@ -135,13 +76,6 @@
     <p>Поделитесь своей реферальной ссылкой:</p>
     <textarea id="referralLink" readonly></textarea>
     <p id="referralLinkDisplay"></p>
-
-    <h2>Добавить реферал вручную:</h2>
-    <input type="text" id="manualReferralInput" placeholder="Введите реферальный код" style="width: calc(100% - 20px); padding: 10px; box-sizing: border-box; margin: 10px 0;">
-    <button onclick="addReferral()">Добавить реферал</button>
-
-    <h2>Список рефералов:</h2>
-    <ul id="referralsList"></ul>
 
     <button id="backButton" onclick="goBack()">Back</button>
 </body>
