@@ -4,53 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Telegram Mini App - Реферальная система</title>
+    <title>Telegram Mini App - Referral System</title>
     <style>
         body {
-            background-color: #000; /* Черный фон */
-            color: white; /* Белый цвет текста */
-            font-family: Arial, sans-serif; /* Шрифт */
-            position: relative; /* Для позиционирования кнопки */
-            min-height: 100vh; /* Минимальная высота страницы */
-            padding: 0 5%; /* Горизонтальные отступы */
-            overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
-            margin: 0; /* Убираем отступы по умолчанию */
+            background-color: #000; /* Black background */
+            color: white; /* White text color */
+            font-family: Arial, sans-serif; /* Font */
+            position: relative; /* For button positioning */
+            min-height: 100vh; /* Minimum height of the page */
+            padding: 0 5%; /* Horizontal padding */
+            overflow-x: hidden; /* Disable horizontal scrolling */
+            margin: 0; /* Remove default margins */
             display: flex;
             flex-direction: column;
         }
         textarea {
-            width: 100%; /* На всю ширину с учетом отступов */
+            width: 100%; /* Full width considering padding */
             height: 100px;
-            margin: 10px 0; /* Отступы сверху и снизу */
-            background-color: #444; /* Темный фон для текстового поля */
-            color: white; /* Белый цвет текста в текстовом поле */
-            border: 1px solid #666; /* Цвет границы */
-            padding: 10px; /* Отступ внутри текстового поля */
-            box-sizing: border-box; /* Учитываем отступы и границы в ширине */
+            margin: 10px 0; /* Top and bottom margins */
+            background-color: #444; /* Dark background for the textarea */
+            color: white; /* White text color in the textarea */
+            border: 1px solid #666; /* Border color */
+            padding: 10px; /* Inner padding for the textarea */
+            box-sizing: border-box; /* Include padding and border in width */
         }
         .back-button {
             position: absolute;
-            bottom: 5%; /* Отступ от низа 5% */
+            bottom: 5%; /* 5% margin from the bottom */
             left: 50%;
             transform: translateX(-50%);
             background-color: #ffffff;
             color: #000000;
             border: none;
-            border-radius: 25px; /* Овальная форма */
+            border-radius: 25px; /* Rounded shape */
             padding: 10px 20px;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
         }
         .back-button:hover {
-            background-color: #e0e0e0; /* Изменение цвета при наведении */
+            background-color: #e0e0e0; /* Change color on hover */
         }
         h1 {
-            margin: 20px 0; /* Отступы для заголовка */
-            text-align: left; /* Выравнивание заголовка влево */
+            margin: 20px 0; /* Margins for the header */
+            text-align: left; /* Align the header to the left */
         }
         p {
-            margin: 10px 0; /* Отступы для параграфов */
+            margin: 10px 0; /* Margins for paragraphs */
         }
     </style>
     <script>
@@ -59,34 +59,34 @@
         Telegram.WebApp.setHeaderColor("#000000");
 
         const getReferralData = () => {
-            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID текущего пользователя
-            const userName = Telegram.WebApp.initDataUnsafe.user.first_name; // Получаем имя текущего пользователя
+            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Get current user's ID
+            const userName = Telegram.WebApp.initDataUnsafe.user.first_name; // Get current user's name
 
-            const referralCode = userId; // ID пользователя как реферальный код
+            const referralCode = userId; // User ID as referral code
             document.getElementById('referralCode').textContent = referralCode;
 
-            const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`; // Формируем реферальную ссылку
+            const referralLink = `https://t.me/ProjectPresident_bot?ref=${userId}`; // Create referral link
             document.getElementById('referralLink').value = referralLink;
             document.getElementById('referralLinkDisplay').textContent = referralLink;
 
-            // Проверка реферала из URL
-            const ref = new URLSearchParams(window.location.search).get('ref'); // Получаем значение параметра ref из URL
+            // Check for referral in URL
+            const ref = new URLSearchParams(window.location.search).get('ref'); // Get ref parameter from URL
             if (ref) {
-                // Если есть реферальный код в URL
-                localStorage.setItem('inviterId', ref); // Сохраняем ID пригласившего
-                localStorage.setItem('inviterName', userName); // Сохраняем имя текущего пользователя как имя пригласившего
-                document.getElementById('referralMessage').textContent = `Вас пригласил: ${userName}`; // Отображаем сообщение о пригласившем
+                // If there is a referral code in the URL
+                localStorage.setItem('inviterId', ref); // Save inviter's ID
+                localStorage.setItem('inviterName', userName); // Save current user's name as inviter's name
+                document.getElementById('referralMessage').textContent = `Invited by: ${userName}`; // Display inviter's message
             } else {
-                // Если пользователь зашел без реферальной ссылки
-                const storedInviterName = localStorage.getItem('inviterName'); // Получаем имя пригласившего из localStorage
+                // If user entered without a referral link
+                const storedInviterName = localStorage.getItem('inviterName'); // Get inviter's name from localStorage
                 if (storedInviterName) {
-                    document.getElementById('referralMessage').textContent = `Вас пригласил: ${storedInviterName}`; // Отображаем сохраненное имя
+                    document.getElementById('referralMessage').textContent = `Invited by: ${storedInviterName}`; // Display saved name
                 }
             }
         };
 
         window.onload = () => {
-            getReferralData(); // Получаем реферальные данные
+            getReferralData(); // Get referral data
         };
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -94,25 +94,25 @@
             
             backButton.addEventListener("click", function() {
                 setTimeout(function() {
-                    window.location.href = 'newpage3.html'; // Переход на новую страницу
+                    window.location.href = 'newpage3.html'; // Redirect to new page
                 }, 500);
             });
 
             backButton.addEventListener("touchstart", function(e) {
-                e.preventDefault(); // Отменяем стандартное поведение
+                e.preventDefault(); // Prevent default behavior
                 setTimeout(function() {
-                    window.location.href = 'newpage3.html'; // Переход на новую страницу
+                    window.location.href = 'newpage3.html'; // Redirect to new page
                 }, 500);
             });
         });
     </script>
 </head>
 <body>
-    <h1>Telegram Mini App - Реферальная система</h1>
+    <h1>Telegram Mini App - Referral System</h1>
     <p id="referralMessage"></p>
-    <p>Ваш реферальный код: <span id="referralCode">Загрузка...</span></p>
+    <p>Your referral code: <span id="referralCode">Loading...</span></p>
 
-    <p>Поделитесь своей реферальной ссылкой:</p>
+    <p>Share your referral link:</p>
     <textarea id="referralLink" readonly></textarea>
 
     <button class="back-button">BACK</button>
