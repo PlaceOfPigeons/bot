@@ -28,7 +28,7 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 10px;
-            padding: 0 7%; /* Отступы слева и справа */
+            padding: 0 7%;
         }
         .icon-text {
             display: flex;
@@ -73,7 +73,7 @@
             <span class="material-symbols-outlined">done_all</span>
             <div>Place of Pigeons</div>
         </div>
-        <button id="action-button1" class="follow-button" style="display: none;" onclick="follow(1)">FOLLOW</button>
+        <button id="action-button1" class="follow-button" style="display: none;">FOLLOW</button>
     </div>
 
     <div class="task">
@@ -81,7 +81,7 @@
             <span class="material-symbols-outlined">done_all</span>
             <div>DaddyTap</div>
         </div>
-        <button id="action-button2" class="follow-button" style="display: none;" onclick="follow(2)">FOLLOW</button>
+        <button id="action-button2" class="follow-button" style="display: none;">FOLLOW</button>
     </div>
 
     <div class="task">
@@ -89,7 +89,7 @@
             <span class="material-symbols-outlined">done_all</span>
             <div>Cryptan</div>
         </div>
-        <button id="action-button3" class="follow-button" style="display: none;" onclick="follow(3)">FOLLOW</button>
+        <button id="action-button3" class="follow-button" style="display: none;">FOLLOW</button>
     </div>
 
     <button id="back-button" class="back-button">BACK</button>
@@ -108,6 +108,7 @@
         function showFollowButton(buttonId) {
             if (!checkButton(buttonId)) {
                 document.getElementById(`action-button${buttonId}`).style.display = 'block';
+                addTouchStartEvent(buttonId);
             }
         }
 
@@ -126,6 +127,14 @@
             // Изменяем текст кнопки на CHECK
             document.getElementById(`action-button${buttonId}`).textContent = 'CHECK';
             document.getElementById(`action-button${buttonId}`).setAttribute('onclick', `check(${buttonId})`);
+        }
+
+        function addTouchStartEvent(buttonId) {
+            const button = document.getElementById(`action-button${buttonId}`);
+            button.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                follow(buttonId);
+            });
         }
 
         document.getElementById("back-button").addEventListener("click", function() {
