@@ -28,7 +28,7 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 10px;
-            padding: 0 7%;
+            padding: 0 7%; /* Отступы слева и справа */
         }
         .icon-text {
             display: flex;
@@ -73,7 +73,7 @@
             <span class="material-symbols-outlined">done_all</span>
             <div>Place of Pigeons</div>
         </div>
-        <button id="action-button1" class="follow-button" style="display: none;" onclick="handleAction(1)">FOLLOW</button>
+        <button id="action-button1" class="follow-button" style="display: none;" onclick="follow(1)">FOLLOW</button>
     </div>
 
     <div class="task">
@@ -81,7 +81,7 @@
             <span class="material-symbols-outlined">done_all</span>
             <div>DaddyTap</div>
         </div>
-        <button id="action-button2" class="follow-button" style="display: none;" onclick="handleAction(2)">FOLLOW</button>
+        <button id="action-button2" class="follow-button" style="display: none;" onclick="follow(2)">FOLLOW</button>
     </div>
 
     <div class="task">
@@ -89,7 +89,7 @@
             <span class="material-symbols-outlined">done_all</span>
             <div>Cryptan</div>
         </div>
-        <button id="action-button3" class="follow-button" style="display: none;" onclick="handleAction(3)">FOLLOW</button>
+        <button id="action-button3" class="follow-button" style="display: none;" onclick="follow(3)">FOLLOW</button>
     </div>
 
     <button id="back-button" class="back-button">BACK</button>
@@ -115,28 +115,17 @@
         showFollowButton(2);
         showFollowButton(3);
 
-        function handleAction(buttonId) {
+        function follow(buttonId) {
             let url = '';
             if (buttonId === 1) url = 'https://t.me/PlaceOfPigeons';
             else if (buttonId === 2) url = 'https://t.me/DaddyTap';
             else if (buttonId === 3) url = 'https://t.me/cryptan77q';
 
-            if (checkButton(buttonId)) {
-                check(buttonId);
-            } else {
-                window.open(url, '_blank');
-                document.getElementById(`action-button${buttonId}`).textContent = 'CHECK';
-                document.getElementById(`action-button${buttonId}`).setAttribute('onclick', `check(${buttonId})`);
-            }
-        }
+            window.open(url, '_blank');
 
-        // Добавляем touchstart обработчики для кнопок
-        for (let i = 1; i <= 3; i++) {
-            const button = document.getElementById(`action-button${i}`);
-            button.addEventListener("touchstart", function(event) {
-                event.preventDefault(); // Предотвращаем нежелательные действия
-                handleAction(i);
-            });
+            // Изменяем текст кнопки на CHECK
+            document.getElementById(`action-button${buttonId}`).textContent = 'CHECK';
+            document.getElementById(`action-button${buttonId}`).setAttribute('onclick', `check(${buttonId})`);
         }
 
         document.getElementById("back-button").addEventListener("click", function() {
@@ -154,10 +143,10 @@
 
         function check(buttonId) {
             if (!checkButton(buttonId)) {
-                score += 1000; 
+                score += 1000; // Добавляем 1000 очков
                 localStorage.setItem('score', score);
-                localStorage.setItem(`hasChecked${buttonId}`, 'true');
-                document.getElementById(`action-button${buttonId}`).style.display = 'none'; 
+                localStorage.setItem(`hasChecked${buttonId}`, 'true'); // Устанавливаем флаг, что проверка была
+                document.getElementById(`action-button${buttonId}`).style.display = 'none'; // Скрываем кнопку
             }
         }
 
