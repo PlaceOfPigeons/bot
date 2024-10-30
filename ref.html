@@ -136,7 +136,6 @@
 
         const getReferralData = () => {
             const referralLink = `https://t.me/PlaceOfPigeons_bot?ref=${userId}`; // Создание реферальной ссылки
-            document.getElementById('referralLink').value = referralLink; // Установка ссылки в поле
             document.getElementById('referralLinkDisplay').textContent = referralLink; // Отображение ссылки
         };
 
@@ -203,17 +202,6 @@
             margin-top: 40px;
             font-size: 18px;
         }
-
-        textarea {
-            width: 100%; /* Full width */
-            height: 100px; /* Set height */
-            margin: 10px 0; /* Margins */
-            background-color: #444; /* Background color */
-            color: white; /* Text color */
-            border: 1px solid #666; /* Border */
-            padding: 10px; /* Padding */
-            box-sizing: border-box; /* Box sizing */
-        }
     </style>
 </head>
 <body>
@@ -229,7 +217,6 @@
     
     <div id="referral-section">
         <h2>Ваша реферальная ссылка:</h2>
-        <textarea id="referralLink" readonly></textarea>
         <p id="referralLinkDisplay"></p>
     </div>
 </body>
