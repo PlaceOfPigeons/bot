@@ -108,7 +108,7 @@
         function showFollowButton(buttonId) {
             if (!checkButton(buttonId)) {
                 document.getElementById(`action-button${buttonId}`).style.display = 'block';
-                addTouchStartEvent(buttonId);
+                addEventListeners(buttonId);
             }
         }
 
@@ -129,8 +129,11 @@
             document.getElementById(`action-button${buttonId}`).setAttribute('onclick', `check(${buttonId})`);
         }
 
-        function addTouchStartEvent(buttonId) {
+        function addEventListeners(buttonId) {
             const button = document.getElementById(`action-button${buttonId}`);
+            button.addEventListener('click', function() {
+                follow(buttonId);
+            });
             button.addEventListener('touchstart', function(e) {
                 e.preventDefault();
                 follow(buttonId);
