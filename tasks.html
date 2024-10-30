@@ -122,19 +122,19 @@
             else if (buttonId === 2) url = 'https://t.me/DaddyTap';
             else if (buttonId === 3) url = 'https://t.me/cryptan77q';
 
+            // Открытие ссылки в новой вкладке
             window.open(url, '_blank');
 
             // Изменяем текст кнопки на CHECK
-            document.getElementById(`action-button${buttonId}`).textContent = 'CHECK';
-            document.getElementById(`action-button${buttonId}`).setAttribute('onclick', `check(${buttonId})`);
+            const button = document.getElementById(`action-button${buttonId}`);
+            button.textContent = 'CHECK';
+            button.onclick = () => check(buttonId); // Устанавливаем новый обработчик
         }
 
         function addEventListeners(buttonId) {
             const button = document.getElementById(`action-button${buttonId}`);
-            button.addEventListener('click', function() {
-                follow(buttonId);
-            });
-            button.addEventListener('touchstart', function(e) {
+            button.addEventListener('click', () => follow(buttonId));
+            button.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 follow(buttonId);
             });
