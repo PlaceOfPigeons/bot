@@ -125,7 +125,7 @@
             // Открытие ссылки в новой вкладке
             window.open(url, '_blank');
 
-            // Изменяем текст кнопки на CHECK
+            // Изменяем текст кнопки на CHECK только после перехода
             const button = document.getElementById(`action-button${buttonId}`);
             button.textContent = 'CHECK';
             button.onclick = () => check(buttonId); // Устанавливаем новый обработчик
