@@ -24,6 +24,8 @@
         const database = getDatabase(app);
 
         window.Telegram.WebApp.ready();
+        Telegram.WebApp.setBackgroundColor("#000000");
+        Telegram.WebApp.setHeaderColor("#000000");
 
         const user = Telegram.WebApp.initDataUnsafe.user;
         const userId = user.id;
@@ -235,14 +237,18 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const backButton = document.querySelector(".back-button");
-            
+
             backButton.addEventListener("click", function() {
-                window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                setTimeout(function() {
+                    window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                }, 500);
             });
 
             backButton.addEventListener("touchstart", function(e) {
                 e.preventDefault(); // Предотвращение стандартного поведения
-                window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                setTimeout(function() {
+                    window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                }, 500);
             });
         });
     </script>
