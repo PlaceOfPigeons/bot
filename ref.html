@@ -3,118 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectPresident</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Telegram Mini App - Referral System</title>
-    <style>
-        body {
-            background-color: #000; /* Black background */
-            color: white; /* White text color */
-            font-family: Arial, sans-serif; /* Font */
-            position: relative; /* For button positioning */
-            min-height: 100vh; /* Minimum height of the page */
-            padding: 0 5%; /* Horizontal padding */
-            overflow-x: hidden; /* Disable horizontal scrolling */
-            margin: 0; /* Remove default margins */
-            display: flex;
-            flex-direction: column;
-        }
-        textarea {
-            width: 100%; /* Full width considering padding */
-            height: 100px;
-            margin: 10px 0; /* Top and bottom margins */
-            background-color: #444; /* Dark background for the textarea */
-            color: white; /* White text color in the textarea */
-            border: 1px solid #666; /* Border color */
-            padding: 10px; /* Inner padding for the textarea */
-            box-sizing: border-box; /* Include padding and border in width */
-        }
-        .back-button {
-            position: absolute;
-            bottom: 5%; /* 5% margin from the bottom */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #ffffff;
-            color: #000000;
-            border: none;
-            border-radius: 25px; /* Rounded shape */
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        .back-button:hover {
-            background-color: #e0e0e0; /* Change color on hover */
-        }
-        h1 {
-            margin: 20px 0; /* Margins for the header */
-            text-align: left; /* Align the header to the left */
-        }
-        p {
-            margin: 10px 0; /* Margins for paragraphs */
-        }
-    </style>
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWwSObNeCTqDk8xJg9sa0u4wIvk5JFw8E",
+            authDomain: "placeofpigeons.firebaseapp.com",
+            databaseURL: "https://placeofpigeons-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "placeofpigeons",
+            storageBucket: "placeofpigeons.appspot.com",
+            messagingSenderId: "67354529384",
+            appId: "1:67354529384:web:716cf99397eb9002c435dd",
+            measurementId: "G-P70KRENL94"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
         window.Telegram.WebApp.ready();
-        Telegram.WebApp.setBackgroundColor("#000000");
-        Telegram.WebApp.setHeaderColor("#000000");
+
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        const userId = user.id;
+        const displayName = user.username || user.first_name || "Неизвестный пользователь";
+        document.getElementById("header").textContent = displayName;
+
+        const saveUserCode = (code) => {
+            set(ref(database, `users/${userId}`), {
+                code: code,
+                name: displayName,
+                invitedBy: null,
+                usedCodes: {}
+            }).then(() => {
+                console.log('Код успешно сохранен!');
+                document.getElementById('generated-code').textContent = `Ваш код: ${code}`;
+            }).catch((error) => {
+                console.error('Ошибка сохранения кода:', error);
+            });
+        };
+
+        const checkUserCode = () => {
+            get(ref(database, `users/${userId}`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const existingCode = snapshot.val().code;
+                    const invitedBy = snapshot.val().invitedBy;
+                    document.getElementById('generated-code').textContent = `Ваш код: ${existingCode}`;
+                    if (invitedBy) {
+                        document.getElementById('invite-message').textContent = `Вас пригласил: ${invitedBy}`;
+                    }
+                    // Отображаем пользователей, использовавших код
+                    displayUsedCodes(userId);
+                    // Скрываем кнопку и поле ввода, если код уже введен
+                    document.getElementById('input-code').style.display = 'none';
+                    document.getElementById('submit-button').style.display = 'none';
+                } else {
+                    const uniqueCode = Math.random().toString(36).substr(2, 6);
+                    saveUserCode(uniqueCode);
+                    console.log('Сгенерированный код:', uniqueCode);
+                }
+            }).catch((error) => {
+                console.error('Ошибка получения данных:', error);
+            });
+        };
+
+        const addCode = (codeToAdd) => {
+            const userRef = ref(database, 'users/');
+            get(userRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const allUsers = snapshot.val();
+                    let found = false;
+                    for (const id in allUsers) {
+                        if (allUsers[id].code === codeToAdd) {
+                            const addedBy = allUsers[id].name; 
+                            document.getElementById('added-by').textContent = `Код добавлен пользователем: ${addedBy}`;
+                            document.getElementById('invite-message').textContent = `Вас пригласил: ${addedBy}`; 
+
+                            // Обновляем информацию о текущем пользователе
+                            update(ref(database, `users/${userId}`), {
+                                invitedBy: addedBy 
+                            });
+
+                            // Добавляем текущего пользователя в список использовавших код
+                            const usedCodesRef = ref(database, `users/${id}/usedCodes/${userId}`);
+                            set(usedCodesRef, displayName).then(() => {
+                                console.log('Пользователь добавлен в список использовавших код');
+                                displayUsedCodes(id); // Обновляем отображение сразу после добавления
+                            });
+
+                            found = true;
+                            // Скрываем кнопку и поле ввода после успешного ввода кода
+                            document.getElementById('input-code').style.display = 'none';
+                            document.getElementById('submit-button').style.display = 'none';
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        document.getElementById('added-by').textContent = 'Код не найден';
+                    }
+                } else {
+                    document.getElementById('added-by').textContent = 'Код не найден';
+                }
+            }).catch((error) => {
+                console.error('Ошибка получения данных:', error);
+            });
+        };
+
+        document.getElementById('submit-button').addEventListener('click', () => {
+            const inputCode = document.getElementById('input-code').value;
+            addCode(inputCode);
+        });
+
+        const displayUsedCodes = (id) => {
+            get(ref(database, `users/${id}/usedCodes`)).then((snapshot) => {
+                const usedList = document.getElementById('used-list');
+                usedList.innerHTML = ''; // Очищаем предыдущий список
+                if (snapshot.exists()) {
+                    const usedCodes = snapshot.val();
+                    for (const userId in usedCodes) {
+                        const li = document.createElement('li');
+                        li.textContent = usedCodes[userId]; // Имя пользователя, использовавшего код
+                        usedList.appendChild(li);
+                    }
+                } else {
+                    usedList.innerHTML = '<li>Нет пользователей, использовавших код.</li>'; // Сообщение, если список пуст
+                }
+            }).catch((error) => {
+                console.error('Ошибка получения данных:', error);
+            });
+        };
 
         const getReferralData = () => {
-            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Get current user's ID
-            const userName = Telegram.WebApp.initDataUnsafe.user.first_name; // Get current user's name
-
-            const referralCode = userId; // User ID as referral code
-            document.getElementById('referralCode').textContent = referralCode;
-
-            const referralLink = `https://t.me/PlaceOfPigeons_bot?ref=${userId}`; // Create referral link
-            document.getElementById('referralLink').value = referralLink;
-            document.getElementById('referralLinkDisplay').textContent = referralLink;
-
-            // Check for referral in URL
-            const ref = new URLSearchParams(window.location.search).get('ref'); // Get ref parameter from URL
-            if (ref) {
-                // If there is a referral code in the URL
-                localStorage.setItem('inviterId', ref); // Save inviter's ID
-                localStorage.setItem('inviterName', userName); // Save current user's name as inviter's name
-                document.getElementById('referralMessage').textContent = `Invited by: ${userName}`; // Display inviter's message
-            } else {
-                // If user entered without a referral link
-                const storedInviterName = localStorage.getItem('inviterName'); // Get inviter's name from localStorage
-                if (storedInviterName) {
-                    document.getElementById('referralMessage').textContent = `Invited by: ${storedInviterName}`; // Display saved name
-                }
-            }
+            const referralLink = `https://t.me/PlaceOfPigeons_bot?ref=${userId}`; // Создание реферальной ссылки
+            document.getElementById('referralLink').value = referralLink; // Установка ссылки в поле
+            document.getElementById('referralLinkDisplay').textContent = referralLink; // Отображение ссылки
         };
 
-        window.onload = () => {
-            getReferralData(); // Get referral data
-        };
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const backButton = document.querySelector(".back-button");
-            
-            backButton.addEventListener("click", function() {
-                setTimeout(function() {
-                    window.location.href = 'newpage3.html'; // Redirect to new page
-                }, 500);
-            });
-
-            backButton.addEventListener("touchstart", function(e) {
-                e.preventDefault(); // Prevent default behavior
-                setTimeout(function() {
-                    window.location.href = 'newpage3.html'; // Redirect to new page
-                }, 500);
-            });
-        });
+        // Проверяем код пользователя при загрузке страницы
+        checkUserCode();
+        getReferralData(); // Получаем данные реферальной ссылки
     </script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        #generated-code {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        #input-code {
+            padding: 10px;
+            margin-right: 10px;
+            width: 200px;
+        }
+
+        #submit-button {
+            padding: 10px;
+            background-color: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+        }
+
+        #added-by {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        #invite-message {
+            margin-top: 10px;
+            font-size: 18px;
+            color: lightblue;
+        }
+
+        #used-codes {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        #referral-section {
+            margin-top: 40px;
+            font-size: 18px;
+        }
+
+        textarea {
+            width: 100%; /* Full width */
+            height: 100px; /* Set height */
+            margin: 10px 0; /* Margins */
+            background-color: #444; /* Background color */
+            color: white; /* Text color */
+            border: 1px solid #666; /* Border */
+            padding: 10px; /* Padding */
+            box-sizing: border-box; /* Box sizing */
+        }
+    </style>
 </head>
 <body>
-    <h1>Telegram Mini App - Referral System</h1>
-    <p id="referralMessage"></p>
-    <p>Your referral code: <span id="referralCode">Loading...</span></p>
-
-    <p>Share your referral link:</p>
-    <textarea id="referralLink" readonly></textarea>
-
-    <button class="back-button">BACK</button>
+    <div class="header" id="header">ProjectPresident</div>
+    <div id="invite-message"></div>
+    <div id="generated-code">Ваш код: </div>
+    <div>
+        <input type="text" id="input-code" placeholder="Введите код">
+        <button id="submit-button">Добавить код</button>
+    </div>
+    <div id="added-by"></div>
+    <div id="used-codes">Пользователи, использовавшие ваш код: <ul id="used-list"></ul></div>
+    
+    <div id="referral-section">
+        <h2>Ваша реферальная ссылка:</h2>
+        <textarea id="referralLink" readonly></textarea>
+        <p id="referralLinkDisplay"></p>
+    </div>
 </body>
 </html>
