@@ -102,12 +102,12 @@
         let score = parseInt(localStorage.getItem('score')) || 0;
 
         function checkButton(buttonId) {
-            return localStorage.getItem(hasChecked${buttonId}) === 'true';
+            return localStorage.getItem(`hasChecked${buttonId}`) === 'true';
         }
 
         function showFollowButton(buttonId) {
             if (!checkButton(buttonId)) {
-                document.getElementById(action-button${buttonId}).style.display = 'block';
+                document.getElementById(`action-button${buttonId}`).style.display = 'block';
             }
         }
 
@@ -124,8 +124,8 @@
             window.open(url, '_blank');
 
             // Изменяем текст кнопки на CHECK
-            document.getElementById(action-button${buttonId}).textContent = 'CHECK';
-            document.getElementById(action-button${buttonId}).setAttribute('onclick', check(${buttonId}));
+            document.getElementById(`action-button${buttonId}`).textContent = 'CHECK';
+            document.getElementById(`action-button${buttonId}`).setAttribute('onclick', `check(${buttonId})`);
         }
 
         document.getElementById("back-button").addEventListener("click", function() {
@@ -145,14 +145,14 @@
             if (!checkButton(buttonId)) {
                 score += 1000; // Добавляем 1000 очков
                 localStorage.setItem('score', score);
-                localStorage.setItem(hasChecked${buttonId}, 'true'); // Устанавливаем флаг, что проверка была
-                document.getElementById(action-button${buttonId}).style.display = 'none'; // Скрываем кнопку
+                localStorage.setItem(`hasChecked${buttonId}`, 'true'); // Устанавливаем флаг, что проверка была
+                document.getElementById(`action-button${buttonId}`).style.display = 'none'; // Скрываем кнопку
             }
         }
 
         function endGame() {
             localStorage.setItem('score', score);
-            window.location.href = newpage3.html?score=${score};
+            window.location.href = `newpage3.html?score=${score}`;
         }
     </script>
 </body>
