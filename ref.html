@@ -200,7 +200,6 @@
     <div id="added-by"></div>
     <div id="used-codes">Пользователи, использовавшие ваш код: <ul id="used-list"></ul></div>
 
-    <!-- Новая секция для реферального кода -->
     <div class="referral-section">
         <p>Ваш реферальный код: <span id="referralCode">Loading...</span></p>
         <p>Поделитесь своей реферальной ссылкой:</p>
@@ -212,8 +211,7 @@
         document.getElementById('referralCode').textContent = referralUserId;
 
         const referralLink = `https://t.me/PlaceOfPigeons_bot?ref=${referralUserId}`; // Создаем реферальную ссылку
-        document.getElementById('referralLink').value = referralLink;
-        document.getElementById('referralLink').textContent = referralLink; // Отображаем реферальную ссылку
+        document.getElementById('referralLink').value = referralLink; // Отображаем реферальную ссылку
     </script>
 </body>
 </html>
