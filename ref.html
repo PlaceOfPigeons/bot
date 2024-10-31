@@ -80,6 +80,14 @@
                             document.getElementById('added-by').textContent = `Код добавлен пользователем: ${addedBy}`;
                             document.getElementById('invite-message').textContent = `Вас пригласил: ${addedBy}`; 
 
+                            // Проверяем, использовал ли пользователь уже код
+                            if (allUsers[id].usedCodes && allUsers[id].usedCodes[userId]) {
+                                // Пользователь уже использовал код от другого пользователя
+                                document.getElementById('input-code').style.display = 'none';
+                                document.getElementById('submit-button').style.display = 'none';
+                                return; // Останавливаем дальнейшее выполнение
+                            }
+
                             update(ref(database, `users/${userId}`), {
                                 invitedBy: addedBy 
                             });
@@ -91,8 +99,6 @@
                             });
 
                             found = true;
-                            document.getElementById('input-code').style.display = 'none';
-                            document.getElementById('submit-button').style.display = 'none';
                             break;
                         }
                     }
