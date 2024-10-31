@@ -48,7 +48,7 @@
 
         const checkUserCode = () => {
             get(ref(database, `users/${userId}`)).then((snapshot) => {
-                if (snapshot.exists()) {
+                if (snapshot.exists() && snapshot.val().code) {
                     const existingCode = snapshot.val().code;
                     const invitedBy = snapshot.val().invitedBy;
                     document.getElementById('generated-code').textContent = `Ваш код: ${existingCode}`;
@@ -56,9 +56,8 @@
                         document.getElementById('invite-message').textContent = `Вас пригласил: ${invitedBy}`;
                     }
                     displayUsedCodes(userId);
-                    document.getElementById('input-code').style.display = 'none';
-                    document.getElementById('submit-button').style.display = 'none';
                 } else {
+                    // Генерация и сохранение нового кода для новых пользователей
                     const uniqueCode = Math.random().toString(36).substr(2, 6);
                     saveUserCode(uniqueCode);
                     console.log('Сгенерированный код:', uniqueCode);
@@ -141,21 +140,21 @@
     </script>
     <style>
         body {
-            background-color: #000; /* Черный фон */
-            color: white; /* Цвет текста белый */
-            font-family: Arial, sans-serif; /* Шрифт */
-            min-height: 100vh; /* Минимальная высота страницы */
-            padding: 0 5%; /* Горизонтальные отступы */
-            overflow-x: hidden; /* Отключение горизонтальной прокрутки */
-            margin: 0; /* Удаление отступов */
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            padding: 0 5%;
+            overflow-x: hidden;
+            margin: 0;
             display: flex;
-            flex-direction: column; /* Вертикальное расположение элементов */
+            flex-direction: column;
         }
         
         .header {
             text-align: center;
             font-size: 24px;
-            margin: 20px 0; /* Отступы для заголовка */
+            margin: 20px 0;
         }
 
         #generated-code {
@@ -167,6 +166,7 @@
             padding: 10px;
             margin-right: 10px;
             width: 200px;
+            display: block;
         }
 
         #submit-button {
@@ -175,6 +175,7 @@
             color: black;
             border: none;
             cursor: pointer;
+            display: block;
         }
 
         #added-by {
@@ -200,20 +201,20 @@
 
         .back-button {
             position: absolute;
-            bottom: 5%; /* Отступ снизу */
+            bottom: 5%;
             left: 50%;
             transform: translateX(-50%);
             background-color: #ffffff;
             color: #000000;
             border: none;
-            border-radius: 25px; /* Закругленная форма */
+            border-radius: 25px;
             padding: 10px 20px;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
         }
         .back-button:hover {
-            background-color: #e0e0e0; /* Изменение цвета при наведении */
+            background-color: #e0e0e0;
         }
     </style>
 </head>
@@ -222,8 +223,8 @@
     <div id="invite-message"></div>
     <div id="generated-code">Ваш код: </div>
     <div>
-        <input type="text" id="input-code" placeholder="Введите код">
-        <button id="submit-button">Добавить код</button>
+        <input type="text" id="input-code" placeholder="Введите код" style="display: block;">
+        <button id="submit-button" style="display: block;">Добавить код</button>
     </div>
     <div id="added-by"></div>
     <div id="used-codes">Пользователи, использовавшие ваш код: <ul id="used-list"></ul></div>
@@ -240,14 +241,14 @@
 
             backButton.addEventListener("click", function() {
                 setTimeout(function() {
-                    window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                    window.location.href = 'newpage3.html';
                 }, 500);
             });
 
             backButton.addEventListener("touchstart", function(e) {
-                e.preventDefault(); // Предотвращение стандартного поведения
+                e.preventDefault();
                 setTimeout(function() {
-                    window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                    window.location.href = 'newpage3.html';
                 }, 500);
             });
         });
