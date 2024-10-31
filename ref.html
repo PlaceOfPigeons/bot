@@ -48,25 +48,17 @@
 
         const checkUserCode = () => {
             get(ref(database, `users/${userId}`)).then((snapshot) => {
-                if (snapshot.exists() && snapshot.val().code) {
+                if (snapshot.exists()) {
                     const existingCode = snapshot.val().code;
                     const invitedBy = snapshot.val().invitedBy;
                     document.getElementById('generated-code').textContent = `Ваш код: ${existingCode}`;
-
-                    // Скрываем поле ввода и кнопку, если код уже введен
-                    document.getElementById('input-code').style.display = 'none';
-                    document.getElementById('submit-button').style.display = 'none';
-
                     if (invitedBy) {
                         document.getElementById('invite-message').textContent = `Вас пригласил: ${invitedBy}`;
                     }
                     displayUsedCodes(userId);
+                    document.getElementById('input-code').style.display = 'none';
+                    document.getElementById('submit-button').style.display = 'none';
                 } else {
-                    // Показываем поле и кнопку для новых пользователей
-                    document.getElementById('input-code').style.display = 'block';
-                    document.getElementById('submit-button').style.display = 'block';
-
-                    // Генерация и сохранение нового кода для новых пользователей
                     const uniqueCode = Math.random().toString(36).substr(2, 6);
                     saveUserCode(uniqueCode);
                     console.log('Сгенерированный код:', uniqueCode);
@@ -149,21 +141,21 @@
     </script>
     <style>
         body {
-            background-color: #000;
-            color: white;
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            padding: 0 5%;
-            overflow-x: hidden;
-            margin: 0;
+            background-color: #000; /* Черный фон */
+            color: white; /* Цвет текста белый */
+            font-family: Arial, sans-serif; /* Шрифт */
+            min-height: 100vh; /* Минимальная высота страницы */
+            padding: 0 5%; /* Горизонтальные отступы */
+            overflow-x: hidden; /* Отключение горизонтальной прокрутки */
+            margin: 0; /* Удаление отступов */
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* Вертикальное расположение элементов */
         }
         
         .header {
             text-align: center;
             font-size: 24px;
-            margin: 20px 0;
+            margin: 20px 0; /* Отступы для заголовка */
         }
 
         #generated-code {
@@ -208,20 +200,20 @@
 
         .back-button {
             position: absolute;
-            bottom: 5%;
+            bottom: 5%; /* Отступ снизу */
             left: 50%;
             transform: translateX(-50%);
             background-color: #ffffff;
             color: #000000;
             border: none;
-            border-radius: 25px;
+            border-radius: 25px; /* Закругленная форма */
             padding: 10px 20px;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
         }
         .back-button:hover {
-            background-color: #e0e0e0;
+            background-color: #e0e0e0; /* Изменение цвета при наведении */
         }
     </style>
 </head>
@@ -235,7 +227,30 @@
     </div>
     <div id="added-by"></div>
     <div id="used-codes">Пользователи, использовавшие ваш код: <ul id="used-list"></ul></div>
-    <div id="referral-section">Ваша реферальная ссылка: <span id="referralLinkDisplay"></span></div>
-    <button class="back-button" onclick="Telegram.WebApp.close()">Back</button>
+    
+    <div id="referral-section">
+        <h2>Ваша реферальная ссылка:</h2>
+        <p id="referralLinkDisplay"></p>
+    </div>
+
+    <button class="back-button">BACK</button>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const backButton = document.querySelector(".back-button");
+
+            backButton.addEventListener("click", function() {
+                setTimeout(function() {
+                    window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                }, 500);
+            });
+
+            backButton.addEventListener("touchstart", function(e) {
+                e.preventDefault(); // Предотвращение стандартного поведения
+                setTimeout(function() {
+                    window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                }, 500);
+            });
+        });
+    </script>
 </body>
 </html>
