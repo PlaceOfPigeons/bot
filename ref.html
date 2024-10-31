@@ -52,6 +52,11 @@
                     const existingCode = snapshot.val().code;
                     const invitedBy = snapshot.val().invitedBy;
                     document.getElementById('generated-code').textContent = `Ваш код: ${existingCode}`;
+
+                    // Скрываем поле ввода и кнопку, если код уже введен
+                    document.getElementById('input-code').style.display = 'none';
+                    document.getElementById('submit-button').style.display = 'none';
+
                     if (invitedBy) {
                         document.getElementById('invite-message').textContent = `Вас пригласил: ${invitedBy}`;
                     }
@@ -166,7 +171,6 @@
             padding: 10px;
             margin-right: 10px;
             width: 200px;
-            display: block;
         }
 
         #submit-button {
@@ -175,7 +179,6 @@
             color: black;
             border: none;
             cursor: pointer;
-            display: block;
         }
 
         #added-by {
@@ -223,8 +226,8 @@
     <div id="invite-message"></div>
     <div id="generated-code">Ваш код: </div>
     <div>
-        <input type="text" id="input-code" placeholder="Введите код" style="display: block;">
-        <button id="submit-button" style="display: block;">Добавить код</button>
+        <input type="text" id="input-code" placeholder="Введите код">
+        <button id="submit-button">Добавить код</button>
     </div>
     <div id="added-by"></div>
     <div id="used-codes">Пользователи, использовавшие ваш код: <ul id="used-list"></ul></div>
@@ -245,11 +248,12 @@
                 }, 500);
             });
 
-            backButton.addEventListener("touchstart", function(e) {
-                e.preventDefault();
-                setTimeout(function() {
-                    window.location.href = 'newpage3.html';
-                }, 500);
+            backButton.addEventListener("touchstart", function() {
+                backButton.style.backgroundColor = "#ccc";
+            });
+
+            backButton.addEventListener("touchend", function() {
+                backButton.style.backgroundColor = "#ffffff";
             });
         });
     </script>
