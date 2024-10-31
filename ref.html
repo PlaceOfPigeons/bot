@@ -54,11 +54,9 @@
                     document.getElementById('generated-code').textContent = `Ваш код: ${existingCode}`;
                     if (invitedBy) {
                         document.getElementById('invite-message').textContent = `Вас пригласил: ${invitedBy}`;
-                        // Скрываем поле ввода и кнопку, если пользователь уже приглашён
                         document.getElementById('input-code').style.display = 'none';
                         document.getElementById('submit-button').style.display = 'none';
                     } else {
-                        // Если пользователь не приглашён, показываем поле ввода
                         document.getElementById('input-code').style.display = 'block';
                         document.getElementById('submit-button').style.display = 'block';
                     }
@@ -82,10 +80,12 @@
                     for (const id in allUsers) {
                         if (allUsers[id].code === codeToAdd) {
                             const addedBy = allUsers[id].name; 
-                            document.getElementById('added-by').textContent = `Код добавлен пользователем: ${addedBy}`;
+                            if (id !== userId) {
+                                document.getElementById('added-by').textContent = `Код добавлен пользователем: ${addedBy}`;
+                            }
+
                             document.getElementById('invite-message').textContent = `Вас пригласил: ${addedBy}`; 
 
-                            // Обновляем информацию о том, кто пригласил пользователя
                             update(ref(database, `users/${userId}`), {
                                 invitedBy: addedBy 
                             });
@@ -97,7 +97,6 @@
                             });
 
                             found = true;
-                            // Скрываем поле ввода и кнопку, так как пользователь был приглашён
                             document.getElementById('input-code').style.display = 'none';
                             document.getElementById('submit-button').style.display = 'none';
                             break;
@@ -114,21 +113,18 @@
             });
         };
 
-        document.getElementById('submit-button').addEventListener('click', () => {
-            const inputCode = document.getElementById('input-code').value;
-            addCode(inputCode);
-        });
-
         const displayUsedCodes = (id) => {
             get(ref(database, `users/${id}/usedCodes`)).then((snapshot) => {
                 const usedList = document.getElementById('used-list');
                 usedList.innerHTML = '';
                 if (snapshot.exists()) {
                     const usedCodes = snapshot.val();
-                    for (const userId in usedCodes) {
-                        const li = document.createElement('li');
-                        li.textContent = usedCodes[userId];
-                        usedList.appendChild(li);
+                    for (const uid in usedCodes) {
+                        if (uid !== userId) {
+                            const li = document.createElement('li');
+                            li.textContent = usedCodes[uid];
+                            usedList.appendChild(li);
+                        }
                     }
                 } else {
                     usedList.innerHTML = '<li>Нет пользователей, использовавших код.</li>';
@@ -148,21 +144,21 @@
     </script>
     <style>
         body {
-            background-color: #000; /* Черный фон */
-            color: white; /* Цвет текста белый */
-            font-family: Arial, sans-serif; /* Шрифт */
-            min-height: 100vh; /* Минимальная высота страницы */
-            padding: 0 5%; /* Горизонтальные отступы */
-            overflow-x: hidden; /* Отключение горизонтальной прокрутки */
-            margin: 0; /* Удаление отступов */
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            padding: 0 5%;
+            overflow-x: hidden;
+            margin: 0;
             display: flex;
-            flex-direction: column; /* Вертикальное расположение элементов */
+            flex-direction: column;
         }
         
         .header {
             text-align: center;
             font-size: 24px;
-            margin: 20px 0; /* Отступы для заголовка */
+            margin: 20px 0;
         }
 
         #generated-code {
@@ -207,20 +203,20 @@
 
         .back-button {
             position: absolute;
-            bottom: 5%; /* Отступ снизу */
+            bottom: 5%;
             left: 50%;
             transform: translateX(-50%);
             background-color: #ffffff;
             color: #000000;
             border: none;
-            border-radius: 25px; /* Закругленная форма */
+            border-radius: 25px;
             padding: 10px 20px;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
         }
         .back-button:hover {
-            background-color: #e0e0e0; /* Изменение цвета при наведении */
+            background-color: #e0e0e0;
         }
     </style>
 </head>
@@ -247,14 +243,14 @@
 
             backButton.addEventListener("click", function() {
                 setTimeout(function() {
-                    window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                    window.location.href = 'newpage3.html';
                 }, 500);
             });
 
             backButton.addEventListener("touchstart", function(e) {
-                e.preventDefault(); // Предотвращение стандартного поведения
+                e.preventDefault();
                 setTimeout(function() {
-                    window.location.href = 'newpage3.html'; // Перенаправление на новую страницу
+                    window.location.href = 'newpage3.html';
                 }, 500);
             });
         });
