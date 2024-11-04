@@ -56,11 +56,6 @@
                         document.getElementById('invite-message').textContent = `Вас пригласил: ${invitedBy}`;
                         document.getElementById('input-code').style.display = 'none';
                         document.getElementById('submit-button').style.display = 'none';
-                        // Проверяем состояние кнопки "ОК"
-                        const okButtonShown = localStorage.getItem('okButtonShown');
-                        if (!okButtonShown) {
-                            document.getElementById('ok-button').style.display = 'inline-block'; // Показываем кнопку "ОК"
-                        }
                     } else {
                         document.getElementById('input-code').style.display = 'block';
                         document.getElementById('submit-button').style.display = 'block';
@@ -106,7 +101,7 @@
                                 if (!usedCodesSnapshot.exists()) {
                                     set(usedCodesRef, displayName).then(() => {
                                         console.log('Пользователь добавлен в список использовавших код');
-                                        displayUsedCodes(userId); // Отображаем только использованные коды текущего пользователя
+                                        displayUsedCodes(userId);
                                         addReferralPoints();
                                     }).catch((error) => {
                                         console.error('Ошибка добавления пользователя в usedCodes:', error);
@@ -146,7 +141,31 @@
                     const usedCodes = snapshot.val();
                     for (const userId in usedCodes) {
                         const li = document.createElement('li');
-                        li.textContent = usedCodes[userId]; // Показываем имена пользователей, использовавших код
+                        li.style.display = 'flex'; // Используем flex для выравнивания
+                        li.style.justifyContent = 'space-between'; // Выравнивание по горизонтали
+
+                        const userName = document.createElement('span');
+                        userName.textContent = usedCodes[userId]; // Имя пользователя
+                        li.appendChild(userName);
+
+                        // Добавляем кнопку "ОК" рядом с именем пользователя
+                        const okButton = document.createElement('button');
+                        okButton.textContent = 'ОК';
+                        okButton.style.padding = '5px 10px';
+                        okButton.style.border = 'none';
+                        okButton.style.borderRadius = '15px'; // Закруглённые края
+                        okButton.style.backgroundColor = 'white';
+                        okButton.style.color = 'black';
+                        okButton.style.cursor = 'pointer';
+
+                        // Обработчик для кнопки "ОК"
+                        okButton.addEventListener('click', () => {
+                            addReferralPoints();
+                            okButton.disabled = true; // Отключаем кнопку после нажатия
+                            okButton.style.display = 'none'; // Скрываем кнопку
+                        });
+
+                        li.appendChild(okButton);
                         usedList.appendChild(li);
                     }
                 } else {
@@ -161,14 +180,6 @@
             const referralLink = `https://t.me/PlaceOfPigeons_bot/Fly?ref=${userId}`;
             document.getElementById('referralLinkDisplay').textContent = referralLink;
         };
-
-        // Обработчик для кнопки "ОК"
-        document.getElementById('ok-button').addEventListener('click', () => {
-            addReferralPoints();
-            localStorage.setItem('okButtonShown', 'true'); // Сохраняем состояние в localStorage
-            document.getElementById('ok-button').disabled = true; // Отключаем кнопку после нажатия
-            document.getElementById('ok-button').style.display = 'none'; // Скрываем кнопку
-        });
 
         checkUserCode();
         getReferralData();
@@ -220,20 +231,6 @@
             margin-top: 10px;
             font-size: 18px;
             color: lightblue;
-            display: flex;
-            align-items: center; /* Выравниваем по вертикали */
-        }
-
-        #ok-button {
-            padding: 10px;
-            background-color: white;
-            color: black;
-            border: none;
-            cursor: pointer;
-            border-radius: 25px; /* Закруглённые края */
-            margin-left: 10px; /* Отступ между текстом и кнопкой */
-            display: none; /* Скрываем кнопку по умолчанию */
-            min-width: 60px; /* Минимальная ширина кнопки */
         }
 
         #used-codes {
@@ -260,9 +257,13 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
-
         .back-button:hover {
             background-color: #e0e0e0; 
+        }
+
+        /* Стили для кнопки ОК */
+        button {
+            margin-left: 10px; /* Отступ между именем и кнопкой */
         }
     </style>
 </head>
@@ -282,7 +283,6 @@
         <p id="referralLinkDisplay"></p>
     </div>
 
-    <button id="ok-button">ОК</button>
     <button class="back-button">BACK</button>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
