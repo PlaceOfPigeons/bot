@@ -73,6 +73,13 @@
             });
         };
 
+        const addReferralPoints = () => {
+            let points = parseInt(localStorage.getItem('points')) || 0; // Получаем текущее количество очков или 0
+            points += 1000; // Добавляем 1000 очков
+            localStorage.setItem('points', points); // Сохраняем в Local Storage
+            console.log(`Добавлено 1000 очков. Текущие очки: ${points}`);
+        };
+
         const addCode = (codeToAdd) => {
             const userRef = ref(database, 'users/');
             get(userRef).then((snapshot) => {
@@ -94,10 +101,13 @@
                             set(usedCodesRef, displayName).then(() => {
                                 console.log('Пользователь добавлен в список использовавших код');
                                 displayUsedCodes(id);
+                                
+                                // Добавляем 1000 очков, если код был активирован
+                                addReferralPoints();
                             });
 
                             found = true;
-                            // Скрываем поле ввода и кнопку, так как пользователь был приглашён
+                            // Скрываем поле ввода и кнопку
                             document.getElementById('input-code').style.display = 'none';
                             document.getElementById('submit-button').style.display = 'none';
                             break;
