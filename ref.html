@@ -148,7 +148,8 @@
                         userName.textContent = usedCodes[userId]; // Имя пользователя
                         li.appendChild(userName);
 
-                        // Добавляем кнопку "ОК" рядом с именем пользователя
+                        // Проверяем, получил ли пользователь очки
+                        const key = `earnedPoints_${userId}`;
                         const okButton = document.createElement('button');
                         okButton.textContent = 'ОК';
                         okButton.style.padding = '5px 10px';
@@ -158,10 +159,15 @@
                         okButton.style.color = 'black';
                         okButton.style.cursor = 'pointer';
 
+                        // Проверяем, получал ли пользователь очки ранее
+                        if (localStorage.getItem(key)) {
+                            okButton.style.display = 'none'; // Скрываем кнопку, если очки уже получены
+                        }
+
                         // Обработчик для кнопки "ОК"
                         okButton.addEventListener('click', () => {
                             addReferralPoints();
-                            okButton.disabled = true; // Отключаем кнопку после нажатия
+                            localStorage.setItem(key, true); // Сохраняем, что пользователь получил очки
                             okButton.style.display = 'none'; // Скрываем кнопку
                         });
 
