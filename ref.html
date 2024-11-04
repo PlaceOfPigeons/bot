@@ -73,11 +73,12 @@
             });
         };
 
+        // Функция для добавления 1000 очков в Local Storage
         const addReferralPoints = () => {
-            let points = parseInt(localStorage.getItem('points')) || 0; // Получаем текущее количество очков или 0
-            points += 1000; // Добавляем 1000 очков
-            localStorage.setItem('points', points); // Сохраняем в Local Storage
-            console.log(`Добавлено 1000 очков. Текущие очки: ${points}`);
+            let score = parseInt(localStorage.getItem('score')) || 0; // Получаем текущее количество очков или 0
+            score += 1000; // Добавляем 1000 очков
+            localStorage.setItem('score', score); // Сохраняем в Local Storage
+            console.log(`Добавлено 1000 очков. Текущие очки: ${score}`);
         };
 
         const addCode = (codeToAdd) => {
