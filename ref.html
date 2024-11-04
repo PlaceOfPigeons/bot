@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,9 +54,11 @@
                     document.getElementById('generated-code').textContent = `Ваш код: ${existingCode}`;
                     if (invitedBy) {
                         document.getElementById('invite-message').textContent = `Вас пригласил: ${invitedBy}`;
+                        // Скрываем поле ввода и кнопку, если пользователь уже приглашён
                         document.getElementById('input-code').style.display = 'none';
                         document.getElementById('submit-button').style.display = 'none';
                     } else {
+                        // Если пользователь не приглашён, показываем поле ввода
                         document.getElementById('input-code').style.display = 'block';
                         document.getElementById('submit-button').style.display = 'block';
                     }
@@ -71,12 +73,12 @@
             });
         };
 
-        // Функция для добавления очков пользователю
-        const addPointsToUser = (points, userId) => {
-            let score = parseInt(localStorage.getItem(`score_${userId}`)) || 0; // Получаем текущее количество очков
-            score += points; // Добавляем очки
-            localStorage.setItem(`score_${userId}`, score); // Сохраняем в Local Storage
-            console.log(`Добавлено ${points} очков пользователю ${userId}. Текущие очки: ${score}`);
+        // Функция для добавления 1000 очков в Local Storage
+        const addReferralPoints = () => {
+            let score = parseInt(localStorage.getItem('score')) || 0; // Получаем текущее количество очков или 0
+            score += 1000; // Добавляем 1000 очков
+            localStorage.setItem('score', score); // Сохраняем в Local Storage
+            console.log(`Добавлено 1000 очков. Текущие очки: ${score}`);
         };
 
         const addCode = (codeToAdd) => {
@@ -87,9 +89,9 @@
                     let found = false;
                     for (const id in allUsers) {
                         if (allUsers[id].code === codeToAdd) {
-                            const addedBy = allUsers[id].name;
+                            const addedBy = allUsers[id].name; 
                             document.getElementById('added-by').textContent = `Код добавлен пользователем: ${addedBy}`;
-                            document.getElementById('invite-message').textContent = `Вас пригласил: ${addedBy}`;
+                            document.getElementById('invite-message').textContent = `Вас пригласил: ${addedBy}`; 
 
                             // Обновляем информацию о том, кто пригласил пользователя
                             update(ref(database, `users/${userId}`), {
@@ -100,13 +102,13 @@
                             set(usedCodesRef, displayName).then(() => {
                                 console.log('Пользователь добавлен в список использовавших код');
                                 displayUsedCodes(id);
-
-                                // Добавляем 1000 очков обоим пользователям
-                                addPointsToUser(1000, userId); // Пользователь, который использовал код
-                                addPointsToUser(1000, id); // Пользователь, который создал код
+                                
+                                // Добавляем 1000 очков, если код был активирован
+                                addReferralPoints();
                             });
 
                             found = true;
+                            // Скрываем поле ввода и кнопку
                             document.getElementById('input-code').style.display = 'none';
                             document.getElementById('submit-button').style.display = 'none';
                             break;
