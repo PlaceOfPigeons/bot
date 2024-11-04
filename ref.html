@@ -59,7 +59,7 @@
                         // Проверяем состояние кнопки "ОК"
                         const okButtonShown = localStorage.getItem('okButtonShown');
                         if (!okButtonShown) {
-                            document.getElementById('ok-button').style.display = 'block'; // Показываем кнопку "ОК"
+                            document.getElementById('ok-button').style.display = 'inline-block'; // Показываем кнопку "ОК"
                         }
                     } else {
                         document.getElementById('input-code').style.display = 'block';
@@ -220,6 +220,20 @@
             margin-top: 10px;
             font-size: 18px;
             color: lightblue;
+            display: flex;
+            align-items: center; /* Выравниваем по вертикали */
+        }
+
+        #ok-button {
+            padding: 10px;
+            background-color: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-radius: 25px; /* Закруглённые края */
+            margin-left: 10px; /* Отступ между текстом и кнопкой */
+            display: none; /* Скрываем кнопку по умолчанию */
+            min-width: 60px; /* Минимальная ширина кнопки */
         }
 
         #used-codes {
@@ -230,16 +244,6 @@
         #referral-section {
             margin-top: 40px;
             font-size: 18px;
-        }
-
-        #ok-button {
-            padding: 10px;
-            background-color: white;
-            color: black;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-            display: none; /* Скрываем кнопку по умолчанию */
         }
 
         .back-button {
@@ -256,6 +260,7 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
+
         .back-button:hover {
             background-color: #e0e0e0; 
         }
