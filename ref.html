@@ -142,13 +142,14 @@
                     for (const userId in usedCodes) {
                         const li = document.createElement('li');
                         li.style.display = 'flex'; // Используем flex для выравнивания
+                        li.style.alignItems = 'center'; // Вертикальное выравнивание
                         li.style.justifyContent = 'space-between'; // Выравнивание по горизонтали
 
                         const userName = document.createElement('span');
                         userName.textContent = usedCodes[userId]; // Имя пользователя
                         li.appendChild(userName);
 
-                        // Проверяем, получил ли пользователь очки
+                        // Проверяем, получал ли пользователь очки
                         const key = `earnedPoints_${userId}`;
                         const okButton = document.createElement('button');
                         okButton.textContent = 'ОК';
@@ -158,6 +159,8 @@
                         okButton.style.backgroundColor = 'white';
                         okButton.style.color = 'black';
                         okButton.style.cursor = 'pointer';
+                        okButton.style.marginLeft = '10px'; // Отступ между именем и кнопкой
+                        okButton.style.marginRight = '10px'; // Отступ справа от кнопки
 
                         // Проверяем, получал ли пользователь очки ранее
                         if (localStorage.getItem(key)) {
