@@ -73,20 +73,11 @@
             });
         };
 
-        // Функция для добавления 1000 очков в Local Storage
         const addReferralPoints = () => {
-            let score = parseInt(localStorage.getItem('score')) || 0; // Получаем текущее количество очков или 0
+            let score = parseInt(localStorage.getItem('score')) || 0;
             score += 1000; // Добавляем 1000 очков
-            localStorage.setItem('score', score); // Сохраняем в Local Storage
+            localStorage.setItem('score', score);
             console.log(`Добавлено 1000 очков. Текущие очки: ${score}`);
-        };
-
-        // Функция для добавления 1000 очков пользователю, чей код был использован
-        const addPointsToUser = (userId) => {
-            let score = parseInt(localStorage.getItem('score')) || 0; // Получаем текущее количество очков или 0
-            score += 1000; // Добавляем 1000 очков
-            localStorage.setItem('score', score); // Сохраняем в Local Storage
-            console.log(`Пользователю ${userId} добавлено 1000 очков. Текущие очки: ${score}`);
         };
 
         const addCode = (codeToAdd) => {
@@ -104,21 +95,20 @@
                             // Обновляем информацию о том, кто пригласил пользователя
                             update(ref(database, `users/${userId}`), {
                                 invitedBy: addedBy 
+                            }).then(() => {
+                                // Начисляем очки пользователю, который пригласил
+                                addReferralPoints();
                             });
 
                             const usedCodesRef = ref(database, `users/${id}/usedCodes/${userId}`);
                             get(usedCodesRef).then((usedCodesSnapshot) => {
                                 if (!usedCodesSnapshot.exists()) {
-                                    // Пользователь добавляется в список использовавших код
                                     set(usedCodesRef, displayName).then(() => {
                                         console.log('Пользователь добавлен в список использовавших код');
                                         displayUsedCodes(id);
                                         
-                                        // Добавляем 1000 очков, если код был активирован
+                                        // Начисляем 1000 очков пользователю, чей код использован
                                         addReferralPoints();
-
-                                        // Добавляем 1000 очков пользователю, чей код был использован
-                                        addPointsToUser(id);
                                     }).catch((error) => {
                                         console.error('Ошибка добавления пользователя в usedCodes:', error);
                                     });
