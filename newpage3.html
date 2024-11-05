@@ -2,149 +2,159 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Image Catcher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectPresident</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap" />
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
+        body, html {
             margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        *:focus {
+            outline: none; /* Убираем контур */
+        }
+
+        .header-container {
+            background-color: black;
+            padding: 0;
+            position: fixed;
+            top: 5%;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .header {
+            background-color: white;
+            color: black;
+            text-align: center;
+            padding: 10px;
+            font-size: 24px;
+            border-radius: 20px;
+            margin: 0 5%;
+            cursor: pointer;
+            font-family: 'New Amsterdam', sans-serif;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .score {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Центрируем по горизонтали */
+            font-size: 20px; /* Исходный размер текста */
+            font-family: 'New Amsterdam', sans-serif; /* Применяем шрифт New Amsterdam */
+        }
+
+        #scoreImage {
+            width: 30px; /* 50% больше исходного 20px */
+            height: auto;
+            margin-right: 5px; /* Отступ справа от изображения */
+        }
+
+        .content {
+            flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #000;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-            touch-action: manipulation;
+            margin-top: 40px;
         }
 
-        #game {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
+        .content img {
+            max-width: 100%;
+            height: auto;
+            cursor: pointer;
+            border: none;
+            outline: none;
         }
 
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 28px;
-            color: #fff;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-
-        #score img {
-            width: 36.4px;
-            height: 36.4px;
-            margin-right: 5px;
-        }
-
-        #timer {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 28px;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        #sequence {
-            position: absolute;
-            top: 10%;
+        .footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 10px;
+            position: fixed;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 36px;
-            color: #fff;
-            font-weight: bold;
-            white-space: nowrap;
-            z-index: 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 50px;
         }
 
-        .wrapper {
-            position: absolute;
-            width: 96px;
-            height: 96px;
-            top: 15%;
-            left: 0;
-            animation: fall linear 4s forwards;
-            z-index: 2;
+        .footer div {
+            text-align: center;
+            margin: 0 5px;
+            cursor: pointer; /* Указатель на кнопки */
         }
 
-        .cage, .bird {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .cage {
-            background-image: url('Cage5.png');
-            background-size: cover;
-            background-position: center;
-            z-index: 2;
-            cursor: pointer;
-        }
-
-        .bird {
-            z-index: 1;
-            cursor: pointer;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            user-select: none;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .bird.clicked {
-            transform: scale(1.5) rotate(10deg);
-            opacity: 0;
-            outline: none;
-        }
-
-        .points {
-            position: absolute;
+        .footer .material-symbols-outlined {
             font-size: 24px;
-            color: #00ff00;
-            font-weight: bold;
-            opacity: 1;
-            transition: opacity 1s ease;
-            pointer-events: none;
+            color: white;
         }
 
-        .points.plus10 {
-            color: #ff0000;
-            font-size: 36px;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(calc(100vh - 96px)) rotate(360deg);
-            }
-        }
-
-        * {
-            outline: none;
-            box-shadow: none;
-            border: none;
+        .footer .icon-label {
+            color: white;
+            font-size: 12px;
+            margin-top: 2px;
         }
     </style>
 </head>
 <body>
-    <div id="game">
-        <div id="score">
-            <img src="tonicon3.png" alt="Очки">
-            <span>0</span>
+
+    <div class="header-container">
+        <div class="header" id="header">
+            ProjectPresident
         </div>
-        <div id="timer">60</div>
-        <div id="sequence"></div>
+    </div>
+
+    <div class="content" id="content">
+        <div style="position: relative;">
+            <div class="score" id="score">
+                <img src="tonicon3.png" alt="Очки" id="scoreImage">
+                <span id="scoreValue">0</span>
+            </div>
+            <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false">
+        </div>
+    </div>
+
+    <div class="footer">
+        <div id="home">
+            <span class="material-symbols-outlined">home</span>
+            <div class="icon-label">Home</div>
+        </div>
+        <div id="wallet">
+            <span class="material-symbols-outlined">wallet</span>
+            <div class="icon-label">Wallet</div>
+        </div>
+        <div id="tasks">
+            <span class="material-symbols-outlined">task</span>
+            <div class="icon-label">Tasks</div>
+        </div>
+        <div id="friends">
+            <span class="material-symbols-outlined">people</span>
+            <div class="icon-label">Friends</div>
+        </div>
+        <div id="saveButton">
+            <span class="material-symbols-outlined">save</span>
+            <div class="icon-label">Save</div>
+        </div>
     </div>
 
     <script type="module">
@@ -165,176 +175,94 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        const game = document.getElementById('game');
-        const scoreDisplay = document.getElementById('score').querySelector('span');
-        const sequenceDisplay = document.getElementById('sequence');
-        const timerDisplay = document.getElementById('timer');
-        const birds = ['birdOne.png', 'birdTwo.png', 'birdThree.png'];
+        // Получаем текущие очки из локального хранилища или устанавливаем 0
+        let score = parseInt(localStorage.getItem('score')) || 0;
+        document.getElementById("scoreValue").textContent = score;
 
-        let storedScore = 0;
-        let score = storedScore;
-        let currentSequence = [];
-        let userSequence = [];
-        let lastClickX = 0;
-        let lastClickY = 0;
-        const birdWidth = 96;
-        const screenWidth = window.innerWidth;
-        const maxLeft = screenWidth - birdWidth;
-        let timerValue = 60;
+        // Функция для сохранения очков в Firebase
+        function saveScoreToFirebase(userId, score) {
+            const scoreRef = ref(database, 'scores/' + userId);
+            set(scoreRef, {
+                score: score
+            }).then(() => {
+                console.log("Score saved successfully!");
+            }).catch((error) => {
+                console.error("Error saving score: ", error);
+            });
+        }
 
-        // Функция для загрузки очков из базы данных Firebase
-        function loadScoreFromFirebase() {
-            const userId = "user_id_here"; // Замените на реальный ID пользователя
+        // Функция для загрузки очков из Firebase
+        function loadScoreFromFirebase(userId) {
             const scoreRef = ref(database, 'scores/' + userId);
             get(scoreRef).then((snapshot) => {
                 if (snapshot.exists()) {
-                    storedScore = snapshot.val().score;
-                    score = storedScore;
-                    updateScoreDisplay(score);
+                    const data = snapshot.val();
+                    document.getElementById("scoreValue").textContent = data.score;
+                    localStorage.setItem('score', data.score); // Сохраняем очки в локальном хранилище
+                } else {
+                    console.log("No data available");
                 }
             }).catch((error) => {
-                console.error("Error loading score:", error);
+                console.error("Error getting score: ", error);
             });
         }
 
-        // Функция для сохранения очков в Firebase
-        function saveScoreToFirebase() {
-            const userId = "user_id_here"; // Замените на реальный ID пользователя
-            set(ref(database, 'scores/' + userId), {
-                score: score
-            }).catch((error) => {
-                console.error("Error saving score:", error);
-            });
-        }
+        window.Telegram.WebApp.ready();
+        Telegram.WebApp.setBackgroundColor("#000000");
+        Telegram.WebApp.setHeaderColor("#000000");
 
-        function createSequence() {
-            currentSequence = [];
-            for (let i = 0; i < 3; i++) {
-                currentSequence.push(birds[Math.floor(Math.random() * birds.length)]);
-            }
-            sequenceDisplay.innerHTML = currentSequence.map(img => `<img src="${img}" style="width: 72px; height: 72px; object-fit: contain;">`).join(' ');
-            userSequence = [];
-        }
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        let displayName = user.username || user.first_name;
+        document.getElementById("header").textContent = displayName;
 
-        function createBird() {
-            const bird = document.createElement('img');
-            bird.classList.add('bird');
-            bird.src = birds[Math.floor(Math.random() * birds.length)];
+        const userId = user.id; // Используем уникальный ID пользователя для сохранения и получения данных
 
-            const cage = document.createElement('div');
-            cage.classList.add('cage');
+        // Загрузка очков из Firebase при загрузке страницы
+        loadScoreFromFirebase(userId);
 
-            const wrapper = document.createElement('div');
-            wrapper.classList.add('wrapper');
-            wrapper.style.left = `${Math.random() * maxLeft}px`;
+        // Обработчик для кнопки "Сохранить"
+        document.getElementById("saveButton").addEventListener("click", function() {
+            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
+            saveScoreToFirebase(userId, score); // Сохраняем текущие очки в Firebase
+        });
 
-            wrapper.appendChild(cage);
-            wrapper.appendChild(bird);
-            game.appendChild(wrapper);
+        // Обработчик для перехода на страницу игры при клике на изображение
+        const birdImage = document.getElementById("birdImage");
 
-            let isCageClicked = false;
-            let isBirdClicked = false;
+        birdImage.addEventListener("click", function() {
+            console.log("birdOne.png clicked!");
+            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
+            window.location.href = `game.html?score=${score}`; // Переход на страницу игры с передачей очков
+        });
 
-            cage.addEventListener('click', () => {
-                if (isCageClicked) return;
-                isCageClicked = true;
-                cage.style.display = 'none';
-            });
+        birdImage.addEventListener("touchstart", function(e) {
+            e.preventDefault(); // Предотвращаем стандартное поведение
+            console.log("birdOne.png touched!");
+            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
+            window.location.href = `game.html?score=${score}`; // Переход на страницу игры с передачей очков
+        });
 
-            bird.addEventListener('click', (event) => {
-                if (!isCageClicked || isBirdClicked) return;
+        // Обработчики событий для кнопок навигации
+        document.getElementById("home").addEventListener("click", function() {
+            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
+            window.location.href = 'newpage3.html'; // Переход на newpage3.html
+        });
 
-                isBirdClicked = true;
+        document.getElementById("friends").addEventListener("click", function() {
+            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
+            window.location.href = 'ref.html'; // Переход на ref.html
+        });
 
-                lastClickX = event.clientX;
-                lastClickY = event.clientY;
+        document.getElementById("wallet").addEventListener("click", function() {
+            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
+            window.location.href = 'wallet.html'; // Переход на wallet.html
+        });
 
-                userSequence.push(bird.src.split('/').pop());
-
-                if (userSequence.length === 3 && userSequence.join(',') === currentSequence.join(',')) {
-                    score += 10;
-
-                    const pointAnim = document.createElement('div');
-                    pointAnim.classList.add('points', 'plus10');
-                    pointAnim.textContent = "+10";
-                    pointAnim.style.left = `${lastClickX}px`;
-                    pointAnim.style.top = `${lastClickY}px`;
-                    game.appendChild(pointAnim);
-
-                    setTimeout(() => pointAnim.remove(), 1000);
-
-                    updateScoreDisplay(score);
-                    createSequence();
-
-                } else if (userSequence.length < 3) {
-                    score++;
-                    updateScoreDisplay(score);
-
-                    const pointAnim = document.createElement('div');
-                    pointAnim.classList.add('points');
-                    pointAnim.textContent = "+1";
-                    pointAnim.style.left = `${lastClickX}px`;
-                    pointAnim.style.top = `${lastClickY}px`;
-                    game.appendChild(pointAnim);
-
-                    setTimeout(() => pointAnim.remove(), 1000);
-                }
-
-                bird.classList.add('clicked');
-                setTimeout(() => {
-                    wrapper.remove();
-                }, 300);
-
-                checkSequence();
-
-                bird.blur();
-                bird.setAttribute('tabindex', '-1');
-            });
-
-            wrapper.addEventListener('animationend', () => {
-                if (!isCageClicked) {
-                    wrapper.remove();
-                }
-            });
-        }
-
-        function updateScoreDisplay(newScore) {
-            scoreDisplay.textContent = `${newScore}`;
-        }
-
-        function checkSequence() {
-            let correctSequence = currentSequence.slice(0, userSequence.length);
-            if (userSequence.join(',') !== correctSequence.join(',')) {
-                userSequence = [];
-            }
-        }
-
-        function startTimer() {
-            const timerInterval = setInterval(() => {
-                timerValue--;
-                timerDisplay.textContent = timerValue;
-
-                if (timerValue <= 0) {
-                    clearInterval(timerInterval);
-                    endGame();
-                }
-            }, 1000);
-        }
-
-        function endGame() {
-            saveScoreToFirebase();
-            window.location.href = `newpage3.html?score=${score}`;
-        }
-
-        function startGame() {
-            loadScoreFromFirebase();
-            createSequence();
-            startTimer();
-            setInterval(createBird, 1000);
-        }
-
-        updateScoreDisplay(score);
-        startGame();
+        document.getElementById("tasks").addEventListener("click", function() {
+            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
+            window.location.href = 'tasks.html'; // Переход на tasks.html
+        });
     </script>
+
 </body>
 </html>
