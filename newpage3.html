@@ -151,12 +151,61 @@
             <span class="material-symbols-outlined">people</span>
             <div class="icon-label">Friends</div>
         </div>
+        <div id="saveButton">
+            <span class="material-symbols-outlined">save</span>
+            <div class="icon-label">Save</div>
+        </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWwSObNeCTqDk8xJg9sa0u4wIvk5JFw8E",
+            authDomain: "placeofpigeons.firebaseapp.com",
+            databaseURL: "https://placeofpigeons-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "placeofpigeons",
+            storageBucket: "placeofpigeons.appspot.com",
+            messagingSenderId: "67354529384",
+            appId: "1:67354529384:web:716cf99397eb9002c435dd",
+            measurementId: "G-P70KRENL94"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
         // Получаем текущие очки из локального хранилища или устанавливаем 0
         let score = parseInt(localStorage.getItem('score')) || 0;
         document.getElementById("scoreValue").textContent = score;
+
+        // Функция для сохранения очков в Firebase
+        function saveScoreToFirebase(userId, score) {
+            const scoreRef = ref(database, 'scores/' + userId);
+            set(scoreRef, {
+                score: score
+            }).then(() => {
+                console.log("Score saved successfully!");
+            }).catch((error) => {
+                console.error("Error saving score: ", error);
+            });
+        }
+
+        // Функция для загрузки очков из Firebase
+        function loadScoreFromFirebase(userId) {
+            const scoreRef = ref(database, 'scores/' + userId);
+            get(scoreRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    document.getElementById("scoreValue").textContent = data.score;
+                    localStorage.setItem('score', data.score); // Сохраняем очки в локальном хранилище
+                } else {
+                    console.log("No data available");
+                }
+            }).catch((error) => {
+                console.error("Error getting score: ", error);
+            });
+        }
 
         window.Telegram.WebApp.ready();
         Telegram.WebApp.setBackgroundColor("#000000");
@@ -166,28 +215,19 @@
         let displayName = user.username || user.first_name;
         document.getElementById("header").textContent = displayName;
 
-        const birdImage = document.getElementById("birdImage");
+        const userId = user.id; // Используем уникальный ID пользователя для сохранения и получения данных
 
-        // Обработчики событий для изображения
-        birdImage.addEventListener("click", function() {
+        // Загрузка очков из Firebase при загрузке страницы
+        loadScoreFromFirebase(userId);
+
+        // Обработчик для кнопки "Сохранить"
+        document.getElementById("saveButton").addEventListener("click", function() {
             Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
-            window.location.href = `game.html?score=${score}`; // Переход на страницу игры без изменения очков
+            saveScoreToFirebase(userId, score); // Сохраняем текущие очки в Firebase
         });
 
-        birdImage.addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
-            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
-            window.location.href = `game.html?score=${score}`; // Переход на страницу игры
-        });
-
-        // Обработчики событий для кнопок
+        // Обработчики событий для других кнопок остаются такими же...
         document.getElementById("home").addEventListener("click", function() {
-            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
-            window.location.href = 'newpage3.html'; // Переход на newpage3.html
-        });
-
-        document.getElementById("home").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
             Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
             window.location.href = 'newpage3.html'; // Переход на newpage3.html
         });
@@ -197,30 +237,12 @@
             window.location.href = 'ref.html'; // Переход на ref.html
         });
 
-        document.getElementById("friends").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
-            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
-            window.location.href = 'ref.html'; // Переход на ref.html
-        });
-
         document.getElementById("wallet").addEventListener("click", function() {
             Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
             window.location.href = 'wallet.html'; // Переход на wallet.html
         });
 
-        document.getElementById("wallet").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
-            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
-            window.location.href = 'wallet.html'; // Переход на wallet.html
-        });
-
         document.getElementById("tasks").addEventListener("click", function() {
-            Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
-            window.location.href = 'tasks.html'; // Переход на tasks.html
-        });
-
-        document.getElementById("tasks").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
             Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
             window.location.href = 'tasks.html'; // Переход на tasks.html
         });
