@@ -7,6 +7,32 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=New+Amsterdam:wght@400;700&display=swap" />
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script type="module">
+        // Инициализация Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWwSObNeCTqDk8xJg9sa0u4wIvk5JFw8E",
+            authDomain: "placeofpigeons.firebaseapp.com",
+            databaseURL: "https://placeofpigeons-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "placeofpigeons",
+            storageBucket: "placeofpigeons.appspot.com",
+            messagingSenderId: "67354529384",
+            appId: "1:67354529384:web:716cf99397eb9002c435dd",
+            measurementId: "G-P70KRENL94"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Функция для сохранения очков в Firebase
+        function saveScoreToFirebase(userId, score) {
+            set(ref(database, 'users/' + userId), {
+                score: score
+            });
+        }
+    </script>
     <style>
         body, html {
             margin: 0;
@@ -166,6 +192,9 @@
         let displayName = user.username || user.first_name;
         document.getElementById("header").textContent = displayName;
 
+        // Сохранение очков в Firebase
+        saveScoreToFirebase(user.id, score);
+
         const birdImage = document.getElementById("birdImage");
 
         // Обработчики событий для изображения
@@ -216,15 +245,25 @@
 
         document.getElementById("tasks").addEventListener("click", function() {
             Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
-            window.location.href = 'tasks.html'; // Переход на tasks.html
+            window.location.href = 'task.html'; // Переход на task.html
         });
 
         document.getElementById("tasks").addEventListener("touchstart", function(e) {
             e.preventDefault(); // Предотвращаем стандартное поведение
             Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
-            window.location.href = 'tasks.html'; // Переход на tasks.html
+            window.location.href = 'task.html'; // Переход на task.html
         });
-    </script>
 
+        // Сохраняем очки в локальном хранилище
+        function saveScore(score) {
+            localStorage.setItem('score', score);
+            document.getElementById("scoreValue").textContent = score;
+            // Сохранение очков в Firebase
+            saveScoreToFirebase(user.id, score); // Сохранение в Firebase
+        }
+
+        // Пример изменения очков
+        // Вызывайте saveScore(score) при необходимости (например, когда игрок зарабатывает очки)
+    </script>
 </body>
 </html>
