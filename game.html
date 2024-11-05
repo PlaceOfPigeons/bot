@@ -171,9 +171,6 @@
 
         let timerValue = 60;
 
-        // Загружаем сохраненные очки при загрузке страницы
-        updateScoreDisplay(score);
-
         function createSequence() {
             currentSequence = [];
             for (let i = 0; i < 3; i++) {
@@ -289,8 +286,8 @@
         }
 
         function endGame() {
-            localStorage.setItem('score', score); // Сохраняем очки
-            window.location.href = `newpage3.html?score=${score}`; // Переход на другую страницу
+            localStorage.setItem('score', score);
+            window.location.href = `newpage3.html?score=${score}`;
         }
 
         function startGame() {
@@ -303,6 +300,7 @@
             event.preventDefault();
         });
 
+        updateScoreDisplay(score);
         startGame();
     </script>
 </body>
