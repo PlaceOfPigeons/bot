@@ -183,8 +183,7 @@
         let timerValue = 60;
 
         // Функция для загрузки очков из базы данных Firebase
-        function loadScoreFromFirebase() {
-            const userId = "user_id_here"; // Замените на реальный ID пользователя
+        function loadScoreFromFirebase(userId) {
             const scoreRef = ref(database, 'scores/' + userId);
             get(scoreRef).then((snapshot) => {
                 if (snapshot.exists()) {
@@ -198,8 +197,7 @@
         }
 
         // Функция для сохранения очков в Firebase
-        function saveScoreToFirebase() {
-            const userId = "user_id_here"; // Замените на реальный ID пользователя
+        function saveScoreToFirebase(userId) {
             set(ref(database, 'scores/' + userId), {
                 score: score
             }).catch((error) => {
@@ -322,12 +320,14 @@
         }
 
         function endGame() {
-            saveScoreToFirebase();
+            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
+            saveScoreToFirebase(userId);
             window.location.href = `newpage3.html?score=${score}`;
         }
 
         function startGame() {
-            loadScoreFromFirebase();
+            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
+            loadScoreFromFirebase(userId);
             createSequence();
             startTimer();
             setInterval(createBird, 1000);
