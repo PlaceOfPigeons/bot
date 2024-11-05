@@ -5,161 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Image Catcher</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-            touch-action: manipulation;
-        }
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-        #game {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWwSObNeCTqDk8xJg9sa0u4wIvk5JFw8E",
+            authDomain: "placeofpigeons.firebaseapp.com",
+            databaseURL: "https://placeofpigeons-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "placeofpigeons",
+            storageBucket: "placeofpigeons.appspot.com",
+            messagingSenderId: "67354529384",
+            appId: "1:67354529384:web:716cf99397eb9002c435dd",
+            measurementId: "G-P70KRENL94"
+        };
 
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 28px; /* Оставим для размера текста, если понадобится */
-            color: #fff;
-            font-weight: bold;
-            display: flex;
-            align-items: center; /* Вертикальное выравнивание */
-        }
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-        #score img {
-            width: 36.4px; /* 28px * 1.3 */
-            height: 36.4px; /* Сохраняем пропорции */
-            margin-right: 5px; /* Отступ между изображением и текстом */
-        }
-
-        #timer {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 28px;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        #sequence {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 36px;
-            color: #fff;
-            font-weight: bold;
-            white-space: nowrap;
-            z-index: 1;
-        }
-
-        .wrapper {
-            position: absolute;
-            width: 96px;
-            height: 96px;
-            top: 15%;
-            left: 0;
-            animation: fall linear 4s forwards;
-            z-index: 2;
-        }
-
-        .cage, .bird {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .cage {
-            background-image: url('Cage5.png');
-            background-size: cover;
-            background-position: center;
-            z-index: 2;
-            cursor: pointer;
-        }
-
-        .bird {
-            z-index: 1;
-            cursor: pointer;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            user-select: none;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .bird.clicked {
-            transform: scale(1.5) rotate(10deg);
-            opacity: 0;
-            outline: none;
-        }
-
-        .points {
-            position: absolute;
-            font-size: 24px;
-            color: #00ff00;
-            font-weight: bold;
-            opacity: 1;
-            transition: opacity 1s ease;
-            pointer-events: none;
-        }
-
-        .points.plus10 {
-            color: #ff0000;
-            font-size: 36px;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(calc(100vh - 96px)) rotate(360deg);
-            }
-        }
-
-        * {
-            outline: none;
-            box-shadow: none;
-            border: none;
-        }
-    </style>
-</head>
-<body>
-    <div id="game">
-        <div id="score">
-            <img src="tonicon3.png" alt="Очки">
-            <span>0</span>
-        </div>
-        <div id="timer">60</div>
-        <div id="sequence"></div>
-    </div>
-
-    <script>
-        // Установка черной темы
-        Telegram.WebApp.setBackgroundColor("#000000");
-        Telegram.WebApp.setHeaderColor("#000000");
+        let userId = "7380238976";  // Например, ID пользователя, который будет использоваться для поиска
+        let storedScore = 0; // Изначально очки равны нулю
+        let score = storedScore;
 
         const game = document.getElementById('game');
         const scoreDisplay = document.getElementById('score').querySelector('span');
         const sequenceDisplay = document.getElementById('sequence');
         const timerDisplay = document.getElementById('timer');
         const birds = ['birdOne.png', 'birdTwo.png', 'birdThree.png'];
-        
-        let storedScore = parseInt(localStorage.getItem('score')) || 0;
-        let score = storedScore;
 
         let currentSequence = [];
         let userSequence = [];
@@ -171,6 +43,35 @@
 
         let timerValue = 60;
 
+        // Загрузка очков из Firebase
+        function loadScoreFromFirebase() {
+            const scoreRef = ref(database, 'scores/' + userId);
+            get(scoreRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    storedScore = snapshot.val();
+                    score = storedScore;
+                } else {
+                    console.log("No data available");
+                    score = 0;
+                }
+                updateScoreDisplay(score); // Обновляем отображение очков
+            }).catch((error) => {
+                console.error("Error getting score: ", error);
+            });
+        }
+
+        // Сохранение очков в Firebase
+        function saveScoreToFirebase() {
+            set(ref(database, 'scores/' + userId), {
+                score: score
+            }).then(() => {
+                console.log("Score saved successfully!");
+            }).catch((error) => {
+                console.error("Error saving score: ", error);
+            });
+        }
+
+        // Функция для создания последовательности
         function createSequence() {
             currentSequence = [];
             for (let i = 0; i < 3; i++) {
@@ -180,6 +81,7 @@
             userSequence = [];
         }
 
+        // Функция для создания птицы
         function createBird() {
             const bird = document.createElement('img');
             bird.classList.add('bird');
@@ -262,10 +164,12 @@
             });
         }
 
+        // Функция для обновления отображения очков
         function updateScoreDisplay(newScore) {
             scoreDisplay.textContent = `${newScore}`;
         }
 
+        // Проверка на правильность последовательности
         function checkSequence() {
             let correctSequence = currentSequence.slice(0, userSequence.length);
             if (userSequence.join(',') !== correctSequence.join(',')) {
@@ -273,6 +177,7 @@
             }
         }
 
+        // Запуск таймера
         function startTimer() {
             const timerInterval = setInterval(() => {
                 timerValue--;
@@ -285,12 +190,15 @@
             }, 1000);
         }
 
+        // Завершение игры
         function endGame() {
-            localStorage.setItem('score', score);
+            saveScoreToFirebase();  // Сохраняем очки в Firebase
             window.location.href = `newpage3.html?score=${score}`;
         }
 
+        // Запуск игры
         function startGame() {
+            loadScoreFromFirebase();  // Загружаем очки из Firebase
             createSequence();
             startTimer();
             setInterval(createBird, 1000);
@@ -303,5 +211,15 @@
         updateScoreDisplay(score);
         startGame();
     </script>
+</head>
+<body>
+    <div id="game">
+        <div id="score">
+            <img src="tonicon3.png" alt="Очки">
+            <span>0</span>
+        </div>
+        <div id="timer">60</div>
+        <div id="sequence"></div>
+    </div>
 </body>
 </html>
