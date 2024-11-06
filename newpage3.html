@@ -41,7 +41,7 @@
             background-color: white;
             color: black;
             text-align: center;
-            padding: 10px 20px; /* Увеличим отступы */
+            padding: 10px;
             font-size: 24px;
             border-radius: 20px;
             margin: 0 5%;
@@ -54,9 +54,8 @@
             display: flex;
             align-items: center;
             justify-content: center; /* Центрируем по горизонтали */
-            font-size: 5vw; /* Исходный размер шрифта зависит от ширины экрана */
+            font-size: 20px; /* Исходный размер текста */
             font-family: 'New Amsterdam', sans-serif; /* Применяем шрифт New Amsterdam */
-            margin-top: 10px;
         }
 
         #scoreImage {
@@ -68,21 +67,17 @@
         .content {
             flex-grow: 1;
             display: flex;
-            justify-content: center;  /* Центрируем содержимое по горизонтали */
-            align-items: center;     /* Центрируем содержимое по вертикали */
+            justify-content: center;
+            align-items: center;
             margin-top: 40px;
-            width: 100%;             /* Для гарантированного использования всей ширины */
-            height: 100%;            /* Для гарантированного использования всей высоты */
-            position: relative;      /* Для точного контроля над расположением */
         }
 
         .content img {
-            max-width: 90%; /* Уменьшаем изображение на 10% */
+            max-width: 100%;
             height: auto;
             cursor: pointer;
             border: none;
             outline: none;
-            margin: auto; /* Центрируем изображение */
         }
 
         .footer {
@@ -118,39 +113,6 @@
             color: white;
             font-size: 12px;
             margin-top: 2px;
-        }
-
-        /* Медиазапросы для адаптивности */
-        @media (max-width: 768px) {
-            .score {
-                font-size: 18px; /* Уменьшение шрифта для маленьких экранов */
-            }
-
-            #scoreImage {
-                width: 25px; /* Уменьшаем размер иконки */
-            }
-
-            .header {
-                font-size: 20px; /* Уменьшаем размер шрифта заголовка */
-            }
-
-            .footer {
-                width: 80%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .score {
-                font-size: 16px; /* Еще меньше шрифт для очень маленьких экранов */
-            }
-
-            .header {
-                font-size: 18px;
-            }
-
-            #scoreImage {
-                width: 20px; /* Еще уменьшаем размер иконки */
-            }
         }
     </style>
 </head>
