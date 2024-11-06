@@ -56,6 +56,10 @@
             justify-content: center; /* Центрируем по горизонтали */
             font-size: 20px; /* Исходный размер текста */
             font-family: 'New Amsterdam', sans-serif; /* Применяем шрифт New Amsterdam */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Центрируем элемент по середине */
         }
 
         #scoreImage {
@@ -135,10 +139,12 @@
 
     <div class="content" id="content">
         <div style="position: relative;">
+            <!-- Элемент с классом .score, который будет центрироваться -->
             <div class="score" id="score">
                 <img src="tonicon3.png" alt="Очки" id="scoreImage">
                 <span id="scoreValue">0</span>
             </div>
+            <!-- Изображение голубя -->
             <img src="birdOne.png" alt="Logo" id="birdImage" draggable="false">
         </div>
     </div>
