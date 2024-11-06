@@ -70,14 +70,7 @@
             justify-content: center;
             align-items: center;
             margin-top: 40px;
-        }
-
-        .content img {
-            max-width: 100%;
-            height: auto;
-            cursor: pointer;
-            border: none;
-            outline: none;
+            width: 100%; /* Обеспечиваем, что контейнер занимает всю ширину */
         }
 
         /* Стили для уменьшения изображения birdOne.png на 10% */
@@ -87,6 +80,8 @@
             cursor: pointer;
             border: none;
             outline: none;
+            display: block; /* Убираем нежелательные отступы вокруг изображения */
+            margin: 0 auto; /* Центрируем изображение по горизонтали */
         }
 
         .footer {
