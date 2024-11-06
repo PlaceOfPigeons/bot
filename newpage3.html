@@ -236,21 +236,9 @@
             window.location.href = 'newpage3.html'; // Переход на newpage3.html
         });
 
-        document.getElementById("home").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
-            window.location.href = 'newpage3.html';
-        });
-
         document.getElementById("friends").addEventListener("click", function() {
             Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
             window.location.href = 'ref.html'; // Переход на ref.html
-        });
-
-        document.getElementById("friends").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
-            window.location.href = 'ref.html';
         });
 
         document.getElementById("wallet").addEventListener("click", function() {
@@ -258,24 +246,12 @@
             window.location.href = 'wallet.html'; // Переход на wallet.html
         });
 
-        document.getElementById("wallet").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
-            window.location.href = 'wallet.html';
-        });
-
         document.getElementById("tasks").addEventListener("click", function() {
             Telegram.WebApp.HapticFeedback.impactOccurred('light'); // Вибрация при нажатии
             window.location.href = 'tasks.html'; // Переход на tasks.html
         });
 
-        document.getElementById("tasks").addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
-            window.location.href = 'tasks.html';
-        });
-
-        // Добавляем обработчик для уменьшения изображения при касании
+        // Обработчик для изображения birdOne.png
         document.getElementById("birdImage").addEventListener("touchstart", function() {
             this.style.width = "80%"; // Уменьшаем размер изображения
         });
