@@ -57,7 +57,7 @@
             font-size: 20px; /* Исходный размер текста */
             font-family: 'New Amsterdam', sans-serif; /* Применяем шрифт New Amsterdam */
             position: relative;
-            top: -15px; /* Поднимем блок с очками немного выше */
+            top: 0; /* Убираем подъем блока с очками */
         }
 
         #scoreImage {
@@ -126,6 +126,41 @@
         /* Скрываем кнопку "Save" */
         #saveButton {
             display: none;
+        }
+
+        /* Медиазапрос для маленьких экранов (например, iPhone SE) */
+        @media (max-width: 375px) { /* iPhone SE */
+            .score {
+                font-size: 16px; /* Уменьшаем размер шрифта для маленьких экранов */
+                padding-top: 5px; /* Уменьшаем отступ сверху */
+            }
+
+            #scoreImage {
+                width: 20px; /* Уменьшаем размер изображения */
+                margin-right: 3px; /* Уменьшаем отступ справа */
+            }
+
+            .header {
+                font-size: 18px; /* Уменьшаем размер шрифта в шапке */
+                padding: 8px; /* Уменьшаем отступы в шапке */
+            }
+
+            #birdImage {
+                width: 80%; /* Уменьшаем размер изображения */
+            }
+
+            .footer {
+                padding: 8px; /* Уменьшаем отступы футера */
+                height: 45px; /* Уменьшаем высоту футера */
+            }
+
+            .footer .material-symbols-outlined {
+                font-size: 20px; /* Уменьшаем размер иконок */
+            }
+
+            .footer .icon-label {
+                font-size: 10px; /* Уменьшаем размер текста в футере */
+            }
         }
     </style>
 </head>
