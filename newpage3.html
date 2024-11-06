@@ -57,9 +57,9 @@
             font-size: 20px; /* Исходный размер текста */
             font-family: 'New Amsterdam', sans-serif; /* Применяем шрифт New Amsterdam */
             position: absolute;
-            top: 50%;
+            top: 50%; /* Центрируем по вертикали между элементами */
             left: 50%;
-            transform: translate(-50%, -50%); /* Центрируем элемент по середине */
+            transform: translate(-50%, -50%); /* Сдвигаем на 50% своей высоты */
         }
 
         #scoreImage {
@@ -75,6 +75,8 @@
             align-items: center;
             margin-top: 40px;
             width: 100%; /* Обеспечиваем, что контейнер занимает всю ширину */
+            position: relative; /* Добавлено для позиционирования .score */
+            padding-top: 60px; /* Отступ сверху для белой обводки с именем пользователя */
         }
 
         /* Стили для уменьшения изображения birdOne.png на 10% */
