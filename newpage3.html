@@ -56,16 +56,12 @@
             justify-content: center; /* Центрируем по горизонтали */
             font-size: 20px; /* Исходный размер текста */
             font-family: 'New Amsterdam', sans-serif; /* Применяем шрифт New Amsterdam */
-            position: relative;
-            top: 0; /* Позиция блока с очками */
         }
 
         #scoreImage {
             width: 30px; /* 50% больше исходного 20px */
             height: auto;
             margin-right: 5px; /* Отступ справа от изображения */
-            position: relative;
-            top: -5px; /* Поднимем изображение очков */
         }
 
         .content {
@@ -86,7 +82,6 @@
             outline: none;
             display: block; /* Убираем нежелательные отступы вокруг изображения */
             margin: 0 auto; /* Центрируем изображение по горизонтали */
-            transition: transform 0.1s ease-in-out; /* Плавная анимация изменения масштаба */
         }
 
         .footer {
@@ -128,65 +123,6 @@
         #saveButton {
             display: none;
         }
-
-        /* Медиазапросы для различных устройств */
-
-        /* Для экранов от 375px и ниже (например, iPhone SE) */
-        @media (max-width: 375px) {
-            .score {
-                font-size: 16px; /* Уменьшаем размер шрифта для маленьких экранов */
-                position: relative;
-                top: 15px; /* Сдвигаем блок с очками на 15px ниже (на 5 пикселей больше) */
-            }
-
-            #scoreImage {
-                width: 18px; /* Уменьшаем размер изображения очков */
-                margin-right: 5px; /* Уменьшаем отступ справа */
-                top: 0; /* Убираем подъем изображения */
-            }
-
-            #birdImage {
-                width: 80%; /* Уменьшаем размер изображения */
-            }
-
-            .header {
-                font-size: 18px; /* Уменьшаем размер шрифта в шапке */
-                padding: 8px; /* Уменьшаем отступы в шапке */
-            }
-
-            .footer {
-                padding: 8px; /* Уменьшаем отступы футера */
-                height: 45px; /* Уменьшаем высоту футера */
-            }
-
-            .footer .material-symbols-outlined {
-                font-size: 20px; /* Уменьшаем размер иконок */
-            }
-
-            .footer .icon-label {
-                font-size: 10px; /* Уменьшаем размер текста в футере */
-            }
-        }
-
-        /* Для устройств с экранами более 375px (например, iPhone 11) */
-        @media (min-width: 376px) {
-            .score {
-                font-size: 20px; /* Оставляем нормальный размер текста */
-                position: relative;
-                top: 0; /* Оставляем блок с очками на месте */
-            }
-
-            #scoreImage {
-                width: 30px; /* Размер изображения очков */
-                margin-right: 5px; /* Отступ справа */
-                top: -5px; /* Поднимем изображение немного */
-            }
-
-            #birdImage {
-                width: 90%; /* Нормальный размер изображения */
-            }
-        }
-
     </style>
 </head>
 <body>
@@ -336,23 +272,6 @@
             e.preventDefault(); // Предотвращаем стандартное поведение
             Telegram.WebApp.HapticFeedback.impactOccurred('light');
             window.location.href = 'tasks.html';
-        });
-
-        // Обработчик для нажатия на изображение
-        const birdImage = document.getElementById("birdImage");
-
-        birdImage.addEventListener("touchstart", function(e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение
-            birdImage.style.transform = "scale(0.9)"; // Уменьшаем изображение
-        });
-
-        birdImage.addEventListener("touchend", function(e) {
-            birdImage.style.transform = "scale(1)"; // Возвращаем изображение в исходный размер
-            window.location.href = "game.html"; // Переход на страницу game.html
-        });
-
-        birdImage.addEventListener("touchcancel", function(e) {
-            birdImage.style.transform = "scale(1)"; // Возвращаем изображение в исходный размер при отмене
         });
     </script>
 
