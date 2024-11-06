@@ -82,6 +82,7 @@
             outline: none;
             display: block; /* Убираем нежелательные отступы вокруг изображения */
             margin: 0 auto; /* Центрируем изображение по горизонтали */
+            transition: width 0.3s ease-in-out; /* Плавное изменение размера */
         }
 
         .footer {
@@ -272,6 +273,16 @@
             e.preventDefault(); // Предотвращаем стандартное поведение
             Telegram.WebApp.HapticFeedback.impactOccurred('light');
             window.location.href = 'tasks.html';
+        });
+
+        // Добавляем обработчик для уменьшения изображения при касании
+        document.getElementById("birdImage").addEventListener("touchstart", function() {
+            this.style.width = "80%"; // Уменьшаем размер изображения
+        });
+
+        document.getElementById("birdImage").addEventListener("touchend", function() {
+            this.style.width = "90%"; // Восстанавливаем оригинальный размер изображения
+            window.location.href = 'game.html'; // Переход на game.html
         });
     </script>
 
