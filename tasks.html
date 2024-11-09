@@ -87,9 +87,17 @@
     <div class="task">
         <div class="icon-text">
             <span class="material-symbols-outlined">done_all</span>
-            <div>Cryptan</div>
+            <div>Cryptan</div> <!-- Оригинальное задание Cryptan -->
         </div>
         <button id="action-button3" class="follow-button" style="display: none;" onclick="follow(3)">FOLLOW</button>
+    </div>
+
+    <div class="task">
+        <div class="icon-text">
+            <span class="material-symbols-outlined">done_all</span>
+            <div>Add stickers</div> <!-- Новое задание Add stickers -->
+        </div>
+        <button id="action-button4" class="follow-button" style="display: none;" onclick="follow(4)">FOLLOW</button>
     </div>
 
     <button id="back-button" class="back-button">BACK</button>
@@ -114,12 +122,14 @@
         showFollowButton(1);
         showFollowButton(2);
         showFollowButton(3);
+        showFollowButton(4); // Показываем кнопку для нового задания
 
         function follow(buttonId) {
             let url = '';
             if (buttonId === 1) url = 'https://t.me/PlaceOfPigeons';
             else if (buttonId === 2) url = 'https://t.me/DaddyTap';
-            else if (buttonId === 3) url = 'https://t.me/cryptan77q';
+            else if (buttonId === 3) url = 'https://t.me/cryptan77q'; // Оригинальная ссылка для Cryptan
+            else if (buttonId === 4) url = 'https://t.me/addstickers/PlaceOfPigeons'; // Новая ссылка для Add stickers
 
             window.open(url, '_blank');
 
