@@ -14,7 +14,12 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          echo "Node modules installed"
+
+      - name: Check FIREBASE_API_KEY
+        run: echo "FIREBASE_API_KEY is set to ${{ secrets.FIREBASE_API_KEY }}" || echo "FIREBASE_API_KEY is not set"
 
       - name: Run Firebase setup
         run: node setupFirebase.js
