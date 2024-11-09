@@ -1,20 +1,18 @@
-const { initializeApp } = require("firebase/app");
-const { getDatabase } = require("firebase/database");
+const fs = require('fs');
 
-// Используем секрет Firebase API ключа через переменную окружения
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,  // Получаем ключ из переменной окружения
-  authDomain: "placeofpigeons.firebaseapp.com",
-  databaseURL: "https://placeofpigeons-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "placeofpigeons",
-  storageBucket: "placeofpigeons.appspot.com",
-  messagingSenderId: "67354529384",
-  appId: "1:67354529384:web:716cf99397eb9002c435dd",
-  measurementId: "G-P70KRENL94"
-};
+// Чтение конфигурации Firebase
+const configFilePath = './firebase-config.js'; // Путь к файлу, где хранится конфигурация Firebase
 
-// Инициализируем Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+// Чтение содержимого конфигурации
+let firebaseConfig = fs.readFileSync(configFilePath, 'utf8');
 
-console.log("Firebase Initialized");
+// Получение ключа из переменных окружения
+const apiKey = process.env.FIREBASE_API_KEY;  // Получаем ключ из переменной окружения
+
+// Замена строки apiKey на значение из секретов
+firebaseConfig = firebaseConfig.replace('YOUR_FIREBASE_API_KEY', apiKey);
+
+// Запись обновленного файла конфигурации
+fs.writeFileSync(configFilePath, firebaseConfig);
+
+console.log('Firebase API key has been set');
