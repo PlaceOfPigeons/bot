@@ -3,29 +3,35 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Убедитесь, что ваша ветка - это main (или другая ветка, если необходимо)
+      - main  # Деплой будет запускаться при пуше в ветку main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Шаг 1: Checkout исходного кода
+      # Шаг 1: Checkout репозитория
       - name: Checkout repository
-        uses: actions/checkout@v3  # Используем последнюю версию v3
+        uses: actions/checkout@v3
 
-      # Шаг 2: Установка Node.js
+      # Шаг 2: Установка Node.js (если используете Node.js)
       - name: Set up Node.js
-        uses: actions/setup-node@v3  # Убедитесь, что используете актуальную версию
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Убедитесь, что версия Node.js актуальна для вашего проекта
 
       # Шаг 3: Установка зависимостей
       - name: Install dependencies
         run: npm install
 
-      # Шаг 4: Сборка проекта (если необходимо)
+      # Шаг 4: Сборка проекта (если используется сборщик)
       - name: Build project
-        run: npm run build
+        run: npm run build  # Если вы используете команду сборки для создания статических файлов
 
-      # Шаг 5: Деплой на Firebase
-      - name: Run Firebase setup
-        run: npm run deploy  # Или используйте команду deploy, если настроена в package.json
+      # Шаг 5: Деплой на GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          branch: gh-pages  # Укажите ветку, в которую нужно деплоить (обычно gh-pages)
+          folder: build      # Укажите папку с вашим проектом (например, build или docs)
+          token: ${{ secrets.GITHUB_TOKEN }}  # Токен для доступа к репозиторию
