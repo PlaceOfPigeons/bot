@@ -3,32 +3,29 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # или другая ветка, с которой хотите деплоить
+      - main  # Убедитесь, что ваша ветка - это main (или другая ветка, если необходимо)
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Шаг 1: Checkout исходного кода
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Используем последнюю версию v3
 
+      # Шаг 2: Установка Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+        uses: actions/setup-node@v3  # Убедитесь, что используете актуальную версию
 
+      # Шаг 3: Установка зависимостей
       - name: Install dependencies
         run: npm install
 
-      - name: Build the project
-        run: npm run build  # или команда для сборки вашего проекта (например, 'npm run build')
+      # Шаг 4: Сборка проекта (если необходимо)
+      - name: Build project
+        run: npm run build
 
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      - name: Authenticate with Firebase
-        run: echo "${{ secrets.FIREBASE_AUTH_TOKEN }}" | firebase login:ci --token
-
-      - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
+      # Шаг 5: Деплой на Firebase
+      - name: Run Firebase setup
+        run: npm run deploy  # Или используйте команду deploy, если настроена в package.json
