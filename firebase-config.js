@@ -1,5 +1,17 @@
+const { initializeApp } = require("firebase/app");
+const { getDatabase } = require("firebase/database");
+
+// Получаем ключ из переменной окружения
+const apiKey = process.env.FIREBASE_API_KEY;
+
+if (!apiKey) {
+  console.error('FIREBASE_API_KEY is not set');
+  process.exit(1); // Прекратить выполнение, если API ключ не задан
+}
+
+// Конфигурация Firebase с использованием переменных окружения
 const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",  // Эта строка будет заменена через GitHub Action
+  apiKey: apiKey,  // Получаем ключ из переменной окружения
   authDomain: "placeofpigeons.firebaseapp.com",
   databaseURL: "https://placeofpigeons-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "placeofpigeons",
@@ -9,5 +21,8 @@ const firebaseConfig = {
   measurementId: "G-P70KRENL94"
 };
 
+// Инициализируем Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+
+console.log("Firebase Initialized");
