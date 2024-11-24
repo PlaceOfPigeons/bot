@@ -113,6 +113,10 @@
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
 
+        // Применяем режим полного экрана для мини-приложения
+        window.Telegram.WebApp.expand();
+        window.Telegram.WebApp.requestFullscreen();
+
         // Разворачивание приложения на весь экран
         Telegram.WebApp.expand();
 
