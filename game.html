@@ -171,7 +171,7 @@
 
         // Функция для загрузки очков с сервера
         function loadScoreFromServer(userId) {
-            fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com//get_data?user_id=${userId}`)
+            fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/get_data?user_id=${userId}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.score !== undefined) {
@@ -187,7 +187,7 @@
 
         // Функция для сохранения очков на сервере
         function saveScoreToServer(userId) {
-            fetch('https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com//save_data', {
+            fetch('https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/save_data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
