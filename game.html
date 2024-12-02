@@ -321,11 +321,12 @@
             }, 1000);
         }
 
-        function endGame() {
-            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
-            saveScoreToServer(userId);
+        async function endGame() {
+            const userId = Telegram.WebApp.initDataUnsafe.user.id;
+            await saveScoreToServer(userId);  // Ожидаем завершения сохранения
             window.location.href = `newpage3.html?score=${score}`;
         }
+
 
         function startGame() {
             const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
