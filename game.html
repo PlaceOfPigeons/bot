@@ -193,7 +193,8 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: "User", // Можно передать имя пользователя, если нужно
+                    user_id: userId, // Передаем user_id для обновления данных конкретного пользователя
+                    name: "User", 
                     score: score
                 })
             })
