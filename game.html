@@ -6,7 +6,135 @@
     <title>Image Catcher</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Ваши стили */
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        #game {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 28px;
+            color: #fff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        #score img {
+            width: 36.4px;
+            height: 36.4px;
+            margin-right: 5px;
+        }
+
+        #timer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 28px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        #sequence {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 36px;
+            color: #fff;
+            font-weight: bold;
+            white-space: nowrap;
+            z-index: 1;
+        }
+
+        .wrapper {
+            position: absolute;
+            width: 96px;
+            height: 96px;
+            top: 15%;
+            left: 0;
+            animation: fall linear 4s forwards;
+            z-index: 2;
+        }
+
+        .cage, .bird {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cage {
+            background-image: url('Cage5.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .bird {
+            z-index: 1;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            user-select: none;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .bird.clicked {
+            transform: scale(1.5) rotate(10deg);
+            opacity: 0;
+            outline: none;
+        }
+
+        .points {
+            position: absolute;
+            font-size: 24px;
+            color: #00ff00;
+            font-weight: bold;
+            opacity: 1;
+            transition: opacity 1s ease;
+            pointer-events: none;
+        }
+
+        .points.plus10 {
+            color: #ff0000;
+            font-size: 36px;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(calc(100vh - 96px)) rotate(360deg);
+            }
+        }
+
+        * {
+            outline: none;
+            box-shadow: none;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -20,6 +148,28 @@
     </div>
 
     <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWwSObNeCTqDk8xJg9sa0u4wIvk5JFw8E",
+            authDomain: "placeofpigeons.firebaseapp.com",
+            databaseURL: "https://placeofpigeons-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "placeofpigeons",
+            storageBucket: "placeofpigeons.appspot.com",
+            messagingSenderId: "67354529384",
+            appId: "1:67354529384:web:716cf99397eb9002c435dd",
+            measurementId: "G-P70KRENL94"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+
+        // Установка черной темы
+        Telegram.WebApp.setBackgroundColor("#000000");
+        Telegram.WebApp.setHeaderColor("#000000");
+
         const game = document.getElementById('game');
         const scoreDisplay = document.getElementById('score').querySelector('span');
         const sequenceDisplay = document.getElementById('sequence');
@@ -37,42 +187,25 @@
         const maxLeft = screenWidth - birdWidth;
         let timerValue = 60;
 
-        // Получаем ID пользователя через Telegram API
-        const userId = Telegram.WebApp.initDataUnsafe.user.id;
-
-        // Функция для загрузки очков с сервера
-        function loadScoreFromServer(userId) {
-            fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/get_score?user_id=${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.score !== undefined) {
-                        storedScore = data.score;
-                        score = storedScore;
-                        updateScoreDisplay(score);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error loading score:", error);
-                });
+        // Функция для загрузки очков из базы данных Firebase
+        function loadScoreFromFirebase(userId) {
+            const scoreRef = ref(database, 'scores/' + userId);
+            get(scoreRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    storedScore = snapshot.val().score;
+                    score = storedScore;
+                    updateScoreDisplay(score);
+                }
+            }).catch((error) => {
+                console.error("Error loading score:", error);
+            });
         }
 
-        // Функция для сохранения очков на сервере
-        function saveScoreToServer(userId) {
-            fetch('https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/save_score', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user_id: userId,
-                    score: score
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.message);
-            })
-            .catch((error) => {
+        // Функция для сохранения очков в Firebase
+        function saveScoreToFirebase(userId) {
+            set(ref(database, 'scores/' + userId), {
+                score: score
+            }).catch((error) => {
                 console.error("Error saving score:", error);
             });
         }
@@ -192,17 +325,20 @@
         }
 
         function endGame() {
-            saveScoreToServer(userId);
+            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
+            saveScoreToFirebase(userId);
             window.location.href = `newpage3.html?score=${score}`;
         }
 
         function startGame() {
-            loadScoreFromServer(userId);
+            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
+            loadScoreFromFirebase(userId);
             createSequence();
             startTimer();
-            setInterval(createBird, 2000);
+            setInterval(createBird, 1000);
         }
 
+        updateScoreDisplay(score);
         startGame();
     </script>
 </body>
