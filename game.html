@@ -187,25 +187,41 @@
         const maxLeft = screenWidth - birdWidth;
         let timerValue = 60;
 
-        // Функция для загрузки очков из базы данных Firebase
-        function loadScoreFromFirebase(userId) {
-            const scoreRef = ref(database, 'scores/' + userId);
-            get(scoreRef).then((snapshot) => {
-                if (snapshot.exists()) {
-                    storedScore = snapshot.val().score;
-                    score = storedScore;
-                    updateScoreDisplay(score);
-                }
-            }).catch((error) => {
-                console.error("Error loading score:", error);
-            });
+        // Функция для загрузки очков из сервера Flask
+        function loadScoreFromServer(userId) {
+            fetch(`http://localhost:5000/get_data?user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.score !== undefined) {
+                        storedScore = data.score;
+                        score = storedScore;
+                        updateScoreDisplay(score);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error loading score:", error);
+                });
         }
 
-        // Функция для сохранения очков в Firebase
-        function saveScoreToFirebase(userId) {
-            set(ref(database, 'scores/' + userId), {
-                score: score
-            }).catch((error) => {
+        // Функция для сохранения очков на сервере Flask
+        function saveScoreToServer(userId) {
+            fetch('http://localhost:5000/save_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: 'User',  // Это можно заменить на настоящее имя игрока, если оно есть
+                    score: score
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    console.log("Data saved successfully!");
+                }
+            })
+            .catch(error => {
                 console.error("Error saving score:", error);
             });
         }
@@ -282,63 +298,34 @@
 
                     setTimeout(() => pointAnim.remove(), 1000);
                 }
-
-                bird.classList.add('clicked');
-                setTimeout(() => {
-                    wrapper.remove();
-                }, 300);
-
-                checkSequence();
-
-                bird.blur();
-                bird.setAttribute('tabindex', '-1');
-            });
-
-            wrapper.addEventListener('animationend', () => {
-                if (!isCageClicked) {
-                    wrapper.remove();
-                }
             });
         }
 
         function updateScoreDisplay(newScore) {
-            scoreDisplay.textContent = `${newScore}`;
-        }
-
-        function checkSequence() {
-            let correctSequence = currentSequence.slice(0, userSequence.length);
-            if (userSequence.join(',') !== correctSequence.join(',')) {
-                userSequence = [];
-            }
+            scoreDisplay.textContent = newScore;
         }
 
         function startTimer() {
             const timerInterval = setInterval(() => {
-                timerValue--;
                 timerDisplay.textContent = timerValue;
-
-                if (timerValue <= 0) {
+                if (timerValue === 0) {
                     clearInterval(timerInterval);
-                    endGame();
+                    saveScoreToServer("User123");  // Подставьте реальный ID пользователя
+                    alert('Game Over!');
+                } else {
+                    timerValue--;
                 }
             }, 1000);
         }
 
-        function endGame() {
-            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
-            saveScoreToFirebase(userId);
-            window.location.href = `newpage3.html?score=${score}`;
-        }
-
         function startGame() {
-            const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
-            loadScoreFromFirebase(userId);
+            Telegram.WebApp.ready();
             createSequence();
             startTimer();
+
             setInterval(createBird, 1000);
         }
 
-        updateScoreDisplay(score);
         startGame();
     </script>
 </body>
