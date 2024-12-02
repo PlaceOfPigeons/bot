@@ -147,25 +147,7 @@
         <div id="sequence"></div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAWwSObNeCTqDk8xJg9sa0u4wIvk5JFw8E",
-            authDomain: "placeofpigeons.firebaseapp.com",
-            databaseURL: "https://placeofpigeons-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "placeofpigeons",
-            storageBucket: "placeofpigeons.appspot.com",
-            messagingSenderId: "67354529384",
-            appId: "1:67354529384:web:716cf99397eb9002c435dd",
-            measurementId: "G-P70KRENL94"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-
+    <script>
         // Установка черной темы
         Telegram.WebApp.setBackgroundColor("#000000");
         Telegram.WebApp.setHeaderColor("#000000");
@@ -187,25 +169,39 @@
         const maxLeft = screenWidth - birdWidth;
         let timerValue = 60;
 
-        // Функция для загрузки очков из базы данных Firebase
-        function loadScoreFromFirebase(userId) {
-            const scoreRef = ref(database, 'scores/' + userId);
-            get(scoreRef).then((snapshot) => {
-                if (snapshot.exists()) {
-                    storedScore = snapshot.val().score;
-                    score = storedScore;
-                    updateScoreDisplay(score);
-                }
-            }).catch((error) => {
-                console.error("Error loading score:", error);
-            });
+        // Функция для загрузки очков с сервера
+        function loadScoreFromServer(userId) {
+            fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com//get_data?user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.score !== undefined) {
+                        storedScore = data.score;
+                        score = storedScore;
+                        updateScoreDisplay(score);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error loading score:", error);
+                });
         }
 
-        // Функция для сохранения очков в Firebase
-        function saveScoreToFirebase(userId) {
-            set(ref(database, 'scores/' + userId), {
-                score: score
-            }).catch((error) => {
+        // Функция для сохранения очков на сервере
+        function saveScoreToServer(userId) {
+            fetch('https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com//save_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: "User", // Можно передать имя пользователя, если нужно
+                    score: score
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+            })
+            .catch((error) => {
                 console.error("Error saving score:", error);
             });
         }
@@ -326,13 +322,13 @@
 
         function endGame() {
             const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
-            saveScoreToFirebase(userId);
+            saveScoreToServer(userId);
             window.location.href = `newpage3.html?score=${score}`;
         }
 
         function startGame() {
             const userId = Telegram.WebApp.initDataUnsafe.user.id; // Получаем ID пользователя через Telegram API
-            loadScoreFromFirebase(userId);
+            loadScoreFromServer(userId);
             createSequence();
             startTimer();
             setInterval(createBird, 1000);
