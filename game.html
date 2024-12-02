@@ -204,29 +204,24 @@
                 });
         }
 
-       // Функция для получения данных с Flask сервера, с передачей ID пользователя
-    async function fetchMessage() {
-      try {
-        const response = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/save_data?user_id=${userId}`); // Передаем ID пользователя
-        if (!response.ok) {
-          throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
-        
-        const jsonData = await response.json(); // Получаем JSON ответ
-        const scoreElement = document.getElementById('score');
+       async function saveScoreToServer(userId, score) {
+    try {
+        const response = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/save_data?user_id=${userId}&score=${score}`, {
+            method: 'GET', // или 'POST', если сервер принимает данные таким методом
+        });
 
-        if (jsonData.error) {
-          scoreElement.textContent = jsonData.error;
-          scoreElement.classList.add('error');
-        } else {
-          scoreElement.textContent = `Очки: ${jsonData.score}`;
+        if (!response.ok) {
+            throw new Error(`Ошибка HTTP: ${response.status}`);
         }
-      } catch (error) {
-        const scoreElement = document.getElementById('score');
-        scoreElement.textContent = 'Ошибка: ' + error.message;
-        scoreElement.classList.add('error');
-      }
+
+        const jsonData = await response.json();
+        console.log('Score saved:', jsonData); // Логируем ответ сервера
+
+    } catch (error) {
+        console.error('Ошибка при сохранении очков:', error);
     }
+}
+
 
         function createSequence() {
             currentSequence = [];
@@ -343,10 +338,11 @@
         }
 
         async function endGame() {
-            const userId = Telegram.WebApp.initDataUnsafe?.user.id; // Получаем ID пользователя через Telegram API
-            await saveScoreToServer(userId, score);  // Сохраняем очки на сервер
-            window.location.href = `newpage3.html?score=${score}`; // Переход на другую страницу с очками
-        }
+    const userId = Telegram.WebApp.initDataUnsafe?.user.id; // Получаем ID пользователя через Telegram API
+    await saveScoreToServer(userId, score);  // Сохраняем очки на сервер
+    window.location.href = `newpage3.html?score=${score}`; // Переход на другую страницу с очками
+}
+
 
         async function startGame() {
             const userId = Telegram.WebApp.initDataUnsafe?.user.id; // Получаем ID пользователя через Telegram API
