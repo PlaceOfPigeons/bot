@@ -37,66 +37,85 @@
     </div>
 
     <script>
-        // Initialize Telegram Web App
-        window.Telegram.WebApp.onEvent('authButtonClicked', async function() {
-            const user = window.Telegram.WebApp.initDataUnsafe.user;
-            const telegramID = user.id;
+        // Проверка, что Telegram Web App инициализировано
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.onEvent('authButtonClicked', async function() {
+                const user = window.Telegram.WebApp.initDataUnsafe.user;
+                const telegramID = user.id;
 
-            // Fetch user info
-            try {
-                const response = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/create_referral_link?telegram_id=${telegramID}`);
-                const data = await response.json();
-                document.getElementById('user-info').classList.remove('loading');
-                document.getElementById('user-info').innerHTML = `<p>Username: ${data.username}</p>`;
-                document.getElementById('referral-link').value = data.referral_link;
-                loadReferrals(telegramID);
-            } catch (error) {
-                console.error('Error fetching user info:', error);
-            }
-
-            // Copy referral link to clipboard
-            function copyToClipboard() {
-                const referralLink = document.getElementById('referral-link');
-                referralLink.select();
-                document.execCommand('copy');
-                alert('Referral link copied to clipboard!');
-            }
-
-            // Load referrals from database
-            async function loadReferrals(telegramID) {
+                // Получаем информацию о пользователе и создаем реферальную ссылку
                 try {
-                    const response = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/get_referrals?telegram_id=${telegramID}`);
+                    const response = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/create_referral_link?telegram_id=${telegramID}`);
                     const data = await response.json();
-                    const referralsList = document.getElementById('referral-list');
-                    referralsList.innerHTML = data.referrals.map(ref => `<li>${ref}</li>`).join('');
+
+                    if (data.referral_link) {
+                        document.getElementById('user-info').classList.remove('loading');
+                        document.getElementById('user-info').innerHTML = `<p>Username: ${data.username}</p>`;
+                        document.getElementById('referral-link').value = data.referral_link;
+                        loadReferrals(telegramID);
+                    } else {
+                        document.getElementById('user-info').innerHTML = `<p>Error fetching referral link. Please try again later.</p>`;
+                    }
                 } catch (error) {
-                    console.error('Error fetching referrals:', error);
+                    console.error('Error fetching user info:', error);
+                    document.getElementById('user-info').innerHTML = `<p>Failed to load user info. Please try again later.</p>`;
+                }
+
+                // Функция для копирования ссылки в буфер обмена
+                function copyToClipboard() {
+                    const referralLink = document.getElementById('referral-link');
+                    referralLink.select();
+                    navigator.clipboard.writeText(referralLink.value).then(() => {
+                        alert('Referral link copied to clipboard!');
+                    }).catch((error) => {
+                        console.error('Failed to copy text: ', error);
+                    });
+                }
+
+                // Загрузка рефералов пользователя
+                async function loadReferrals(telegramID) {
+                    const referralsList = document.getElementById('referral-list');
+                    try {
+                        const response = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/get_referrals?telegram_id=${telegramID}`);
+                        const data = await response.json();
+
+                        if (data.referrals) {
+                            referralsList.innerHTML = data.referrals.map(ref => `<li>${ref}</li>`).join('');
+                        } else {
+                            referralsList.innerHTML = '<li>No referrals yet.</li>';
+                        }
+                    } catch (error) {
+                        console.error('Error fetching referrals:', error);
+                        referralsList.innerHTML = '<li>Error loading referrals. Please try again later.</li>';
+                    }
+                }
+            });
+
+            // Проверка рефералов, если доступ через ссылку
+            const urlParams = new URLSearchParams(window.location.search);
+            const startappID = urlParams.get('startapp');
+            if (startappID) {
+                handleReferral(startappID);
+            }
+
+            // Отслеживание рефералов
+            async function handleReferral(referrerID) {
+                const referredID = window.Telegram.WebApp.initDataUnsafe.user.id;
+                try {
+                    const response = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/track_referral?referrer_id=${referrerID}&referred_id=${referredID}`);
+                    const data = await response.json();
+                    if (data.message) {
+                        loadReferrals(referrerID);
+                        alert(data.message);
+                    } else {
+                        console.error(data.error);
+                    }
+                } catch (error) {
+                    console.error('Error tracking referral:', error);
                 }
             }
-        });
-
-        // Handle referral tracking
-        async function handleReferral(referrerID) {
-            const referredID = window.Telegram.WebApp.initDataUnsafe.user.id;
-            try {
-                const response = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/track_referral?referrer_id=${referrerID}&referred_id=${referredID}`);
-                const data = await response.json();
-                if (data.message) {
-                    loadReferrals(referrerID);
-                    alert(data.message);
-                } else {
-                    console.error(data.error);
-                }
-            } catch (error) {
-                console.error('Error tracking referral:', error);
-            }
-        }
-
-        // Listen for referrals if accessed via a referral link
-        const urlParams = new URLSearchParams(window.location.search);
-        const startappID = urlParams.get('startapp');
-        if (startappID) {
-            handleReferral(startappID);
+        } else {
+            console.error('Telegram Web App is not initialized');
         }
     </script>
 </body>
