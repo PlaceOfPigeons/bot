@@ -114,7 +114,7 @@ if (startappID) {
 async function handleReferral(referrerID) {
     const referredID = userId;
     try {
-        const response = await fetch(`https://yourserver.com/track_referral?startapp=${referrerID}&referred_id=${referredID}`);
+        const response = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/track_referral?startapp=${referrerID}&referred_id=${referredID}`);
         const data = await response.json();
         if (data.message) {
             alert(data.message);
