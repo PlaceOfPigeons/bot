@@ -5,9 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Web App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            background-color: white; /* Белый фон */
+            color: black; /* Чёрный текст */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        button {
+            background-color: black; /* Чёрная кнопка */
+            color: white; /* Белый текст на кнопке */
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: grey; /* Серый фон при наведении */
+        }
+    </style>
 </head>
 <body>
     <h1>Telegram Web App</h1>
+    <p>Эта страница интегрирована с Telegram Web App API.</p>
     <button id="sendPoints">Send Points</button>
 
     <script>
