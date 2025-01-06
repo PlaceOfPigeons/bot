@@ -49,7 +49,7 @@
 
             try {
                 // Валидация initData
-                const validateResponse = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/validate`, {
+                const validateResponse = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/validate`, {  
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -63,7 +63,7 @@
 
                 if (validateData.message === "Validation successful") {
                     // Если валидация успешна, получаем очки
-                    const pointsResponse = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points`, {
+                    const pointsResponse = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points`, {  
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -105,7 +105,7 @@
 
             try {
                 // Отправляем данные на сервер для сохранения очков
-                const response = await fetch("https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points", {
+                const response = await fetch("https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points", {  
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
