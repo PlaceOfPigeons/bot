@@ -31,6 +31,7 @@
 </head>
 <body>
     <h1>Telegram Web App</h1>
+    <p id="userInfo">Загрузка данных пользователя...</p> <!-- Место для отображения данных пользователя -->
     <p>Эта страница интегрирована с Telegram Web App API.</p>
     <button id="sendPoints">Send Points</button>
 
@@ -38,14 +39,33 @@
         // Получаем данные Telegram Web App
         const tg = window.Telegram.WebApp;
 
-        // Инициализация
+        // Инициализация Telegram Web App
         tg.ready();
+
+        // Функция для получения данных пользователя и отображения их на странице
+        function fetchUserData() {
+            // Получаем информацию о пользователе через Telegram Web App API
+            const userName = tg.initDataUnsafe?.user?.username || "Неизвестно";
+            const userId = tg.initDataUnsafe?.user?.id || "Неизвестно";
+            const userPoints = 0;  // Начальные очки (вы получите их с сервера позже)
+
+            // Обновляем информацию на странице
+            document.getElementById('userInfo').innerHTML = `
+                <strong>Имя пользователя:</strong> ${userName}<br>
+                <strong>ID пользователя:</strong> ${userId}<br>
+                <strong>Очки:</strong> ${userPoints}<br>
+            `;
+        }
+
+        // Вызов функции для получения данных
+        fetchUserData();
 
         // Обработчик нажатия на кнопку
         document.getElementById('sendPoints').addEventListener('click', () => {
             const initData = tg.initData; // Получаем initData
             const points = 100; // Очки для отправки
 
+            // Отправляем данные на сервер для сохранения очков
             fetch("https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points", {
                 method: "POST",
                 headers: {
