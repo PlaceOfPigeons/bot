@@ -48,14 +48,15 @@
             let userPoints = 0;
 
             try {
-                // Получаем данные для валидации
+                // Валидация initData
                 const validateResponse = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/validate`, {  
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        initData: tg.initData
+                        initData: tg.initData,
+                        signature: tg.initDataUnsafe?.signature  // Передаем подпись
                     }),
                 });
 
@@ -70,6 +71,7 @@
                         },
                         body: JSON.stringify({
                             initData: tg.initData,
+                            signature: tg.initDataUnsafe?.signature,
                             points: 0  // Пример с нулевыми очками, чтобы получить текущие
                         }),
                     });
@@ -92,44 +94,34 @@
             document.getElementById('userInfo').innerHTML = `
                 <strong>Имя пользователя:</strong> ${userName}<br>
                 <strong>ID пользователя:</strong> ${userId}<br>
-                <strong>Очки:</strong> ${userPoints}<br>
+                <strong>Очки:</strong> ${userPoints}
             `;
         }
 
-        // Вызов функции для получения данных
-        fetchUserData();
+        fetchUserData();  // Вызываем функцию при загрузке страницы
 
-        // Обработчик нажатия на кнопку
-        document.getElementById('sendPoints').addEventListener('click', async () => {
-            const points = 100;  // Очки для отправки
-
+        // Обработчик для кнопки "Send Points"
+        document.getElementById('sendPoints').onclick = async function() {
+            const points = 10; // Пример, передаем 10 очков
             try {
-                // Отправляем данные на сервер для сохранения очков
-                const response = await fetch("https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points", {  
+                const response = await fetch("https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
                         initData: tg.initData,
-                        points: points,
+                        signature: tg.initDataUnsafe?.signature,
+                        points: points
                     }),
                 });
 
-                const data = await response.json();
-
-                if (data.error) {
-                    alert(`Ошибка: ${data.error}`);
-                } else {
-                    alert("Очки успешно отправлены!");
-                    // После отправки обновляем информацию на странице
-                    fetchUserData();  // Обновляем данные пользователя
-                }
+                const responseData = await response.json();
+                alert(responseData.message);
             } catch (error) {
-                console.error("Ошибка:", error);
-                alert("Произошла ошибка при отправке очков.");
+                alert("Ошибка отправки очков: " + error);
             }
-        });
+        }
     </script>
 </body>
 </html>
