@@ -7,8 +7,8 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            background-color: white; /* Белый фон */
-            color: black; /* Чёрный текст */
+            background-color: white;
+            color: black;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
@@ -17,15 +17,15 @@
             font-size: 24px;
         }
         button {
-            background-color: black; /* Чёрная кнопка */
-            color: white; /* Белый текст на кнопке */
+            background-color: black;
+            color: white;
             border: none;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
         }
         button:hover {
-            background-color: grey; /* Серый фон при наведении */
+            background-color: grey;
         }
     </style>
 </head>
@@ -36,7 +36,6 @@
     <button id="sendPoints">Send Points</button>
 
     <script>
-        // Получаем данные Telegram Web App
         const tg = window.Telegram.WebApp;
 
         // Инициализация Telegram Web App
@@ -44,12 +43,42 @@
 
         // Функция для получения данных пользователя и отображения их на странице
         function fetchUserData() {
-            // Получаем информацию о пользователе через Telegram Web App API
             const userName = tg.initDataUnsafe?.user?.username || "Неизвестно";
             const userId = tg.initDataUnsafe?.user?.id || "Неизвестно";
-            const userPoints = 0;  // Начальные очки (вы получите их с сервера позже)
+            let userPoints = 0;
 
-            // Обновляем информацию на странице
+            // Получаем очки с сервера
+            fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/validate`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    initData: tg.initData
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === "Validation successful") {
+                    fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            initData: tg.initData,
+                            points: 0  // Проверка, например, с нулевыми очками
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === "Points submitted successfully") {
+                            userPoints = data.points;  // Пример обновления
+                        }
+                    })
+                }
+            })
+            // Обновляем отображение данных о пользователе
             document.getElementById('userInfo').innerHTML = `
                 <strong>Имя пользователя:</strong> ${userName}<br>
                 <strong>ID пользователя:</strong> ${userId}<br>
@@ -62,8 +91,7 @@
 
         // Обработчик нажатия на кнопку
         document.getElementById('sendPoints').addEventListener('click', () => {
-            const initData = tg.initData; // Получаем initData
-            const points = 100; // Очки для отправки
+            const points = 100;  // Очки для отправки
 
             // Отправляем данные на сервер для сохранения очков
             fetch("https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points", {
@@ -72,7 +100,7 @@
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    initData: initData,
+                    initData: tg.initData,
                     points: points,
                 }),
             })
@@ -82,6 +110,8 @@
                         alert(`Ошибка: ${data.error}`);
                     } else {
                         alert("Очки успешно отправлены!");
+                        // После отправки обновляем информацию на странице
+                        fetchUserData();  // Обновляем данные пользователя
                     }
                 })
                 .catch(error => {
