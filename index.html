@@ -31,10 +31,9 @@
 </head>
 <body>
     <h1>Telegram Web App</h1>
-    <p id="userInfo">Загрузка данных пользователя...</p> <!-- Место для отображения данных пользователя -->
+    <p id="userInfo">Загрузка данных пользователя...</p>
     <p>Эта страница интегрирована с Telegram Web App API.</p>
     <button id="sendPoints">Send Points</button>
-    <p id="validationResult"></p> <!-- Место для отображения результата валидации -->
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -46,44 +45,68 @@
         async function fetchUserData() {
             const userName = tg.initDataUnsafe?.user?.username || "Неизвестно";
             const userId = tg.initDataUnsafe?.user?.id || "Неизвестно";
+            const initData = tg.initData;
+            const signature = tg.initDataUnsafe?.signature;
 
-            // Обновляем отображение данных о пользователе
-            document.getElementById('userInfo').innerHTML = `
-                <strong>Имя пользователя:</strong> ${userName}<br>
-                <strong>ID пользователя:</strong> ${userId}
-            `;
+            try {
+                // Логируем данные перед отправкой
+                console.log("Sending initData:", initData);
+                console.log("Sending signature:", signature);
+
+                const validateResponse = await fetch('https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/validate', {  
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        initData: initData,
+                        signature: signature
+                    }),
+                });
+
+                const response = await validateResponse.json();
+
+                if (response.message === "Validation successful") {
+                    console.log("Validation successful");
+                    // Обновляем информацию на странице
+                    document.getElementById('userInfo').innerHTML = `
+                        <strong>Имя пользователя:</strong> ${userName}<br>
+                        <strong>ID пользователя:</strong> ${userId}
+                    `;
+                } else {
+                    console.error("Validation failed:", response.message);
+                    document.getElementById('userInfo').innerHTML = "Ошибка валидации данных!";
+                }
+            } catch (error) {
+                console.error("Ошибка при запросе:", error);
+                document.getElementById('userInfo').innerHTML = "Ошибка при запросе!";
+            }
         }
 
         fetchUserData();  // Вызываем функцию при загрузке страницы
 
         // Обработчик для кнопки "Send Points"
         document.getElementById('sendPoints').onclick = async function() {
+            const points = 10; // Пример, передаем 10 очков
             try {
-                // Отправляем запрос на валидацию данных
-                const validateResponse = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/validate`, {  
+                const response = await fetch("https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
                         initData: tg.initData,
-                        signature: tg.initDataUnsafe?.signature  // Передаем подпись
+                        signature: tg.initDataUnsafe?.signature,
+                        points: points
                     }),
                 });
 
-                const validateData = await validateResponse.json();
-
-                // Обработка результата валидации
-                if (validateData.message === "Validation successful") {
-                    document.getElementById('validationResult').innerHTML = "Данные корректны!";
-                } else {
-                    document.getElementById('validationResult').innerHTML = "Ошибка: данные повреждены или устарели!";
-                }
+                const responseData = await response.json();
+                alert(responseData.message);
             } catch (error) {
-                alert("Ошибка при запросе: " + error);
-                document.getElementById('validationResult').innerHTML = "Произошла ошибка при отправке данных!";
+                alert("Ошибка отправки очков: " + error);
             }
-        };
+        }
     </script>
 </body>
 </html>
