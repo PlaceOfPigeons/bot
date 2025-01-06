@@ -34,6 +34,7 @@
     <p id="userInfo">Загрузка данных пользователя...</p> <!-- Место для отображения данных пользователя -->
     <p>Эта страница интегрирована с Telegram Web App API.</p>
     <button id="sendPoints">Send Points</button>
+    <p id="validationResult"></p> <!-- Место для отображения результата валидации -->
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -45,11 +46,21 @@
         async function fetchUserData() {
             const userName = tg.initDataUnsafe?.user?.username || "Неизвестно";
             const userId = tg.initDataUnsafe?.user?.id || "Неизвестно";
-            let userPoints = 0;
 
+            // Обновляем отображение данных о пользователе
+            document.getElementById('userInfo').innerHTML = `
+                <strong>Имя пользователя:</strong> ${userName}<br>
+                <strong>ID пользователя:</strong> ${userId}
+            `;
+        }
+
+        fetchUserData();  // Вызываем функцию при загрузке страницы
+
+        // Обработчик для кнопки "Send Points"
+        document.getElementById('sendPoints').onclick = async function() {
             try {
-                // Валидация initData
-                const validateResponse = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/validate`, {  
+                // Отправляем запрос на валидацию данных
+                const validateResponse = await fetch(`https://your-heroku-url/validate`, {  
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -62,66 +73,17 @@
 
                 const validateData = await validateResponse.json();
 
+                // Обработка результата валидации
                 if (validateData.message === "Validation successful") {
-                    // Если валидация успешна, получаем очки
-                    const pointsResponse = await fetch(`https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points`, {  
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            initData: tg.initData,
-                            signature: tg.initDataUnsafe?.signature,
-                            points: 0  // Пример с нулевыми очками, чтобы получить текущие
-                        }),
-                    });
-
-                    const pointsData = await pointsResponse.json();
-
-                    if (pointsData.message === "Points submitted successfully") {
-                        userPoints = pointsData.points;  // Обновляем очки пользователя
-                    } else {
-                        console.error("Ошибка при получении очков");
-                    }
+                    document.getElementById('validationResult').innerHTML = "Данные корректны!";
                 } else {
-                    console.error("Ошибка валидации");
+                    document.getElementById('validationResult').innerHTML = "Ошибка: данные повреждены или устарели!";
                 }
             } catch (error) {
-                console.error("Ошибка при запросе:", error);
+                alert("Ошибка при запросе: " + error);
+                document.getElementById('validationResult').innerHTML = "Произошла ошибка при отправке данных!";
             }
-
-            // Обновляем отображение данных о пользователе
-            document.getElementById('userInfo').innerHTML = `
-                <strong>Имя пользователя:</strong> ${userName}<br>
-                <strong>ID пользователя:</strong> ${userId}<br>
-                <strong>Очки:</strong> ${userPoints}
-            `;
-        }
-
-        fetchUserData();  // Вызываем функцию при загрузке страницы
-
-        // Обработчик для кнопки "Send Points"
-        document.getElementById('sendPoints').onclick = async function() {
-            const points = 10; // Пример, передаем 10 очков
-            try {
-                const response = await fetch("https://frozen-dawn-48680-9cdb4d5a9403.herokuapp.com/submit_points", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        initData: tg.initData,
-                        signature: tg.initDataUnsafe?.signature,
-                        points: points
-                    }),
-                });
-
-                const responseData = await response.json();
-                alert(responseData.message);
-            } catch (error) {
-                alert("Ошибка отправки очков: " + error);
-            }
-        }
+        };
     </script>
 </body>
 </html>
